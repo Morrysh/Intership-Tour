@@ -16,7 +16,7 @@ public class Azienda {
 	
 	private String utente;
 	private String nome;
-	private String cognome;
+	private String regione;
 	private String indirizzoSedeLegale;
 	private String foroCompetente;
 	private String nomeRappresentante;
@@ -28,7 +28,7 @@ public class Azienda {
 	public Azienda() {
 		this.utente = "";
 		this.nome = "";
-		this.cognome = "";
+		this.regione = "";
 		this.indirizzoSedeLegale = "";
 		this.foroCompetente = "";
 		this.nomeRappresentante = "";
@@ -38,12 +38,12 @@ public class Azienda {
 		this.convenzionata = false;
 	}
 	
-	public Azienda(String utente, String nome, String cognome, String indirizzoSedeLegale, String foroCompetente,
+	public Azienda(String utente, String nome, String regione, String indirizzoSedeLegale, String foroCompetente,
 			String nomeRappresentante, String cognomeRappresentante, String nomeResponsabile,
 			String cognomeResponsabile, boolean convenzionata) {
 		this.utente = utente;
 		this.nome = nome;
-		this.cognome = cognome;
+		this.regione = regione;
 		this.indirizzoSedeLegale = indirizzoSedeLegale;
 		this.foroCompetente = foroCompetente;
 		this.nomeRappresentante = nomeRappresentante;
@@ -65,11 +65,11 @@ public class Azienda {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	public String getCognome() {
-		return cognome;
+	public String getRegione() {
+		return regione;
 	}
-	public void setCognome(String cognome) {
-		this.cognome = cognome;
+	public void setRegione(String regione) {
+		this.regione = regione;
 	}
 	public String getIndirizzoSedeLegale() {
 		return indirizzoSedeLegale;
@@ -107,7 +107,7 @@ public class Azienda {
 	public void setCognomeResponsabile(String cognomeResponsabile) {
 		this.cognomeResponsabile = cognomeResponsabile;
 	}
-	public boolean isConvenzionata() {
+	public boolean getConvenzionata() {
 		return convenzionata;
 	}
 	public void setConvenzionata(boolean convenzionata) {

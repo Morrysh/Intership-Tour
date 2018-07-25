@@ -11,8 +11,7 @@ public class OffertaTirocinio {
 	public static final String OBIETTIVI = "obiettivi";
 	public static final String MODALITA = "modalita";
 	public static final String RIMBORSO = "rimborso";
-	public static final String VISIBILITA = "visibilita";
-	public static final String APPROVAZIONE = "approvazione"; 
+	public static final String VISIBILE = "visibile";
 
 	private int idTirocinio;
 	private String azienda;
@@ -22,8 +21,7 @@ public class OffertaTirocinio {
 	private String obiettivi;
 	private String modalita;
 	private String rimborso;
-	private boolean visibilita;
-	private boolean approvazione;
+	private boolean visibile;
 	
 	public OffertaTirocinio() {
 		this.idTirocinio = 0;
@@ -34,12 +32,11 @@ public class OffertaTirocinio {
 		this.obiettivi = "";
 		this.modalita = "";
 		this.rimborso = null;
-		this.visibilita = false;
-		this.approvazione = false;
+		this.visibile = false;
 	}
 	
 	public OffertaTirocinio(int idTirocinio, String azienda, String luogo, String orari, String durata,
-			String obiettivi, String modalita, String rimborso, boolean visibilita, boolean approvazione) {
+			String obiettivi, String modalita, String rimborso, boolean visibile) {
 		this.idTirocinio = idTirocinio;
 		this.azienda = azienda;
 		this.luogo = luogo;
@@ -48,8 +45,7 @@ public class OffertaTirocinio {
 		this.obiettivi = obiettivi;
 		this.modalita = modalita;
 		this.rimborso = rimborso;
-		this.visibilita = visibilita;
-		this.approvazione = approvazione;
+		this.visibile = visibile;
 	}
 	
 	public int getIdTirocinio() {
@@ -100,17 +96,11 @@ public class OffertaTirocinio {
 	public void setRimborso(String rimborso) {
 		this.rimborso = rimborso;
 	}
-	public boolean isVisibilita() {
-		return visibilita;
+	public boolean isVisibile() {
+		return visibile;
 	}
-	public void setVisibilita(boolean visibilita) {
-		this.visibilita = visibilita;
-	}
-	public boolean isApprovazione() {
-		return approvazione;
-	}
-	public void setApprovazione(boolean approvazione) {
-		this.approvazione = approvazione;
+	public void setVisibile(boolean visibile) {
+		this.visibile = visibile;
 	}
 	
 }

@@ -7,7 +7,7 @@ public class Studente {
 	// DB fields
 	public static final String UTENTE = "utente";
 	public static final String NOME = "nome";
-	public static final String CONGOME = "cognome";
+	public static final String COGNOME = "cognome";
 	public static final String DATA_NASCITA = "data_nascita";
 	public static final String LUOGO_NASCITA = "luogo_nascita";
 	public static final String RESIDENZA = "residenza";

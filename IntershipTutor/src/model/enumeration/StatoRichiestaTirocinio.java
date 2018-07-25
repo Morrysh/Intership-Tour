@@ -2,6 +2,6 @@ package model.enumeration;
 
 public enum StatoRichiestaTirocinio {
 	
-	attesa, accettato, rifiutato;
+	attesa, accettato, rifiutato, terminato;
 
 }

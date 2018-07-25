@@ -3,6 +3,7 @@ package dao;
 import java.util.List;
 
 import model.Azienda;
+import model.Utente;
 
 public interface AziendaDAOInterface {
 	
@@ -10,13 +11,14 @@ public interface AziendaDAOInterface {
 	
 	int update(Azienda azienda);
 	
-	boolean isConvenzionata(Azienda azienda);
+	boolean setConvenzione(Azienda azienda, boolean convezione);
 	
 	Azienda getAziendaByCodiceFiscale(String codiceFiscale);
 
+	List<Azienda> allAziendeAccordingToConvention(boolean convenzione);
+	
 	List<Azienda> allAziende();
 	
-	List<Azienda> allAziendeNonConvenzionate();
-	
+	Azienda getAziendaByUtente(Utente utente);
 	
 }
