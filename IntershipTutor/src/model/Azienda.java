@@ -8,11 +8,11 @@ public class Azienda {
 	public static final String REGIONE = "regione";
 	public static final String INDIRIZZO_SEDE_LEGALE = "indirizzo_sede_legale";
 	public static final String FORO_COMPETENTE = "foro_competente";
-	public static final String CONVENZIONATA = "convenzionata";
 	public static final String NOME_RAPPRESENTANTE = "nome_rappresentante";
 	public static final String COGNOME_RAPPRESENTANTE = "cognome_rappresentante";
 	public static final String NOME_RESPONSABILE = "nome_responsabile";
 	public static final String COGNOME_RESPONSABILE = "cognome_responsabile";
+	public static final String CONVENZIONATA = "convenzionata";
 	
 	private String utente;
 	private String nome;

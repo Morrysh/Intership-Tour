@@ -17,7 +17,7 @@ public class TirocinioStudenteDAO implements TirocinioStudenteDAOInterface {
 
 	@Override
 	public int insert(TirocinioStudente tirocinioStudente) {
-		String insertQuery = "INSERT INTO tirociniostudente VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+		String insertQuery = "INSERT INTO tirociniostudente VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 		PreparedStatement preparedStatement;
         int status = 0;
         
@@ -26,14 +26,15 @@ public class TirocinioStudenteDAO implements TirocinioStudenteDAOInterface {
 
             preparedStatement.setString(1, tirocinioStudente.getStudente());
             preparedStatement.setInt(2, tirocinioStudente.getTirocinio());
-            preparedStatement.setString(3, tirocinioStudente.getParere());
-            preparedStatement.setInt(4, tirocinioStudente.getCfu());
-            preparedStatement.setString(5, tirocinioStudente.getTutoreUniversitario());
+            preparedStatement.setInt(3, tirocinioStudente.getCfu());
+            preparedStatement.setString(4, tirocinioStudente.getTutoreUniversitario());
+            preparedStatement.setString(5, tirocinioStudente.getTelefonoTutoreUniversitario());
             preparedStatement.setString(6, tirocinioStudente.getEmailTutoreUniversitario());
-            preparedStatement.setInt(7, tirocinioStudente.getOreSvolte());
-            preparedStatement.setString(8, tirocinioStudente.getDescrizioneDettagliata());
+            preparedStatement.setString(7, tirocinioStudente.getDescrizioneDettagliata());
+            preparedStatement.setInt(8, tirocinioStudente.getOreSvolte());
             preparedStatement.setString(9, tirocinioStudente.getGiudizioFinale());
-            preparedStatement.setString(10, tirocinioStudente.getStato().name());
+            preparedStatement.setString(10, tirocinioStudente.getParere());            
+            preparedStatement.setString(11, tirocinioStudente.getStato().name());
 
             status = preparedStatement.executeUpdate();
 
@@ -77,8 +78,9 @@ public class TirocinioStudenteDAO implements TirocinioStudenteDAOInterface {
                         resultSet.getString(Studente.COGNOME),
                         resultSet.getDate(Studente.DATA_NASCITA),
                         resultSet.getString(Studente.LUOGO_NASCITA),
+                        resultSet.getString(Studente.PROVINCIA_NASCITA),
                         resultSet.getString(Studente.RESIDENZA),
-                        resultSet.getString(Studente.PROVINCIA),
+                        resultSet.getString(Studente.PROVINCIA_RESIDENZA),
                         resultSet.getString(Studente.TIPO_LAUREA),
                         resultSet.getString(Studente.CORSO_LAUREA),
                         resultSet.getBoolean(Studente.HANDICAP));

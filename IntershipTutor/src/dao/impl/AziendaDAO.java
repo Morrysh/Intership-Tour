@@ -23,16 +23,16 @@ public class AziendaDAO implements AziendaDAOInterface {
         try (Connection connectionection = DBConnector.getDatasource().getConnection()) {
             preparedStatement = connectionection.prepareStatement(insertQuery);
 
-            preparedStatement.setString(1, azienda.getNome());
-            preparedStatement.setString(2, azienda.getRegione());
-            preparedStatement.setString(3, azienda.getIndirizzoSedeLegale());
-            preparedStatement.setString(4, azienda.getForoCompetente());
-            preparedStatement.setBoolean(5, azienda.getConvenzionata());
+            preparedStatement.setString(1, azienda.getUtente());
+            preparedStatement.setString(2, azienda.getNome());
+            preparedStatement.setString(3, azienda.getRegione());
+            preparedStatement.setString(4, azienda.getIndirizzoSedeLegale());
+            preparedStatement.setString(5, azienda.getForoCompetente());
             preparedStatement.setString(6, azienda.getNomeRappresentante());
             preparedStatement.setString(7, azienda.getCognomeRappresentante());
             preparedStatement.setString(8, azienda.getNomeResponsabile());
             preparedStatement.setString(9, azienda.getCognomeResponsabile());
-            preparedStatement.setString(10, azienda.getUtente());
+            preparedStatement.setBoolean(10, azienda.getConvenzionata());
 
             status = preparedStatement.executeUpdate();
 
@@ -82,6 +82,7 @@ public class AziendaDAO implements AziendaDAOInterface {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 Azienda azienda = new Azienda(
+                		resultSet.getString(Azienda.UTENTE),
                 		resultSet.getString(Azienda.NOME),
 						resultSet.getString(Azienda.REGIONE),
 						resultSet.getString(Azienda.INDIRIZZO_SEDE_LEGALE),
@@ -90,7 +91,6 @@ public class AziendaDAO implements AziendaDAOInterface {
 	                    resultSet.getString(Azienda.COGNOME_RAPPRESENTANTE),
 	                    resultSet.getString(Azienda.NOME_RESPONSABILE),
 	                    resultSet.getString(Azienda.COGNOME_RESPONSABILE),
-	                    resultSet.getString(Azienda.UTENTE),
 	                    resultSet.getBoolean(Azienda.CONVENZIONATA));
             aziende.add(azienda);
             }
@@ -117,6 +117,7 @@ public class AziendaDAO implements AziendaDAOInterface {
 	            ResultSet resultSet = preparedStatement.executeQuery();
 	            if (resultSet.next()) {
 	                azienda = new Azienda(
+	                		resultSet.getString(Azienda.UTENTE),
 	                		resultSet.getString(Azienda.NOME),
 	                        resultSet.getString(Azienda.REGIONE),
 	                        resultSet.getString(Azienda.INDIRIZZO_SEDE_LEGALE),
@@ -125,7 +126,6 @@ public class AziendaDAO implements AziendaDAOInterface {
 	                        resultSet.getString(Azienda.COGNOME_RAPPRESENTANTE),
 	                        resultSet.getString(Azienda.NOME_RESPONSABILE),
 	                        resultSet.getString(Azienda.COGNOME_RESPONSABILE),
-	                        resultSet.getString(Azienda.UTENTE),
 	                        resultSet.getBoolean(Azienda.CONVENZIONATA));
 	            }
 

@@ -22,9 +22,9 @@ public class UtenteDAO implements UtenteDAOInterface {
             preparedStatement = connection.prepareStatement(insertQuery);
 
             preparedStatement.setString(1, utente.getCodiceFiscale());
-            preparedStatement.setString(2, utente.getTelefono());
-            preparedStatement.setString(3, utente.getEmail());
-            preparedStatement.setString(4, utente.getPassword());
+            preparedStatement.setString(2, utente.getEmail());
+            preparedStatement.setString(3, utente.getPassword());
+            preparedStatement.setString(4, utente.getTelefono());
             preparedStatement.setString(5, utente.getTipoUtente().name());
 
             status = preparedStatement.executeUpdate();
@@ -70,9 +70,9 @@ public class UtenteDAO implements UtenteDAOInterface {
             if (resultSet.next()) {
                 utente = new Utente(
                 		resultSet.getString(Utente.CODICE_FISCALE),
-    					resultSet.getString(Utente.TELEFONO),
                         resultSet.getString(Utente.EMAIL),
                         resultSet.getString(Utente.PASSWORD),
+                        resultSet.getString(Utente.TELEFONO),
                         TipoUtente.valueOf(resultSet.getString(Utente.TIPO_UTENTE)));
             }
 
