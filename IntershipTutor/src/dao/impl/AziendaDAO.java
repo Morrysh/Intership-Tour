@@ -105,7 +105,7 @@ public class AziendaDAO implements AziendaDAOInterface {
 
 	@Override
 	public Azienda getAziendaByUtente(Utente utente) {
-		 String query = "SELECT * FROM azienda WHERE id = ?;";
+		 String query = "SELECT * FROM azienda WHERE utente = ?;";
 	        PreparedStatement preparedStatement;
 	        Azienda azienda = null;
 
@@ -134,7 +134,6 @@ public class AziendaDAO implements AziendaDAOInterface {
 	            e.printStackTrace();
 	        }
 	        return azienda;
-	}
-	
+	}	
 	
 }

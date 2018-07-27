@@ -1,0 +1,232 @@
+html,
+body,
+h1
+h2,
+h3,
+h4,
+h5 {
+    font-family: "Open Sans", sans-serif
+}
+
+    
+
+
+.titolo-aziende{
+    color:#822627;
+    font-size: 20px;
+
+}
+
+.page-container-aziende{
+    margin-top:70px;
+}
+
+.univaq-color{
+    background-color: #822627;
+    color: #ffffff
+}
+
+.profile-container{
+    margin-bottom: 20px;
+    /*User not logged*/
+    display: none;
+}
+
+.aziende{
+    max-height: 600px;
+    overflow-y: scroll
+}
+
+.azienda:hover{
+    cursor: pointer;
+    color: #F90200;
+}
+
+.azienda:first-child{
+    border-top: 1px solid #eeeeee
+}
+
+.aziende::-webkit-scrollbar {
+    width: 4px;
+}
+
+ 
+.aziende::-webkit-scrollbar-thumb {
+  background-color: #dedede;
+}
+
+.aziende-convenzionate{
+    padding-left: 40px;
+    font-size: 23px;
+    margin: 0 !important;
+    padding: 20px !important;
+    font-size: 100% !important; 
+    font-weight: 700;
+    text-align: center;
+    color: #822627;
+}
+
+.w3-container.margin-bottom .w3-center{
+    font-size: 100%;
+}
+
+.info{
+    text-align: center;
+    font-size: 90%;
+    margin: 5px 0
+}
+
+.azienda:last-child{
+    padding-bottom: 10px;
+}
+
+.w3-opacity{
+    font-size: 18px;
+    font-weight: 500;
+    transition: .2s all ease-in;
+    opacity: .8;
+}
+
+.w3-opacity:hover{
+    color: #F90200;
+    cursor: pointer;
+}
+
+.w3-border{
+    border-color: #eeeeee !important;
+}
+
+.page-container{
+    max-width:1400px;
+    margin-top:80px;
+}
+
+.middle-column{
+    width: 70%;
+}
+
+.proposte-tirocinio{
+    font-size: 13px;
+    line-height: 2;
+}
+
+.pagination{
+    margin-top: 20px
+}
+
+.w3-container.intership{
+    margin-bottom: 20px
+}
+
+.w3-col.m7{
+    width: 80%;
+}
+
+.w3-col.m3, .w3-quarter{
+    width: 20%
+}
+
+.page-container{
+    margin-left: 8%;
+    margin-right: 8%;
+}
+
+/* Computer */
+@media (min-device-width: 500px){
+    html,
+    .w3-bar{
+        min-width: 500px !important;
+    }
+}
+
+/* Tablet and smartphone */
+@media  (max-width: 701px){
+
+    .profilo,
+    .aziende{
+        display: none;
+    }
+
+    .margin-bottom{
+        margin-bottom: 30px
+        
+    }
+
+    .page-container{
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .w3-col.m7,
+    .w3-col.m3, .w3-quarter{
+        width: 100%;
+    }
+
+    .w3-row-padding,
+    .w3-col.m12{
+        padding-left: 0;
+        padding-right: 0;
+    }
+    
+}
+
+/*form ricerca*/
+input[type=text] {
+    width: 130px;
+    -webkit-transition: width 0.4s ease-in-out;
+    transition: width 0.4s ease-in-out;
+}
+
+/* When the input field gets focus, change its width to 100% */
+input[type=text]:focus {
+    width: 100%;
+}
+
+
+/* ricerca filtrata delle proposte*/
+/* the button that is used to open and close the collapsible content */
+.collapsible {
+    background-color: #eee;
+    color: #444;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+  }
+  
+  /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+  .active, .collapsible:hover {
+    background-color: #ccc;
+  }
+  
+  /* Style the collapsible content. Note: hidden by default */
+  .content {
+    padding: 0 18px;
+    display: none;
+    overflow: hidden;
+    background-color: #f1f1f1;
+  }
+
+  .collapsible:after {
+    content: '\02795'; /* Unicode character for "plus" sign (+) */
+    font-size: 13px;
+    color: white;
+    float: right;
+    margin-left: 5px;
+}
+
+.active:after {
+    content: "\2796"; /* Unicode character for "minus" sign (-) */
+}
+
+
+.search-form{
+    font-size: 18px;
+    font-weight: 500;
+    transition: .2s all ease-in;
+    opacity: .8;
+}
+

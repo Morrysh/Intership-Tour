@@ -13,7 +13,7 @@ public class Studente {
 	public static final String PROVINCIA_NASCITA = "provincia_nascita";
 	public static final String RESIDENZA = "residenza";
 	public static final String PROVINCIA_RESIDENZA = "provincia_residenza";
-	public static final String TIPO_LAUREA = "tipo_lurea";
+	public static final String TIPO_LAUREA = "tipo_laurea";
 	public static final String CORSO_LAUREA = "corso_laurea";
 	public static final String HANDICAP = "handicap";
 	

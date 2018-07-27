@@ -12,7 +12,7 @@ public class DBConnector {
     private static void init() {
         try {
             ctx = new InitialContext();
-            dataSource = (DataSource) ctx.lookup("jdbc:mysql://localhost/intershiptutor?autoReconnect=true&useSSL=false");
+            dataSource = (DataSource) ctx.lookup("java:comp/env/jdbc/intershiptutor_database");
         } catch (NamingException e) {
             e.printStackTrace();
         }

@@ -2,6 +2,6 @@ package model.enumeration;
 
 public enum TipoUtente {
 	
-	amministratore, azienda, utente;
+	amministratore, azienda, studente;
 
 }

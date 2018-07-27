@@ -57,7 +57,7 @@ public class StudenteDAO implements StudenteDAOInterface {
 
 	@Override
 	public Studente getStudenteByUtente(Utente utente) {
-		String query = "SELECT * FROM studente WHERE id = ?;";
+		String query = "SELECT * FROM studente WHERE utente = ?;";
         PreparedStatement preparedStatement;
         Studente studente = null;
 

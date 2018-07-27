@@ -57,7 +57,7 @@ public class UtenteDAO implements UtenteDAOInterface {
 
 	@Override
 	public Utente getUtenteByCF(String codiceFiscale) {
-		String query = "SELECT * FROM utente WHERE id = ?;";
+		String query = "SELECT * FROM utente WHERE codice_fiscale = ?;";
         PreparedStatement preparedStatement;
         Utente utente = null;
 
