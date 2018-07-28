@@ -1,10 +1,31 @@
-* {
-    font-family: "Open Sans", sans-serif
+/*titolo e logo*/
+.logo{
+    float:left;
 }
 
-html{
-    margin: auto;
-    max-width:1500px;
+.header{
+    float:left;
+    margin-bottom:0px;
+    margin-left:10px;
+}
+
+.titolo{
+    height: 108px;
+    /*width:50%;*/
+    margin-bottom:20px;
+    /*margin-left: auto;*/
+    /*margin-right: auto;*/
+}
+
+.header p{
+    font-size: 18px;
+    margin-top:0px;
+    margin-bottom:0px;
+}
+
+
+* {
+    font-family: "Open Sans", sans-serif
 }
 
 /* Useful in different parts */
@@ -28,8 +49,7 @@ html{
 }
 
 .page-container{
-    margin-left: 8%;
-    margin-right: 8%;
+    margin: 25px auto auto auto !important;
 }
 /* End column management */
 
@@ -108,10 +128,6 @@ html{
 
 .w3-border{
     border-color: #eeeeee !important;
-}
-
-.page-container{
-    margin: 40px auto auto auto !important;
 }
 
 .proposte-tirocinio{
