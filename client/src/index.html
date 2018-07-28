@@ -1,71 +1,78 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="it" xml:lang="it">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="it">
 
 <head>
     <title>Intership Tour</title>
-    <link rel="icon" href="Univaq.jpg">
+    <link rel="icon" href="img/univaq_logo.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="css/w3.css">
-    <link href="css/style.css" rel="stylesheet" type="text/css">
+    <link href="css/style.css" rel="stylesheet">
     <script src="js/index.js"></script>
     
 </head>
 
 <body class="w3-theme-l5">
 
-    <!-- Navbar -->
-    <div class="w3-top">
-        <div class="w3-bar univaq-color w3-left-align w3-large">
-            <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-large univaq-color"
-                onclick="openNav()">
-                <i class="fa fa-bars"></i>
-            </a>
-            <a href="#" class="w3-bar-item w3-button w3-hover-red w3-padding-large univaq-color">
-                <i class="fa fa-home w3-margin-right"></i>IntershipTutor</a>
-            <a href="#" class="w3-bar-item w3-button w3-hover-red w3-right w3-hide-small w3-padding-large " title="Account Settings">
-                <i class="fa fa-user"></i>
-                Accedi
-            </a>
+    <!-- Navbar pc -->
+    <div class="w3-bar univaq-color w3-left-align w3-large w3-padding-large w3-hide-small">
+        <a href="#" class="w3-bar-item w3-button no-padding">
+            <i class="fa fa-home"></i>
+            IntershipTutor
+        </a>
+        <a href="#" class="w3-bar-item w3-button w3-right no-padding">
+            <i class="fa fa-user"></i>
+            Accedi
+        </a>
+    </div>
+
+
+    <!-- Navbar mobile -->
+    <div class="w3-bar univaq-color w3-left-align w3-large  w3-hide-medium">
+        <div class="collapsible-menu-1 w3-padding-large w3-hide-large">
+                <i class="fa fa-home w3-margin-right"></i>
+                IntershipTutor
+                <input type="checkbox" id="menu-1">
+                <label for="menu-1"><i class="fa fa-bars w3-right"></i></label>
+            <div class="menu-content-1">
+                <ul>
+                    <li><a href="#" class="w3-bar-item w3-button">Accedi</a></li>
+                    <li><a href="./aziende-smartphone.html" class="w3-bar-item w3-button">Aziende convenzionate</a></li>
+                </ul>                    
+            </div>
         </div>
     </div>
 
-    <!-- Navbar on small screens -->
-    <div id="navDemo" class="w3-bar-block univaq-color w3-hide w3-hide-large w3-hide-medium w3-large">
-        <a href="#" class="w3-bar-item w3-button w3-hover-red w3-padding-large">Link 1</a><!--NON SO PERCHE SE TOLGO QUESTO NON APPARE ACCEDI-->
-        <a href="#" class="w3-bar-item w3-button w3-hover-red w3-padding-large">Accedi</a>
-        <a href="./aziende-smartphone.html" class="w3-bar-item w3-button w3-hover-red w3-padding-large">Aziende convenzionate</a>
-        
-    </div>
+    <!-- Title container -->
+    
 
     <!-- Page Container -->
     <div class="w3-container w3-content page-container">
         <!-- The Grid -->
         <div class="w3-row">
             <!-- Left Column -->
-            <div class="w3-col m3 profilo">
+            <div class="w3-col m3" id="left-column">
                 <!-- Profile -->
                 <div class="w3-card w3-round w3-white">
                     <div class="w3-container profile-container">
                         <h4 class="w3-center">Stefano Martella</h4>
                         <hr>
                         <p>
-                            <i class="fa fa-pencil fa-fw w3-margin-right w3-text-theme"></i>Informatica</p>
+                            <i class="fa fa-pencil fa-fw w3-margin-right w3-text-theme"></i>Informatica
+                        </p>
                         <p>
-                            <i class="fa fa-home fa-fw w3-margin-right w3-text-theme"></i>L'Aquila</p>
+                            <i class="fa fa-home fa-fw w3-margin-right w3-text-theme"></i>L'Aquila
+                        </p>
                         <p>
-                            <i class="fa fa-birthday-cake fa-fw w3-margin-right w3-text-theme"></i>14 Giugno 1996</p>
+                            <i class="fa fa-birthday-cake fa-fw w3-margin-right w3-text-theme"></i>14 Giugno 1996
+                        </p>
                     </div>
                 </div>
 
                 <div class="w3-card w3-round w3-white">
                     <p class="aziende-convenzionate">Aziende convenzionate</p>
                     <div class="w3-container margin-bottom aziende">
-                        <div class="w3-center">
-                            <input type="text" name="search" placeholder="Cerca...">
-                        </div>
-                        <hr>
                         <div class="azienda">
                             <h4 class="w3-center">Xenia S.p.a</h4>
                             <p class="info">L'aquila</p>
@@ -108,27 +115,29 @@
             <!-- End Left Column -->
 
             <!-- Middle Column -->
-            <div class="w3-col m7 middle-column">
+            <div class="w3-col m7" id="middle-column">
 
                 <div class="w3-row-padding">
-                    <div class="w3-col m12">
+                    <div id="search-bar" class="w3-col m12">
                         <div class="w3-card w3-round w3-white">
-                            <div class="w3-container w3-padding intership">
-                                <div class="search-form"><button class="collapsible">Filtra le proposte di tirocinio</button>
-                                    <div class="content">
-                                      <p><form action="/action_page.php">
-                                        Azienda:<br />
-                                        <input /><br />
-                                        Sede:<br />
-                                        <input /><br />
-                                        Obiettivi:<br />
-                                        <input /><br />
-                                        Modalità:<br />
-                                        <input /><br />
-                                        Durata tirocinio:<br />
-                                        <input /><br />
-                                        <button>Cerca</button>  
-                                        <button>Annulla</button>
+                            <div class="w3-container intership">
+                                <div class="search-form collapsible-menu">
+                                    <input type="checkbox" id="menu" />
+                                    <label id="label-search" for="menu">Filtra le proposte di tirocinio</label>
+                                    <div class="menu-content">
+                                      <br /><br />
+                                      <form action="">
+                                        <label class="field-filter">Azienda</label>
+                                        <input class="w3-input" />
+                                        <label class="field-filter">Sede</label>
+                                        <input class="w3-input" />
+                                        <label class="field-filter">Obiettivi</label>
+                                        <input class="w3-input" />
+                                        <label class="field-filter">Modalità</label>
+                                        <input class="w3-input" />
+                                        <label class="field-filter">Durata tirocinio</label>
+                                        <input class="w3-input" />
+                                        <button class="w3-button w3-right w3-border w3-round">Cerca</button>
                                       </form>
                                  </div>
                             </div>
@@ -260,7 +269,6 @@
     </footer>
     <!-- Scripts -->
     <script src="js/jquery-3.3.1.min.js" ></script>
-    <script src="js/bootstrap.min.js"></script>
     <script src="js/index.js"></script>
 
 </body>

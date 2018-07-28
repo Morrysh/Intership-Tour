@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import dao.OffertaTirocinioDAOInterface;
 import database.DBConnector;
@@ -105,7 +106,7 @@ public class OffertaTirocinioDAO implements OffertaTirocinioDAOInterface {
                         resultSet.getTime(OffertaTirocinio.ORA_FINE),
                         resultSet.getInt(OffertaTirocinio.NUMERO_ORE),
                         resultSet.getBoolean(OffertaTirocinio.VISIBILE));
-            offerteTirocinio.add(offertaTirocinio);
+                offerteTirocinio.add(offertaTirocinio);
             }
 
             connection.close();
@@ -141,7 +142,7 @@ public class OffertaTirocinioDAO implements OffertaTirocinioDAOInterface {
                         resultSet.getTime(OffertaTirocinio.ORA_FINE),
                         resultSet.getInt(OffertaTirocinio.NUMERO_ORE),
                         resultSet.getBoolean(OffertaTirocinio.VISIBILE));
-            offerteTirocinio.add(offertaTirocinio);
+                offerteTirocinio.add(offertaTirocinio);
             }
 
             connection.close();
@@ -154,24 +155,42 @@ public class OffertaTirocinioDAO implements OffertaTirocinioDAOInterface {
 
 	@Override
 	// IllegalArgumentException management, not here
-	public List<OffertaTirocinio> filtraPerCampo(CampoRicercaTirocinio campo, String ricerca) {
+	public List<OffertaTirocinio> filtraPerCampo(Map<CampoRicercaTirocinio, String> campoRicerca) {
 		List<OffertaTirocinio> offerteTirocinio = new ArrayList<>();
 		PreparedStatement preparedStatement;
-		String query;
+		String query = "SELECT * FROM offertatirocinio WHERE ";
 		
 		try (Connection connection = DBConnector.getDatasource().getConnection()) {
 			
-            switch(campo) {
-				case durata: 
-					query = "SELECT * FROM offertatirocinio WHERE ROUND((data_fine - data_inizio)/60) = ?;";
-				    preparedStatement = connection.prepareStatement(query);
-				    preparedStatement.setString(1, ricerca);
-			        break;
-	
-				default:
-					query = "SELECT * FROM offertatirocinio WHERE UPPER(" + campo + ") LIKE UPPER(?)";
-					preparedStatement = connection.prepareStatement(query);
-					preparedStatement.setString(1, "%" + ricerca + "%");
+			int counter = 0;
+			
+			// Building query according to campoRicerca entries
+			for(Map.Entry<CampoRicercaTirocinio, String> entry : campoRicerca.entrySet()) {
+				if(counter != 0) query += " AND ";
+				switch(entry.getKey()) {
+					case durata: 
+						query += "ROUND((data_fine - data_inizio)/60) = ?";
+				        break;
+		
+					default:
+						query += "UPPER(" + entry.getKey() + ") LIKE UPPER(?)";
+				}
+				counter++;
+			}
+			
+			preparedStatement = connection.prepareStatement(query);
+			
+			// Preparing statement according to campoRicerca entries
+			counter = 1;
+			for(Map.Entry<CampoRicercaTirocinio, String> entry : campoRicerca.entrySet()) {
+				switch(entry.getKey()) {
+					case durata:
+						preparedStatement.setString(counter++, entry.getValue());
+						break;
+
+					default:
+						preparedStatement.setString(counter++, "%" + entry.getValue() + "%");
+				}
 			}
 
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -189,7 +208,7 @@ public class OffertaTirocinioDAO implements OffertaTirocinioDAOInterface {
                         resultSet.getTime(OffertaTirocinio.ORA_FINE),
                         resultSet.getInt(OffertaTirocinio.NUMERO_ORE),
                         resultSet.getBoolean(OffertaTirocinio.VISIBILE));
-            offerteTirocinio.add(offertaTirocinio);
+                offerteTirocinio.add(offertaTirocinio);
             }
 
             connection.close();

@@ -92,7 +92,7 @@ public class AziendaDAO implements AziendaDAOInterface {
 	                    resultSet.getString(Azienda.NOME_RESPONSABILE),
 	                    resultSet.getString(Azienda.COGNOME_RESPONSABILE),
 	                    resultSet.getBoolean(Azienda.CONVENZIONATA));
-            aziende.add(azienda);
+                aziende.add(azienda);
             }
 
             connection.close();

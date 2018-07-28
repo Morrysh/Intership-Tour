@@ -1,6 +1,7 @@
 package dao;
 
 import java.util.List;
+import java.util.Map;
 
 import model.OffertaTirocinio;
 import model.enumeration.CampoRicercaTirocinio;
@@ -19,6 +20,6 @@ public interface OffertaTirocinioDAOInterface {
 	
 	List<OffertaTirocinio> allOfferteTirocinioAccordingToVisibilita(boolean visibile);
 	
-	List<OffertaTirocinio> filtraPerCampo(CampoRicercaTirocinio campo, String ricerca);
+	List<OffertaTirocinio> filtraPerCampo(Map<CampoRicercaTirocinio, String> campoRicerca);
 	
 }

@@ -1,0 +1,117 @@
+<!-- Page Container -->
+<div class="w3-container w3-content page-container">
+    <!-- The Grid -->
+    <div class="w3-row">
+        <!-- Left Column -->
+        <div class="w3-col m3" id="left-column">
+            <!-- Profile -->
+            <div class="w3-card w3-round w3-white">
+                <div class="w3-container profile-container">
+                    <h4 class="w3-center">Stefano Martella</h4>
+                    <hr>
+                    <p>
+                        <i class="fa fa-pencil fa-fw w3-margin-right w3-text-theme"></i>Informatica
+                    </p>
+                    <p>
+                        <i class="fa fa-home fa-fw w3-margin-right w3-text-theme"></i>L'Aquila
+                    </p>
+                    <p>
+                        <i class="fa fa-birthday-cake fa-fw w3-margin-right w3-text-theme"></i>14 Giugno 1996
+                    </p>
+                </div>
+            </div>
+
+            <div class="w3-card w3-round w3-white">
+                <p class="aziende-convenzionate">Aziende convenzionate</p>
+                <div class="w3-container margin-bottom aziende">
+                    <#list aziende as azienda>
+                        <div class="azienda">
+                            <h4 class="w3-center">${azienda.nome}</h4>
+                            <p class="info">${azienda.regione}</p>
+                            <p class="info">${azienda.nomeRappresentante}</p>
+                        </div>
+                        <hr>
+                    </#list>
+                </div>
+            </div>
+        </div>
+
+        <!-- End Left Column -->
+
+        <!-- Middle Column -->
+        <div class="w3-col m7" id="middle-column">
+
+            <div class="w3-row-padding">
+                <div id="search-bar" class="w3-col m12">
+                    <div class="w3-card w3-round w3-white">
+                        <div class="w3-container intership">
+                            <div class="search-form collapsible-menu">
+                                <input type="checkbox" id="menu" />
+                                <label id="label-search" for="menu">Filtra le proposte di tirocinio</label>
+                                <div class="menu-content">
+                                    <br /><br />
+                                    <form action="">
+                                    <#list campiRicerca as campoRicerca>
+                                        <label class="field-filter">${campoRicerca?capitalize}</label>
+                                        <input class="w3-input" />
+                                    </#list>
+                                    <button class="w3-button w3-right w3-border w3-round">Cerca</button>
+                                    </form>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <#list offerte as offerta>
+                <div class="w3-row-padding">
+                    <div class="w3-col m12">
+                        <div class="w3-card w3-round w3-white">
+                            <div class="w3-container w3-padding intership">
+                                <h6 class="w3-opacity">
+                                    <#if offerta.obiettivi?length &lt; 150>
+                                        ${offerta.obiettivi}
+                                    <#else>
+                                        ${offerta.obiettivi?substring(0,150)}...
+                                    </#if>
+                                </h6>
+                                <p  class="w3-border w3-padding proposte-tirocinio">
+                                    <#if offerta.modalita?length &lt; 500>
+                                        ${offerta.modalita}
+                                    <#else>
+                                        ${offerta.modalita?substring(0,500)}...
+                                    </#if>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </#list>
+            
+            <div class="w3-center">
+                <div class="w3-bar w3-border pagination">
+                    <a href="#" class="w3-button w3-hover-univaq-color">&laquo;</a>
+                    <a href="#" class="w3-button w3-hover-univaq-color">1</a>
+                    <a href="#" class="w3-button w3-hover-univaq-color">2</a>
+                    <a href="#" class="w3-button w3-hover-univaq-color">3</a>
+                    <a href="#" class="w3-button w3-hover-univaq-color">4</a>
+                    <a href="#" class="w3-button w3-hover-univaq-color">5</a>
+                    <a href="#" class="w3-button w3-hover-univaq-color">&raquo;</a>
+                </div>
+            </div>
+
+            <!-- End Middle Column -->
+        </div>
+
+        <!-- Right Column -->
+
+
+        <!-- End Grid -->
+    </div>
+
+    <!-- Pagination -->
+
+    <!-- End Page Container -->
+    </div>
+</div>
+<br />
