@@ -1,5 +1,17 @@
 package servlet;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import dao.impl.AziendaDAO;
 import freemarker.core.HTMLOutputFormat;
 import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapperBuilder;
@@ -8,25 +20,9 @@ import freemarker.template.TemplateDateModel;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateExceptionHandler;
 import model.Azienda;
-import model.OffertaTirocinio;
-import model.enumeration.CampoRicercaTirocinio;
 
-import java.io.IOException;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import dao.impl.AziendaDAO;
-import dao.impl.OffertaTirocinioDAO;
-
-public class HomePage extends HttpServlet {
-
+public class DettaglioAzienda extends HttpServlet {
+	
 	private static final long serialVersionUID = 1L;
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -47,17 +43,14 @@ public class HomePage extends HttpServlet {
         
         Map<String, Object> templateData = new HashMap<>();
 
-        List<Azienda> aziende = new AziendaDAO().allAziendeAccordingToConvention(true);
-        List<OffertaTirocinio> offerte = new OffertaTirocinioDAO().allOfferteTirocinioAccordingToVisibilita(true);
-        CampoRicercaTirocinio[] campiRicerca = CampoRicercaTirocinio.values();
+        String codiceFiscale = request.getParameter("azienda");
+        Azienda azienda = new AziendaDAO().getAziendaByCF(codiceFiscale);
         
-        templateData.put("offerte", offerte);
-        templateData.put("aziende", aziende);
-        templateData.put("campiRicerca", campiRicerca);
-        templateData.put("page_css", "homepage");
+        templateData.put("azienda", azienda);
+        templateData.put("page_css", "dettaglio-azienda");
         
         // Impostiamo il nome del template che verrà incluso tramite la direttiva include
-        templateData.put("template_to_include", "homepage.ftl.html");
+        templateData.put("template_to_include", "dettaglio-azienda.ftl.html");
         
         Template t = cfg.getTemplate("container.ftl.html");
         try {
@@ -83,4 +76,5 @@ public class HomePage extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
 }

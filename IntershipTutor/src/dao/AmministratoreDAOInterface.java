@@ -6,5 +6,7 @@ import model.Utente;
 public interface AmministratoreDAOInterface {
 	
 	Amministratore getAmministratoreByUtente(Utente utente);
+	
+	Amministratore getAmministratoreByCF(String codiceFiscale);
 
 }

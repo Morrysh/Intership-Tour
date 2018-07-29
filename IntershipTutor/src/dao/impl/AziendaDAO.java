@@ -11,6 +11,7 @@ import dao.AziendaDAOInterface;
 import database.DBConnector;
 import model.Azienda;
 import model.Utente;
+import model.enumeration.TipoUtente;
 
 public class AziendaDAO implements AziendaDAOInterface {
 
@@ -57,9 +58,42 @@ public class AziendaDAO implements AziendaDAOInterface {
 	}
 
 	@Override
-	public Azienda getAziendaByCodiceFiscale(String codiceFiscale) {
-		// TODO Auto-generated method stub
-		return null;
+	public Azienda getAziendaByCF(String codiceFiscale) {
+		String query = "SELECT * FROM azienda JOIN utente ON utente = codice_fiscale WHERE utente = ?;";
+        PreparedStatement preparedStatement;
+        Azienda azienda = null;
+
+        try (Connection connection = DBConnector.getDatasource().getConnection()) {
+            preparedStatement = connection.prepareStatement(query);
+
+            preparedStatement.setString(1, codiceFiscale);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                azienda = new Azienda(
+                		resultSet.getString(Utente.CODICE_FISCALE),
+                		resultSet.getString(Utente.EMAIL),
+                		resultSet.getString(Utente.USERNAME),
+                		resultSet.getString(Utente.PASSWORD),
+                		resultSet.getString(Utente.TELEFONO),
+                		TipoUtente.valueOf(resultSet.getString(Utente.TIPO_UTENTE)),
+                		resultSet.getString(Azienda.UTENTE),
+                		resultSet.getString(Azienda.NOME),
+                        resultSet.getString(Azienda.REGIONE),
+                        resultSet.getString(Azienda.INDIRIZZO_SEDE_LEGALE),
+                        resultSet.getString(Azienda.FORO_COMPETENTE),
+                        resultSet.getString(Azienda.NOME_RAPPRESENTANTE),
+                        resultSet.getString(Azienda.COGNOME_RAPPRESENTANTE),
+                        resultSet.getString(Azienda.NOME_RESPONSABILE),
+                        resultSet.getString(Azienda.COGNOME_RESPONSABILE),
+                        resultSet.getBoolean(Azienda.CONVENZIONATA));
+            }
+
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return azienda;
 	}
 
 	@Override
@@ -72,7 +106,7 @@ public class AziendaDAO implements AziendaDAOInterface {
 	public List<Azienda> allAziendeAccordingToConvention(boolean convenzione) {
 		List<Azienda> aziende = new ArrayList<>();
 		PreparedStatement preparedStatement;
-		String query = "SELECT * FROM azienda WHERE convenzionata = ?;";
+		String query = "SELECT * FROM azienda JOIN utente ON utente = codice_fiscale WHERE convenzionata = ?";
 		
 		try (Connection connection = DBConnector.getDatasource().getConnection()) {
             preparedStatement = connection.prepareStatement(query);
@@ -82,6 +116,12 @@ public class AziendaDAO implements AziendaDAOInterface {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 Azienda azienda = new Azienda(
+                		resultSet.getString(Utente.CODICE_FISCALE),
+                		resultSet.getString(Utente.EMAIL),
+                		resultSet.getString(Utente.USERNAME),
+                		resultSet.getString(Utente.PASSWORD),
+                		resultSet.getString(Utente.TELEFONO),
+                		TipoUtente.valueOf(resultSet.getString(Utente.TIPO_UTENTE)),
                 		resultSet.getString(Azienda.UTENTE),
                 		resultSet.getString(Azienda.NOME),
 						resultSet.getString(Azienda.REGIONE),
@@ -105,35 +145,8 @@ public class AziendaDAO implements AziendaDAOInterface {
 
 	@Override
 	public Azienda getAziendaByUtente(Utente utente) {
-		 String query = "SELECT * FROM azienda WHERE utente = ?;";
-	        PreparedStatement preparedStatement;
-	        Azienda azienda = null;
-
-	        try (Connection connection = DBConnector.getDatasource().getConnection()) {
-	            preparedStatement = connection.prepareStatement(query);
-
-	            preparedStatement.setString(1, utente.getCodiceFiscale());
-
-	            ResultSet resultSet = preparedStatement.executeQuery();
-	            if (resultSet.next()) {
-	                azienda = new Azienda(
-	                		resultSet.getString(Azienda.UTENTE),
-	                		resultSet.getString(Azienda.NOME),
-	                        resultSet.getString(Azienda.REGIONE),
-	                        resultSet.getString(Azienda.INDIRIZZO_SEDE_LEGALE),
-	                        resultSet.getString(Azienda.FORO_COMPETENTE),
-	                        resultSet.getString(Azienda.NOME_RAPPRESENTANTE),
-	                        resultSet.getString(Azienda.COGNOME_RAPPRESENTANTE),
-	                        resultSet.getString(Azienda.NOME_RESPONSABILE),
-	                        resultSet.getString(Azienda.COGNOME_RESPONSABILE),
-	                        resultSet.getBoolean(Azienda.CONVENZIONATA));
-	            }
-
-	            connection.close();
-	        } catch (SQLException e) {
-	            e.printStackTrace();
-	        }
-	        return azienda;
+		// TODO Auto-generated method stub
+		return null;
 	}	
 	
 }

@@ -1,0 +1,118 @@
+* {
+    font-family: "Open Sans", sans-serif
+}
+
+a{
+	text-decoration: none;
+}
+
+/* Useful in different parts */
+.no-padding{
+    padding: 0 !important;
+}
+
+.univaq-color-background{
+    background-color: #822627;
+    color: #ffffff
+}
+
+.univaq-color{
+    background-color: #ffffff;
+    color: #822627
+}
+/* End useful in different parts */
+
+input.w3-input{
+    margin-top: 5px;
+    margin-bottom: 15px;
+    padding: 5px;
+    outline: none;
+    border-bottom: 1px solid;
+    border-color: #dddeee;
+    transition: all .2s ease-in-out
+}
+
+input.w3-input:focus{
+    border-color: #822627
+}
+
+.w3-button:hover{
+    color: #ffffff !important;
+    background-color: #822627 !important
+}
+
+.w3-border{
+    border-color: #eeeeee !important;
+}
+
+/* Collapsible */
+
+input#menu-1,
+input#menu {
+    display: none;
+}
+
+.menu-content-1,
+.menu-content {
+    max-height: 0;
+    overflow: hidden;
+}
+
+.menu-content-1{
+    display: block;
+}
+
+input:checked ~ .menu-content-1,
+input:checked ~ .menu-content {
+    max-height: 100%;
+}
+
+#label-search{
+    cursor: pointer;
+}
+
+#label-search:after {
+    font-family: FontAwesome;
+    content: '\f067'; /* Unicode character for "plus" sign (+) */
+    font-size: 16px;
+    float: right;
+    color: #822627;
+}
+
+input:checked ~ #label-search:after {
+    font-family: FontAwesome;
+    content: "\f068"; /* Unicode character for "minus" sign (-) */
+    color: #822627;
+}
+
+.fa.fa-bars.w3-right{
+    padding-top: 4px
+}
+
+
+/* End Collapsible */
+
+/* Computer */
+@media (min-device-width: 500px){
+    html,
+    .w3-bar{
+        min-width: 500px !important;
+    }
+}
+
+/* Tablet and smartphone */
+@media  (max-width: 701px){
+	.menu-content-1 ul {
+        list-style-type: none;
+        display: grid;
+    }
+
+    .menu-content-1 ul li{
+        font-size: 16px;
+        padding: 8px 0
+    }
+
+    .menu-content-1 ul li a{
+        padding: 0 !important
+    }
+}

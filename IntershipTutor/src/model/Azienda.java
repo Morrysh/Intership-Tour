@@ -1,6 +1,8 @@
 package model;
 
-public class Azienda {
+import model.enumeration.TipoUtente;
+
+public class Azienda extends Utente {
 	
 	// DB fields
 	public static final String UTENTE = "utente";
@@ -26,6 +28,7 @@ public class Azienda {
 	private boolean convenzionata;
 	
 	public Azienda() {
+		super();
 		this.utente = "";
 		this.nome = "";
 		this.regione = "";
@@ -38,9 +41,12 @@ public class Azienda {
 		this.convenzionata = false;
 	}
 	
-	public Azienda(String utente, String nome, String regione, String indirizzoSedeLegale, String foroCompetente,
-			String nomeRappresentante, String cognomeRappresentante, String nomeResponsabile,
-			String cognomeResponsabile, boolean convenzionata) {
+	public Azienda(String codiceFiscale, String email, String username, String password, 
+			String telefono, TipoUtente tipoUtente, String utente, String nome, String regione, 
+			String indirizzoSedeLegale, String foroCompetente, String nomeRappresentante, 
+			String cognomeRappresentante, String nomeResponsabile, String cognomeResponsabile,
+			boolean convenzionata) {
+		super(codiceFiscale, email, username, password, telefono, tipoUtente);
 		this.utente = utente;
 		this.nome = nome;
 		this.regione = regione;

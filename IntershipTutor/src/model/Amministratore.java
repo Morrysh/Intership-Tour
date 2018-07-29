@@ -1,6 +1,8 @@
 package model;
 
-public class Amministratore {
+import model.enumeration.TipoUtente;
+
+public class Amministratore extends Utente {
 	
 	// DB fields
 	public static final String UTENTE = "utente";
@@ -12,12 +14,15 @@ public class Amministratore {
 	private String cognome;
 	
 	public Amministratore() {
+		super();
 		this.utente = "";
 		this.nome = "";
 		this.cognome = "";
 	}
 	
-	public Amministratore(String utente, String nome, String cognome) {
+	public Amministratore(String codiceFiscale, String email, String username, String password, 
+			String telefono, TipoUtente tipoUtente, String utente, String nome, String cognome) {
+		super(codiceFiscale, email, username, password, telefono, tipoUtente);
 		this.utente = utente;
 		this.nome = nome;
 		this.cognome = cognome;

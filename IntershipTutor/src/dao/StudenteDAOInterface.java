@@ -1,7 +1,6 @@
 package dao;
 
 import model.Studente;
-import model.Utente;
 
 public interface StudenteDAOInterface {
 	
@@ -11,6 +10,6 @@ public interface StudenteDAOInterface {
 	
 	int delete(Studente studente);
 
-	Studente getStudenteByUtente(Utente utente);
+	Studente getStudenteByCF(String codiceFiscale);
 	
 }

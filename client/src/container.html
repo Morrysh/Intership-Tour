@@ -7,8 +7,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css">
     <link rel="stylesheet" href="css/w3.css">
-    <link href="css/style.css" rel="stylesheet">
+    <link href="css/container.css" rel="stylesheet">
+    <link href="css/container.css" rel="stylesheet">
     <script src="js/index.js"></script>
     
 </head>
@@ -16,7 +18,7 @@
 <body class="w3-theme-l5">
 
     <!-- Navbar pc -->
-    <div class="w3-bar univaq-color w3-left-align w3-large w3-padding-large w3-hide-small">
+    <div class="w3-bar univaq-color-background w3-left-align w3-large w3-padding-large w3-hide-small">
         <a href="#" class="w3-bar-item w3-button no-padding">
             <i class="fa fa-home"></i>
             IntershipTutor
@@ -29,7 +31,7 @@
 
 
     <!-- Navbar mobile -->
-    <div class="w3-bar univaq-color w3-left-align w3-large  w3-hide-medium">
+    <div class="w3-bar univaq-color-background w3-left-align w3-large  w3-hide-medium">
         <div class="collapsible-menu-1 w3-padding-large w3-hide-large">
                 <i class="fa fa-home w3-margin-right"></i>
                 IntershipTutor
@@ -44,15 +46,18 @@
         </div>
     </div>
 
-    
-    
 
     <!-- Page Container -->
     <div class="w3-container w3-content page-container">
         <!-- The Grid -->
         <!-- Title container -->
-        <div class="titolo"><img src="./img/univaq_logo.png" alt="Smiley face" height="108" class="logo">
-        <h1 class="header"> Proposte di tirocinio<br> <p>Università degli studi dell'Aquila</p></h1></div>
+        <div class="titolo">
+            <img src="./img/univaq_logo.png" alt="Smiley face" height="100" class="logo">
+            <h1 class="header"> 
+                Offerte di tirocinio per gli studenti<br>
+                <span>Università degli studi dell'Aquila</span>
+            </h1>
+        </div>
         <!--end Title container -->
         <div class="w3-row">
             <!-- Left Column -->
@@ -78,9 +83,11 @@
                     <p class="aziende-convenzionate">Aziende convenzionate</p>
                     <div class="w3-container margin-bottom aziende">
                         <div class="azienda">
-                            <h4 class="w3-center">Xenia S.p.a</h4>
-                            <p class="info">L'aquila</p>
-                            <p class="info">085123456</p>
+                            <a href="#">
+                                <h4 class="w3-center">Xenia S.p.a</h4>
+                                <p class="info">L'aquila</p>
+                                <p class="info">085123456</p>
+                            </a>
                         </div>
                         <hr>
                         <div class="azienda">
@@ -241,13 +248,13 @@
                 
                 <div class="w3-center">
                     <div class="w3-bar w3-border pagination">
-                        <a href="#" class="w3-button w3-hover-univaq-color">&laquo;</a>
-                        <a href="#" class="w3-button w3-hover-univaq-color">1</a>
-                        <a href="#" class="w3-button w3-hover-univaq-color">2</a>
-                        <a href="#" class="w3-button w3-hover-univaq-color">3</a>
-                        <a href="#" class="w3-button w3-hover-univaq-color">4</a>
-                        <a href="#" class="w3-button w3-hover-univaq-color">5</a>
-                        <a href="#" class="w3-button w3-hover-univaq-color">&raquo;</a>
+                        <a href="#" class="w3-button w3-hover-univaq-color-background">&laquo;</a>
+                        <a href="#" class="w3-button w3-hover-univaq-color-background">1</a>
+                        <a href="#" class="w3-button w3-hover-univaq-color-background">2</a>
+                        <a href="#" class="w3-button w3-hover-univaq-color-background">3</a>
+                        <a href="#" class="w3-button w3-hover-univaq-color-background">4</a>
+                        <a href="#" class="w3-button w3-hover-univaq-color-background">5</a>
+                        <a href="#" class="w3-button w3-hover-univaq-color-background">&raquo;</a>
                     </div>
                 </div>
 
@@ -268,7 +275,7 @@
     <br />
 
     <!-- Footer -->
-    <footer class="w3-container univaq-color w3-padding-16">
+    <footer class="w3-container univaq-color-background w3-padding-16">
         <h5>Footer</h5>
     </footer>
     <!-- Scripts -->

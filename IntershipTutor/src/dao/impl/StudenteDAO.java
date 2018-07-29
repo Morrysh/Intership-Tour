@@ -9,6 +9,7 @@ import dao.StudenteDAOInterface;
 import database.DBConnector;
 import model.Studente;
 import model.Utente;
+import model.enumeration.TipoUtente;
 
 public class StudenteDAO implements StudenteDAOInterface {
 
@@ -56,19 +57,25 @@ public class StudenteDAO implements StudenteDAOInterface {
 	}
 
 	@Override
-	public Studente getStudenteByUtente(Utente utente) {
-		String query = "SELECT * FROM studente WHERE utente = ?;";
+	public Studente getStudenteByCF(String codiceFiscale) {
+		String query = "SELECT * FROM studente JOIN utente ON utente = codice_fiscale WHERE utente = ?;";
         PreparedStatement preparedStatement;
         Studente studente = null;
 
         try (Connection connection = DBConnector.getDatasource().getConnection()) {
             preparedStatement = connection.prepareStatement(query);
 
-            preparedStatement.setString(1, utente.getCodiceFiscale());
+            preparedStatement.setString(1, codiceFiscale);
 
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 studente = new Studente(
+                		resultSet.getString(Utente.CODICE_FISCALE),
+                		resultSet.getString(Utente.EMAIL),
+                		resultSet.getString(Utente.USERNAME),
+                		resultSet.getString(Utente.PASSWORD),
+                		resultSet.getString(Utente.TELEFONO),
+                		TipoUtente.valueOf(resultSet.getString(Utente.TIPO_UTENTE)),
                 		resultSet.getString(Studente.UTENTE),
 						resultSet.getString(Studente.NOME),
                         resultSet.getString(Studente.COGNOME),

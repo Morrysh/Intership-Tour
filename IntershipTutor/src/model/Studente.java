@@ -2,7 +2,9 @@ package model;
 
 import java.sql.Date;
 
-public class Studente {
+import model.enumeration.TipoUtente;
+
+public class Studente extends Utente {
 
 	// DB fields
 	public static final String UTENTE = "utente";
@@ -30,6 +32,7 @@ public class Studente {
 	private boolean handicap;
 	
 	public Studente() {
+		super();
 		this.utente = "";
 		this.nome = "";
 		this.cognome = "";
@@ -43,9 +46,12 @@ public class Studente {
 		this.handicap = false;
 	}
 
-	public Studente(String utente, String nome, String cognome, Date dataNascita, String luogoNascita,
+	public Studente(String codiceFiscale, String email, String username, String password,
+			String telefono, TipoUtente tipoUtente,String utente, String nome, 
+			String cognome, Date dataNascita, String luogoNascita,
 			String provinciaNascita, String residenza, String provinciaResidenza, String tipoLaurea,
 			String corsoLaurea, boolean handicap) {
+		super(codiceFiscale, email, username, password, telefono, tipoUtente);
 		this.utente = utente;
 		this.nome = nome;
 		this.cognome = cognome;

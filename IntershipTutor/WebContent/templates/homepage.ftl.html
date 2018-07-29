@@ -26,9 +26,11 @@
                 <div class="w3-container margin-bottom aziende">
                     <#list aziende as azienda>
                         <div class="azienda">
-                            <h4 class="w3-center">${azienda.nome}</h4>
-                            <p class="info">${azienda.regione}</p>
-                            <p class="info">${azienda.nomeRappresentante}</p>
+	                        <a href="azienda?azienda=${azienda.codiceFiscale}">
+	                            <h4 class="w3-center">${azienda.nome}</h4>
+	                            <p class="info">${azienda.regione}</p>
+	                            <p class="info">${azienda.telefono}</p>
+	                        </a>
                         </div>
                         <hr>
                     </#list>
@@ -90,13 +92,13 @@
             
             <div class="w3-center">
                 <div class="w3-bar w3-border pagination">
-                    <a href="#" class="w3-button w3-hover-univaq-color">&laquo;</a>
-                    <a href="#" class="w3-button w3-hover-univaq-color">1</a>
-                    <a href="#" class="w3-button w3-hover-univaq-color">2</a>
-                    <a href="#" class="w3-button w3-hover-univaq-color">3</a>
-                    <a href="#" class="w3-button w3-hover-univaq-color">4</a>
-                    <a href="#" class="w3-button w3-hover-univaq-color">5</a>
-                    <a href="#" class="w3-button w3-hover-univaq-color">&raquo;</a>
+                    <a href="#" class="w3-button w3-hover-univaq-color-background">&laquo;</a>
+                    <a href="#" class="w3-button w3-hover-univaq-color-background">1</a>
+                    <a href="#" class="w3-button w3-hover-univaq-color-background">2</a>
+                    <a href="#" class="w3-button w3-hover-univaq-color-background">3</a>
+                    <a href="#" class="w3-button w3-hover-univaq-color-background">4</a>
+                    <a href="#" class="w3-button w3-hover-univaq-color-background">5</a>
+                    <a href="#" class="w3-button w3-hover-univaq-color-background">&raquo;</a>
                 </div>
             </div>
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" version="3.1">
   
-  <!-- Url is setted to the default page: container.ftl.html -->
+  <!-- Servlets -->
   <servlet>
 	<servlet-name>HomePage</servlet-name>
     <servlet-class>servlet.HomePage</servlet-class>
@@ -10,6 +10,16 @@
     <servlet-name>HomePage</servlet-name>
     <url-pattern></url-pattern>
   </servlet-mapping>
+  <servlet>
+	<servlet-name>DettaglioAzienda</servlet-name>
+    <servlet-class>servlet.DettaglioAzienda</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DettaglioAzienda</servlet-name>
+    <url-pattern>/azienda</url-pattern>
+  </servlet-mapping>
+  <!-- End servlets -->
+  
   <display-name>Homepage</display-name>
   <resource-ref>
     <description>DB Connection</description>

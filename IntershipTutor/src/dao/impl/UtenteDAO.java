@@ -48,6 +48,45 @@ public class UtenteDAO implements UtenteDAOInterface {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+	
+	@Override
+	public boolean checkEmailDisponibile(String email) {
+		return this.checkCampoDisponibile(Utente.EMAIL, email);
+	}
+
+	@Override
+	public boolean checkUsernameDisponibile(String username) {
+		return this.checkCampoDisponibile(Utente.USERNAME, username);
+	}
+
+	@Override
+	public boolean checkTelefonoDisponibile(String telefono) {
+		return this.checkCampoDisponibile(Utente.TELEFONO, telefono);
+	}
+	
+	private boolean checkCampoDisponibile(String campo, String valore) {
+		// campo is set inside the code, 
+		// it is not inserted by the user(No risk of SQL injection)
+		String query = "SELECT COUNT(*) AS count FROM utente WHERE " + campo + " = ?;";
+        PreparedStatement preparedStatement;
+        int numeroUtilizzo = 0;
+        
+
+        try (Connection conn = DBConnector.getDatasource().getConnection()) {
+            preparedStatement = conn.prepareStatement(query);
+
+            preparedStatement.setString(1, valore);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                numeroUtilizzo = resultSet.getInt("count");
+            }
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+		return numeroUtilizzo == 0;
+	}
 
 	@Override
 	public Utente getUtenteByUsernameAndPassword(String username, String password) {
@@ -71,11 +110,51 @@ public class UtenteDAO implements UtenteDAOInterface {
                 utente = new Utente(
                 		resultSet.getString(Utente.CODICE_FISCALE),
                         resultSet.getString(Utente.EMAIL),
+                        resultSet.getString(Utente.USERNAME),
                         resultSet.getString(Utente.PASSWORD),
                         resultSet.getString(Utente.TELEFONO),
                         TipoUtente.valueOf(resultSet.getString(Utente.TIPO_UTENTE)));
             }
 
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return utente;
+	}
+
+	@Override
+	public Object getLogged(String username, String password) {
+		String queryUtente = "SELECT tipo, codice_fiscale FROM utente WHERE username = ? AND password = ?;";
+        PreparedStatement preparedStatement;
+        Object utente = null;
+        String codiceFiscale = "";
+        TipoUtente tipoUtente = null;
+
+        try (Connection connection = DBConnector.getDatasource().getConnection()) {
+            preparedStatement = connection.prepareStatement(queryUtente);
+
+            preparedStatement.setString(1, username);
+            preparedStatement.setString(2, password);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                codiceFiscale = resultSet.getString(Utente.CODICE_FISCALE);
+                tipoUtente = TipoUtente.valueOf(resultSet.getString(Utente.TIPO_UTENTE));
+                
+                switch(tipoUtente) {
+	            	case studente:
+	            		utente = new StudenteDAO().getStudenteByCF(codiceFiscale);
+	            		break;
+	            	case azienda:
+	            		utente = new AziendaDAO().getAziendaByCF(codiceFiscale);
+	            		break;
+	            	case amministratore:
+	            		utente = new AmministratoreDAO().getAmministratoreByCF(codiceFiscale);
+	           }
+
+            }
+            
             connection.close();
         } catch (SQLException e) {
             e.printStackTrace();

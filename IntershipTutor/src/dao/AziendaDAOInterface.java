@@ -13,7 +13,7 @@ public interface AziendaDAOInterface {
 	
 	boolean setConvenzione(Azienda azienda, boolean convezione);
 	
-	Azienda getAziendaByCodiceFiscale(String codiceFiscale);
+	Azienda getAziendaByCF(String codiceFiscale);
 
 	List<Azienda> allAziendeAccordingToConvention(boolean convenzione);
 	

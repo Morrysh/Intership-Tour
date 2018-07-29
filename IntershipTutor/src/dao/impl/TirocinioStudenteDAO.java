@@ -12,6 +12,8 @@ import database.DBConnector;
 import model.OffertaTirocinio;
 import model.Studente;
 import model.TirocinioStudente;
+import model.Utente;
+import model.enumeration.TipoUtente;
 
 public class TirocinioStudenteDAO implements TirocinioStudenteDAOInterface {
 
@@ -62,7 +64,7 @@ public class TirocinioStudenteDAO implements TirocinioStudenteDAOInterface {
 	public List<Studente> getStudentiPerTirocinio(OffertaTirocinio offertaTirocinio) {
 		List<Studente> studenti = new ArrayList<>();
 		PreparedStatement preparedStatement;
-		String query = "SELECT * FROM (tirociniostudente JOIN studente ON studente.utente=tirociniostudente.studente)" + 
+		String query = "SELECT * FROM (tirociniostudente JOIN studente ON utente = studente)" + 
 					   "JOIN utente ON utente.codice_fiscale=studente.utente WHERE tirocinio = ?;";
 		
 		try (Connection connection = DBConnector.getDatasource().getConnection()) {
@@ -73,6 +75,12 @@ public class TirocinioStudenteDAO implements TirocinioStudenteDAOInterface {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 Studente studente = new Studente(
+                		resultSet.getString(Utente.CODICE_FISCALE),
+                		resultSet.getString(Utente.EMAIL),
+                		resultSet.getString(Utente.USERNAME),
+                		resultSet.getString(Utente.PASSWORD),
+                		resultSet.getString(Utente.TELEFONO),
+                		TipoUtente.valueOf(resultSet.getString(Utente.TIPO_UTENTE)),
                 		resultSet.getString(Studente.UTENTE),
 						resultSet.getString(Studente.NOME),
                         resultSet.getString(Studente.COGNOME),
