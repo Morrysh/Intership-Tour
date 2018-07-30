@@ -56,7 +56,6 @@ public class DettaglioAzienda extends HttpServlet {
         templateData.put("tirocini", offerte);
         templateData.put("voto", voto);
         templateData.put("page_css", "dettaglio-azienda");
-        templateData.put("w3_css", "w3details");
         
         // Impostiamo il nome del template che verrà incluso tramite la direttiva include
         templateData.put("template_to_include", "dettaglio-azienda.ftl.html");

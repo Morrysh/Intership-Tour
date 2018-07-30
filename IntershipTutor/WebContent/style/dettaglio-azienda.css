@@ -1,10 +1,10 @@
-html, body{
-    height: 100%;
-}
-
 h1{
     margin-top: 40px;
     font-weight: 500;
+}
+
+h2{
+	font-size: 140% !important
 }
 
 p{
@@ -24,6 +24,10 @@ p{
 	background-color:#fee8e8 !important
 }
 
+.w3-content{
+	max-width:1400px;
+}
+
 table{
 	border:1px solid #822627;
 	border-collapse: collapse;
@@ -34,20 +38,22 @@ tr:nth-child(even){
 	background-color: #f2f2f2;
 }
 
+#nome-azienda{
+	color:#822627;
+	line-height:7px;
+	font-weight: 500;
+}
+
+#tirocini-disponibili{
+	margin-bottom: 0;
+}
+
 td{
 	padding: 7px;
 }
 
 td:first-child{
-	
  background-color:#822627;
-}
-#page-container{
-    display: flex;
-    min-height: 90%;
-    height: auto !important;
-    align-items: center;
-    justify-content: center;
 }
 
 .azienda-info{
@@ -58,10 +64,19 @@ td:first-child{
     font-size: 23px;
 }
 
+.descrizione-tirocinio{
+	line-height: 2;
+	font-size: 14px
+}
+
 .fas{
     font-size: 25px;
     color: #822627;
     margin-bottom: 40px
+}
+
+fa.fa-chart-bar{
+	font-size:25px
 }
 
 .persone,
@@ -85,9 +100,5 @@ td:first-child{
 	.azienda-info{
 	    min-width: 100%;
 	    background-color: #ffffff
-	}
-	#page-container{
-	    display: inline;
-	    min-height: 100%;
 	}
 }

@@ -9,10 +9,6 @@ body {
  margin: 0
 }
 
-#container{
-	min-height: 100%;
-}
-
 a{
 	text-decoration: none;
 }
@@ -109,10 +105,24 @@ input:checked ~ #label-search:after {
     .w3-bar{
         min-width: 500px !important;
     }
+    
+    #container{
+		min-height: 100%;
+		margin: 30px auto !important;
+		width: 80%;
+		max-width: 2500px;	
+	}
 }
 
 /* Tablet and smartphone */
 @media  (max-width: 701px){
+	#container{
+		min-height: 100%;
+		margin: 30px 0;
+		width: 100%;
+		max-width: 2500px;	
+	}
+	
 	.menu-content-1 ul {
         list-style-type: none;
         display: grid;

@@ -1,16 +1,6 @@
-/* Column management */
-#left-column{
-    width: 20%
+#homepage-container{
+	padding: 0
 }
-
-#middle-column{
-    width: 80%;
-}
-
-.page-container{
-    margin: 40px auto auto auto !important;
-}
-/* End column management */
 
 .titolo-aziende{
     color:#822627;
@@ -18,13 +8,13 @@
 }
 
 .profile-container{
-    margin-bottom: 20px;
-    /*User not logged*/
+    margin-bottom: 8px;
+    /* User logged */
     display: none;
 }
 
 .aziende{
-    max-height: 600px;
+    max-height: 500px;
     overflow-y: scroll
 }
 
@@ -47,12 +37,11 @@
   background-color: #dedede;
 }
 
-.aziende-convenzionate{
+#aziende-convenzionate{
     padding-left: 40px;
-    font-size: 23px;
     margin: 0 !important;
-    padding: 20px !important;
-    font-size: 100% !important; 
+    padding: 20px 20px 0 20px;
+    font-size: 120% !important; 
     font-weight: 700;
     text-align: center;
     color: #822627;
@@ -86,16 +75,12 @@
 }
 
 .proposte-tirocinio{
-    font-size: 13px;
-    line-height: 2;
+    font-size: 14px;
+    line-height: 2
 }
 
 .pagination{
     margin-top: 20px
-}
-
-.w3-container.intership{
-    margin-bottom: 20px
 }
 
 form .w3-button{
@@ -127,6 +112,12 @@ form .w3-button{
 
 
 
+@media (min-device-width: 500px){
+	.intership{
+		margin-bottom: 0;
+	}
+}
+
 /* Tablet and smartphone */
 @media  (max-width: 701px){
 
@@ -134,21 +125,25 @@ form .w3-button{
     .aziende{
         display: none;
     }
-
-    .margin-bottom{
-        margin-bottom: 30px
+    
+    .offerte{
+    	padding: 0 !important
     }
+    
+    .intership{
+		margin-bottom: 20px;
+	}
 
     #search-bar{
         padding: 0;
     }
-
-    .page-container{
-        margin-top: 20px !important
+    
+    #homepage-container{
+    	padding: 0 16px
     }
 
     #left-column,
-    #middle-column{
+    #right-column{
         width: 100%;
     }
 
