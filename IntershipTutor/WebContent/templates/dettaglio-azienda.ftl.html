@@ -1,31 +1,64 @@
-<h1 class="w3-center">${azienda.nome}</h1>
-<div id="page-container" class="w3-center">
 
-    <div class="azienda-info">
-        <i class="fas fa-user-tie"></i>
-        <p class="persone">Nome rappresentante</p>
-        <p class="info">${azienda.nomeRappresentante} ${azienda.cognomeRappresentante}</p>
-        <p class="persone">Responsabile</p>
-        <p class="info">${azienda.nomeResponsabile} ${azienda.cognomeResponsabile}</p>
+<!-- Page Container -->
+<div class="w3-content w3-margin-top" style="max-width:1400px;">
+
+  <!-- The Grid -->
+  <div class="w3-row-padding">
+  
+    <!-- Left Column -->
+    <div class="w3-third">
+    
+      <div class="w3-white w3-text-grey w3-card-4">
+        <div class="w3-display-container">
+          <i class="material-icons" style="font-size:200px; text-align:center; width:100%">person</i>
+          <div class="w3-display-bottomleft w3-container w3-text-black">
+            <h2 style="color:#822627; line-height:7px;">${azienda.nome}</h2>
+          </div>
+        </div>
+        <div class="w3-container">
+          <p><i class="fa fa-briefcase fa-fw w3-margin-right w3-large w3-text-teal"></i>${azienda.nomeRappresentante} ${azienda.cognomeRappresentante}</p>
+          <p><i class="fa fa-home fa-fw w3-margin-right w3-large w3-text-teal"></i>${azienda.regione}</p>
+          <p><i class="fa fa-envelope fa-fw w3-margin-right w3-large w3-text-teal"></i>${azienda.email}</p>
+          <p><i class="fa fa-phone fa-fw w3-margin-right w3-large w3-text-teal"></i>${azienda.telefono}</p>
+          <hr>
+
+          
+        </div>
+        
+        
+      </div><br>
+		<p class="w3-large"><b><i class="fa fa-chart-bar fa-fw w3-margin-right w3-text-teal"  style = "font-size:25px"></i>Valutazione</b></p>
+          <p class ="w3-text-grey">Voto</p>
+          <div class="w3-light-grey w3-round-xlarge w3-small">
+            <div class="w3-container w3-center w3-round-xlarge w3-teal" style="width:${voto}%">${voto/20}</div>
+          </div>
+         <br>
+
+    <!-- End Left Column -->
     </div>
 
-    <div class="azienda-info">
-        <i class="fas fa-info-circle"></i>
-        <p class="contatti">Email</p>
-        <p class="info">${azienda.email}</p>
-        <p class="contatti">Telefono</p>
-        <p class="info">${azienda.telefono}</p>
-        <p class="contatti">Partita IVA</p>
-        <p class="info">${azienda.codiceFiscale}</p>
-    </div>
+    <!-- Right Column -->
+    <div class="w3-twothird">
+    
+      <div class="w3-container w3-card w3-white w3-margin-bottom">
+        <h2 class="w3-text-grey w3-padding-16"><i class="fa fa-suitcase fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Tirocini disponibili</h2>
+        <#list tirocini as tirocinio>
+        <div class="w3-container">
+          <h5 class="w3-opacity"><b>Tirocinio ${tirocinio.idTirocinio}</b></h5>
+          <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>Jan 2015 - <span class="w3-tag w3-teal w3-round">Current</span></h6>
+          <p>Lorem ipsum dolor sit amet. Praesentium magnam consectetur vel in deserunt aspernatur est reprehenderit sunt hic. Nulla tempora soluta ea et odio, unde doloremque repellendus iure, iste.</p>
+          <hr>
+        </div>
+        </#list>
+        
+      </div>
 
-    <div class="azienda-info">
-        <i class="fas fa-map-marked-alt"></i>
-        <p class="info">
-            ${azienda.regione}<br />
-            ${azienda.foroCompetente}<br />
-            ${azienda.indirizzoSedeLegale}
-        </p>
-    </div>
 
+    <!-- End Right Column -->
+    </div>
+    
+  <!-- End Grid -->
+  </div>
+  
+  <!-- End Page Container -->
 </div>

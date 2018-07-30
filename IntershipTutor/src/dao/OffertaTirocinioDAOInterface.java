@@ -22,4 +22,5 @@ public interface OffertaTirocinioDAOInterface {
 	
 	List<OffertaTirocinio> filtraPerCampo(Map<CampoRicercaTirocinio, String> campoRicerca);
 	
+	List<OffertaTirocinio> offerteTirocinioByIDAzienda(String utente);
 }

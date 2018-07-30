@@ -11,11 +11,43 @@ p{
     margin: 15px 0
 }
 
+.w3-teal{
+	color:white !important;
+	background-color: #822627 !important;
+}
+
+.w3-text-teal{
+	color:#822627 !important;
+}
+
+.w3-light-grey{
+	background-color:#fee8e8 !important
+}
+
+table{
+	border:1px solid #822627;
+	border-collapse: collapse;
+	border-radius: 25px;
+}
+
+tr:nth-child(even){
+	background-color: #f2f2f2;
+}
+
+td{
+	padding: 7px;
+}
+
+td:first-child{
+	
+ background-color:#822627;
+}
 #page-container{
     display: flex;
     min-height: 90%;
     height: auto !important;
-    align-items: center
+    align-items: center;
+    justify-content: center;
 }
 
 .azienda-info{
@@ -36,7 +68,8 @@ p{
 .contatti{
     margin: 0;
     font-style: italic;
-    font-size: 14px
+    font-size: 14px;
+    color: white;
 }
 
 .info{

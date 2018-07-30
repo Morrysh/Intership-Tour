@@ -218,5 +218,41 @@ public class OffertaTirocinioDAO implements OffertaTirocinioDAOInterface {
 		
 		return offerteTirocinio;
 	}
+	
+	@Override
+	public List<OffertaTirocinio> offerteTirocinioByIDAzienda(String utente){
+		List<OffertaTirocinio> offerteTirocinio = new ArrayList<>();
+		PreparedStatement preparedStatement;
+		String query = "SELECT * FROM offertatirocinio where azienda = ?";
+		
+		try (Connection connection = DBConnector.getDatasource().getConnection()) {
+			preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, utente);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                OffertaTirocinio offertaTirocinio = new OffertaTirocinio(
+                		resultSet.getInt(OffertaTirocinio.ID_TIROCINIO),
+                		resultSet.getString(OffertaTirocinio.AZIENDA),
+		 				resultSet.getString(OffertaTirocinio.LUOGO),
+                        resultSet.getString(OffertaTirocinio.OBIETTIVI),
+                        resultSet.getString(OffertaTirocinio.MODALITA),
+                        resultSet.getString(OffertaTirocinio.RIMBORSO),
+                        resultSet.getDate(OffertaTirocinio.DATA_INIZIO),
+                        resultSet.getDate(OffertaTirocinio.DATA_FINE),
+                        resultSet.getTime(OffertaTirocinio.ORA_INIZIO),
+                        resultSet.getTime(OffertaTirocinio.ORA_FINE),
+                        resultSet.getInt(OffertaTirocinio.NUMERO_ORE),
+                        resultSet.getBoolean(OffertaTirocinio.VISIBILE));
+                offerteTirocinio.add(offertaTirocinio);
+            }
+
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+		
+		return offerteTirocinio;
+	}
 
 }

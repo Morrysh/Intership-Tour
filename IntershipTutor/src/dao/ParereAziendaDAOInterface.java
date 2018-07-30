@@ -15,4 +15,5 @@ public interface ParereAziendaDAOInterface {
 
 	List<String> getPareriAzienda(Azienda azienda);
 	
+	int getMediaVoto(Azienda azienda);
 }

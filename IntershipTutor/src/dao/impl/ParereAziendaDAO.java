@@ -73,5 +73,30 @@ public class ParereAziendaDAO implements ParereAziendaDAOInterface {
 		
 		return pareri;
 	}
+	
+	@Override
+	public int getMediaVoto(Azienda azienda){
+		
+		int voto = 0;
+		PreparedStatement preparedStatement;
+		String query = "SELECT AVG(voto) as voto FROM parereazienda WHERE azienda = ?;";
+		
+		try (Connection connection = DBConnector.getDatasource().getConnection()) {
+            preparedStatement = connection.prepareStatement(query);
 
+            preparedStatement.setString(1, azienda.getCodiceFiscale());
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            
+            if(resultSet.next())
+            	voto = resultSet.getInt("voto");
+            
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+		
+		
+		return voto*100/5;
+	}
 }

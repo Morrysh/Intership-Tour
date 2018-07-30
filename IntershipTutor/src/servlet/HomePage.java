@@ -54,6 +54,7 @@ public class HomePage extends HttpServlet {
         templateData.put("offerte", offerte);
         templateData.put("aziende", aziende);
         templateData.put("campiRicerca", campiRicerca);
+        templateData.put("w3_css", "w3");
         templateData.put("page_css", "homepage");
         
         // Impostiamo il nome del template che verrà incluso tramite la direttiva include

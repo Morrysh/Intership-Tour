@@ -2,6 +2,7 @@ package servlet;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -12,6 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import dao.impl.AziendaDAO;
+import dao.impl.OffertaTirocinioDAO;
+import dao.impl.ParereAziendaDAO;
 import freemarker.core.HTMLOutputFormat;
 import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapperBuilder;
@@ -20,6 +23,7 @@ import freemarker.template.TemplateDateModel;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateExceptionHandler;
 import model.Azienda;
+import model.OffertaTirocinio;
 
 public class DettaglioAzienda extends HttpServlet {
 	
@@ -45,9 +49,14 @@ public class DettaglioAzienda extends HttpServlet {
 
         String codiceFiscale = request.getParameter("azienda");
         Azienda azienda = new AziendaDAO().getAziendaByCF(codiceFiscale);
+        List<OffertaTirocinio> offerte = new OffertaTirocinioDAO().offerteTirocinioByIDAzienda(codiceFiscale);
+        int voto = new ParereAziendaDAO().getMediaVoto(azienda);
         
         templateData.put("azienda", azienda);
+        templateData.put("tirocini", offerte);
+        templateData.put("voto", voto);
         templateData.put("page_css", "dettaglio-azienda");
+        templateData.put("w3_css", "w3details");
         
         // Impostiamo il nome del template che verrà incluso tramite la direttiva include
         templateData.put("template_to_include", "dettaglio-azienda.ftl.html");
