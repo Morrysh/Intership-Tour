@@ -2,6 +2,25 @@
 	padding: 0
 }
 
+#offerte-container hr:first-child{
+	display: none
+}
+
+#offerte-container hr{
+	margin-bottom: 0
+}
+
+h2{
+	font-size: 140% !important;
+}
+
+h4{
+	font-size: 105%;
+	margin: 0;
+	font-weight: 500;
+	transition: .2s all ease;
+}
+
 .titolo-aziende{
     color:#822627;
     font-size: 20px;
@@ -18,7 +37,7 @@
     overflow-y: scroll
 }
 
-.azienda:hover{
+.azienda h4:hover{
     cursor: pointer;
     /* color: #F90200; */
     color: #822627;
@@ -37,28 +56,36 @@
   background-color: #dedede;
 }
 
+#aziende-container hr:first-child{
+	visibility: hidden;
+	margin: 10px 0;
+}
+
 #aziende-convenzionate{
-    padding-left: 40px;
     margin: 0 !important;
-    padding: 20px 20px 0 20px;
-    font-size: 120% !important; 
+    padding: 16px;
+    font-size: 110% !important; 
     font-weight: 700;
     text-align: center;
     color: #822627;
+    border-bottom: 1px solid #eeeeee;
 }
 
 .azienda:last-child{
     padding-bottom: 10px;
 }
 
-.w3-container.margin-bottom .w3-center{
+.aziende{
     font-size: 100%;
 }
 
+.aziende hr{
+	margin: 10px
+}
+
 .info{
-    text-align: center;
     font-size: 90%;
-    margin: 5px 0
+    margin: 8px 0
 }
 
 .w3-opacity{
@@ -74,13 +101,18 @@
     cursor: pointer;
 }
 
+.fa-book-reader{
+	color: #822627
+}
+
+.data-tirocinio,
+.luogo-tirocinio{
+	font-size: 13px
+}
+
 .proposte-tirocinio{
     font-size: 14px;
     line-height: 2
-}
-
-.pagination{
-    margin-top: 20px
 }
 
 form .w3-button{
@@ -91,9 +123,6 @@ form .w3-button{
 }
 
 /* Collapsible research */
-#search-bar{
-    padding: 0 16px;
-}
 
 .collapsible-menu{
     padding: 10px 0;
@@ -115,6 +144,10 @@ form .w3-button{
 @media (min-device-width: 500px){
 	.intership{
 		margin-bottom: 0;
+	}
+	
+	.offerte{
+		margin: 20px 0
 	}
 }
 
@@ -139,7 +172,7 @@ form .w3-button{
     }
     
     #homepage-container{
-    	padding: 0 16px
+    	padding: 0 8px
     }
 
     #left-column,

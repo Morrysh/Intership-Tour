@@ -9,6 +9,10 @@ body {
  margin: 0
 }
 
+#pagination{
+    margin-top: 20px
+}
+
 a{
 	text-decoration: none;
 }

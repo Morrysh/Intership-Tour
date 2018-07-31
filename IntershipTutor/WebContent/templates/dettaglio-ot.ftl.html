@@ -1,0 +1,58 @@
+
+<!-- Page Container -->
+<div id="dettaglio-azienda-container" class="w3-content w3-margin-top">
+
+  <!-- The Grid -->
+  <div class="w3-row-padding">
+  
+    <!-- Left Column -->
+    <div class="w3-quarter">
+    
+      <div class="w3-white w3-text-grey w3-card-4 w3-round">
+        <div class="w3-container w3-padding">
+          <h2 id="nome-azienda">${azienda.nome}</h2>
+          <hr />
+          <p><i class="fa fa-user fa-fw w3-margin-right w3-large w3-text-teal"></i>${azienda.nomeResponsabile} ${azienda.cognomeResponsabile}</p>
+          <p><i class="fa fa-home fa-fw w3-margin-right w3-large w3-text-teal"></i>${ot.luogo}</p>
+          <p><i class="fa fa-envelope fa-fw w3-margin-right w3-large w3-text-teal"></i>${azienda.email}</p>
+          <p><i class="fa fa-phone fa-fw w3-margin-right w3-large w3-text-teal"></i>${azienda.telefono}</p> 
+        </div>
+        
+        
+      </div><br>
+		
+
+    <!-- End Left Column -->
+    </div>
+
+    <!-- Right Column -->
+    <div class="w3-threequarter">
+    
+      <div class="w3-container w3-card w3-white w3-margin-bottom">
+        <h2 id="tirocini-disponibili" class="w3-text-grey w3-padding-16">
+        	<i class="fa fa-suitcase fa-fw w3-margin-right w3-xlarge w3-text-teal"></i>
+        	${ot.titolo}
+        </h2>
+	        <div class="w3-container">
+	        <hr>
+	          <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>${ot.dataInizio} - ${ot.dataFine} <span class="w3-tag w3-teal w3-round">Current</span></h6>
+	          <h5 class="w3-opacity"><b>Obiettivi</b></h5>
+	          <p class="descrizione-tirocinio">${ot.obiettivi}</p>
+	       
+	        
+	        <hr>
+	          <h5 class="w3-opacity"><b>Modalità</b></h5>
+	          <p class="descrizione-tirocinio">${ot.modalita}</p>
+	        </div>
+        
+      </div>
+
+
+    <!-- End Right Column -->
+    </div>
+    
+  <!-- End Grid -->
+  </div>
+  
+  <!-- End Page Container -->
+</div>

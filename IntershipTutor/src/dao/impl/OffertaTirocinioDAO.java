@@ -10,14 +10,17 @@ import java.util.Map;
 
 import dao.OffertaTirocinioDAOInterface;
 import database.DBConnector;
+import model.Azienda;
 import model.OffertaTirocinio;
+import model.Utente;
 import model.enumeration.CampoRicercaTirocinio;
+import model.enumeration.TipoUtente;
 
 public class OffertaTirocinioDAO implements OffertaTirocinioDAOInterface {
 
 	@Override
 	public int insert(OffertaTirocinio offertaTirocinio) {
-		String insertQuery = "INSERT INTO offertatirocinio VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,?);";
+		String insertQuery = "INSERT INTO offertatirocinio VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,?);";
 		PreparedStatement preparedStatement;
         int status = 0;
         
@@ -26,16 +29,17 @@ public class OffertaTirocinioDAO implements OffertaTirocinioDAOInterface {
 
             preparedStatement.setInt(1, offertaTirocinio.getIdTirocinio());
             preparedStatement.setString(2, offertaTirocinio.getAzienda());
-            preparedStatement.setString(3, offertaTirocinio.getLuogo());
-            preparedStatement.setString(4, offertaTirocinio.getObiettivi());
-            preparedStatement.setString(5, offertaTirocinio.getModalita());
-            preparedStatement.setString(6, offertaTirocinio.getRimborso());
-            preparedStatement.setDate(7, offertaTirocinio.getDataInizio());
-            preparedStatement.setDate(8, offertaTirocinio.getDataFine());
-            preparedStatement.setTime(9, offertaTirocinio.getOraInizio());
-            preparedStatement.setTime(10, offertaTirocinio.getOraFine());
-            preparedStatement.setInt(11, offertaTirocinio.getNumeroOre());
-            preparedStatement.setBoolean(12, offertaTirocinio.isVisibile());
+            preparedStatement.setString(3, offertaTirocinio.getTitolo());
+            preparedStatement.setString(4, offertaTirocinio.getLuogo());
+            preparedStatement.setString(5, offertaTirocinio.getObiettivi());
+            preparedStatement.setString(6, offertaTirocinio.getModalita());
+            preparedStatement.setString(7, offertaTirocinio.getRimborso());
+            preparedStatement.setDate(8, offertaTirocinio.getDataInizio());
+            preparedStatement.setDate(9, offertaTirocinio.getDataFine());
+            preparedStatement.setTime(10, offertaTirocinio.getOraInizio());
+            preparedStatement.setTime(11, offertaTirocinio.getOraFine());
+            preparedStatement.setInt(12, offertaTirocinio.getNumeroOre());
+            preparedStatement.setBoolean(13, offertaTirocinio.isVisibile());
             
 
             status = preparedStatement.executeUpdate();
@@ -83,6 +87,82 @@ public class OffertaTirocinioDAO implements OffertaTirocinioDAOInterface {
 	}
 
 	@Override
+	public OffertaTirocinio getOffertaByID(int id){
+		OffertaTirocinio ot = null;
+		PreparedStatement preparedStatement;
+		String query = "SELECT * FROM offertatirocinio WHERE id_tirocinio = ?;";
+		
+		try (Connection connection = DBConnector.getDatasource().getConnection()) {
+			preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, id);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+            	ot = new OffertaTirocinio(
+                		resultSet.getInt(OffertaTirocinio.ID_TIROCINIO),
+                		resultSet.getString(OffertaTirocinio.AZIENDA),
+                		resultSet.getString(OffertaTirocinio.TITOLO),
+		 				resultSet.getString(OffertaTirocinio.LUOGO),
+                        resultSet.getString(OffertaTirocinio.OBIETTIVI),
+                        resultSet.getString(OffertaTirocinio.MODALITA),
+                        resultSet.getString(OffertaTirocinio.RIMBORSO),
+                        resultSet.getDate(OffertaTirocinio.DATA_INIZIO),
+                        resultSet.getDate(OffertaTirocinio.DATA_FINE),
+                        resultSet.getTime(OffertaTirocinio.ORA_INIZIO),
+                        resultSet.getTime(OffertaTirocinio.ORA_FINE),
+                        resultSet.getInt(OffertaTirocinio.NUMERO_ORE),
+                        resultSet.getBoolean(OffertaTirocinio.VISIBILE));
+            }
+
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+		
+		return ot;
+	}
+	
+	@Override
+	public Azienda getAziendaByIDTirocinio(int id){
+		String query = "SELECT * FROM azienda JOIN utente ON azienda.utente = utente.codice_fiscale "
+				+ "WHERE utente = (SELECT azienda FROM offertatirocinio WHERE id_tirocinio = ?);";
+        PreparedStatement preparedStatement;
+        Azienda azienda = null;
+
+        try (Connection connection = DBConnector.getDatasource().getConnection()) {
+            preparedStatement = connection.prepareStatement(query);
+
+            preparedStatement.setInt(1, id);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                azienda = new Azienda(
+                		resultSet.getString(Utente.CODICE_FISCALE),
+                		resultSet.getString(Utente.EMAIL),
+                		resultSet.getString(Utente.USERNAME),
+                		resultSet.getString(Utente.PASSWORD),
+                		resultSet.getString(Utente.TELEFONO),
+                		TipoUtente.valueOf(resultSet.getString(Utente.TIPO_UTENTE)),
+                		resultSet.getString(Azienda.UTENTE),
+                		resultSet.getString(Azienda.NOME),
+                        resultSet.getString(Azienda.REGIONE),
+                        resultSet.getString(Azienda.INDIRIZZO_SEDE_LEGALE),
+                        resultSet.getString(Azienda.FORO_COMPETENTE),
+                        resultSet.getString(Azienda.NOME_RAPPRESENTANTE),
+                        resultSet.getString(Azienda.COGNOME_RAPPRESENTANTE),
+                        resultSet.getString(Azienda.NOME_RESPONSABILE),
+                        resultSet.getString(Azienda.COGNOME_RESPONSABILE),
+                        resultSet.getBoolean(Azienda.CONVENZIONATA));
+            }
+
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return azienda;
+	}
+	
+	@Override
 	public List<OffertaTirocinio> allOfferteTirocinio() {
 		List<OffertaTirocinio> offerteTirocinio = new ArrayList<>();
 		PreparedStatement preparedStatement;
@@ -96,6 +176,7 @@ public class OffertaTirocinioDAO implements OffertaTirocinioDAOInterface {
                 OffertaTirocinio offertaTirocinio = new OffertaTirocinio(
                 		resultSet.getInt(OffertaTirocinio.ID_TIROCINIO),
                 		resultSet.getString(OffertaTirocinio.AZIENDA),
+                		resultSet.getString(OffertaTirocinio.TITOLO),
 		 				resultSet.getString(OffertaTirocinio.LUOGO),
                         resultSet.getString(OffertaTirocinio.OBIETTIVI),
                         resultSet.getString(OffertaTirocinio.MODALITA),
@@ -132,6 +213,7 @@ public class OffertaTirocinioDAO implements OffertaTirocinioDAOInterface {
                 OffertaTirocinio offertaTirocinio = new OffertaTirocinio(
                 		resultSet.getInt(OffertaTirocinio.ID_TIROCINIO),
                 		resultSet.getString(OffertaTirocinio.AZIENDA),
+                		resultSet.getString(OffertaTirocinio.TITOLO),
 		 				resultSet.getString(OffertaTirocinio.LUOGO),
                         resultSet.getString(OffertaTirocinio.OBIETTIVI),
                         resultSet.getString(OffertaTirocinio.MODALITA),
@@ -198,6 +280,7 @@ public class OffertaTirocinioDAO implements OffertaTirocinioDAOInterface {
                 OffertaTirocinio offertaTirocinio = new OffertaTirocinio(
                 		resultSet.getInt(OffertaTirocinio.ID_TIROCINIO),
                 		resultSet.getString(OffertaTirocinio.AZIENDA),
+                		resultSet.getString(OffertaTirocinio.TITOLO),
 		 				resultSet.getString(OffertaTirocinio.LUOGO),
                         resultSet.getString(OffertaTirocinio.OBIETTIVI),
                         resultSet.getString(OffertaTirocinio.MODALITA),
@@ -234,6 +317,7 @@ public class OffertaTirocinioDAO implements OffertaTirocinioDAOInterface {
                 OffertaTirocinio offertaTirocinio = new OffertaTirocinio(
                 		resultSet.getInt(OffertaTirocinio.ID_TIROCINIO),
                 		resultSet.getString(OffertaTirocinio.AZIENDA),
+                		resultSet.getString(OffertaTirocinio.TITOLO),
 		 				resultSet.getString(OffertaTirocinio.LUOGO),
                         resultSet.getString(OffertaTirocinio.OBIETTIVI),
                         resultSet.getString(OffertaTirocinio.MODALITA),

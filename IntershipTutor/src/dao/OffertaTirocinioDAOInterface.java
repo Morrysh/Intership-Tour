@@ -3,6 +3,7 @@ package dao;
 import java.util.List;
 import java.util.Map;
 
+import model.Azienda;
 import model.OffertaTirocinio;
 import model.enumeration.CampoRicercaTirocinio;
 
@@ -15,6 +16,10 @@ public interface OffertaTirocinioDAOInterface {
 	int delete(OffertaTirocinio offertaTirocinio);
 	
 	int setVisibilita(OffertaTirocinio offertaTirocinio, boolean visibilita);
+	
+	OffertaTirocinio getOffertaByID(int id);
+	
+	Azienda getAziendaByIDTirocinio(int id);
 	
 	List<OffertaTirocinio> allOfferteTirocinio();
 	

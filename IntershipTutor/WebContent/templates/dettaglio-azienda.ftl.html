@@ -1,6 +1,5 @@
-
 <!-- Page Container -->
-<div id="dettaglio-azienda-container" class="w3-content w3-margin-top">
+<div id="dettaglio-azienda-container" class="w3-content">
 
   <!-- The Grid -->
   <div class="w3-row-padding">
@@ -8,24 +7,23 @@
     <!-- Left Column -->
     <div class="w3-quarter">
     
-      <div class="w3-white w3-text-grey w3-card-4 w3-round">
+      <div class="w3-white w3-text-grey w3-card w3-round">
         <div class="w3-container w3-padding">
           <h2 id="nome-azienda">${azienda.nome}</h2>
           <hr />
           <p><i class="fa fa-briefcase fa-fw w3-margin-right w3-large w3-text-teal"></i>${azienda.nomeRappresentante} ${azienda.cognomeRappresentante}</p>
           <p><i class="fa fa-home fa-fw w3-margin-right w3-large w3-text-teal"></i>${azienda.regione}</p>
           <p><i class="fa fa-envelope fa-fw w3-margin-right w3-large w3-text-teal"></i>${azienda.email}</p>
-          <p><i class="fa fa-phone fa-fw w3-margin-right w3-large w3-text-teal"></i>${azienda.telefono}</p> 
-        </div>
-        
-        
-      </div><br>
-		<p class="w3-large"><b><i class="fa fa-chart-bar fa-fw w3-margin-right w3-text-teal"></i>Valutazione</b></p>
+          <p><i class="fa fa-phone fa-fw w3-margin-right w3-large w3-text-teal"></i>${azienda.telefono}</p>
+          <hr />
+          <p class="w3-large"><b><i class="fa fa-chart-bar fa-fw w3-margin-right w3-text-teal"></i>Valutazione</b></p>
           <p class ="w3-text-grey">Voto</p>
           <div class="w3-light-grey w3-round-xlarge w3-small">
             <div class="w3-container w3-center w3-round-xlarge w3-teal" style="width:${voto}%">${voto/20}</div>
           </div>
          <br>
+        </div>
+      </div>
 
     <!-- End Left Column -->
     </div>
@@ -33,10 +31,10 @@
     <!-- Right Column -->
     <div class="w3-threequarter">
     
-      <div class="w3-container w3-card w3-white w3-margin-bottom">
+      <div class="w3-container w3-card w3-round w3-white w3-margin-bottom">
         <h2 id="tirocini-disponibili" class="w3-text-grey w3-padding-16">
         	<i class="fa fa-suitcase fa-fw w3-margin-right w3-xlarge w3-text-teal"></i>
-        	Tirocini disponibili
+        	Tirocini proposti
         </h2>
         <#list tirocini as tirocinio>
 	        <div class="w3-container">
@@ -48,7 +46,19 @@
         </#list>
         
       </div>
-
+      
+      <!-- Pagination -->
+      <div class="w3-center">
+          <div id="pagination" class="w3-bar w3-border">
+              <a href="#" class="w3-button w3-hover-univaq-color-background">&laquo;</a>
+              <a href="#" class="w3-button w3-hover-univaq-color-background">1</a>
+              <a href="#" class="w3-button w3-hover-univaq-color-background">2</a>
+              <a href="#" class="w3-button w3-hover-univaq-color-background">3</a>
+              <a href="#" class="w3-button w3-hover-univaq-color-background">4</a>
+              <a href="#" class="w3-button w3-hover-univaq-color-background">5</a>
+              <a href="#" class="w3-button w3-hover-univaq-color-background">&raquo;</a>
+          </div>
+      </div>
 
     <!-- End Right Column -->
     </div>

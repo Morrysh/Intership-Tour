@@ -18,6 +18,14 @@
     <servlet-name>DettaglioAzienda</servlet-name>
     <url-pattern>/azienda</url-pattern>
   </servlet-mapping>
+  <servlet>
+	<servlet-name>DettaglioOT</servlet-name>
+    <servlet-class>servlet.DettaglioOT</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DettaglioOT</servlet-name>
+    <url-pattern>/offertaTirocinio</url-pattern>
+  </servlet-mapping>
   <!-- End servlets -->
   
   <display-name>Homepage</display-name>

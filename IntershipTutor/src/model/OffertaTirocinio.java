@@ -8,6 +8,7 @@ public class OffertaTirocinio {
 	// DB fields
 	public static final String ID_TIROCINIO = "id_tirocinio";
 	public static final String AZIENDA = "azienda";
+	public static final String TITOLO = "titolo";
 	public static final String LUOGO = "luogo";
 	public static final String OBIETTIVI = "obiettivi";
 	public static final String MODALITA = "modalita";
@@ -21,6 +22,7 @@ public class OffertaTirocinio {
 
 	private int idTirocinio;
 	private String azienda;
+	private String titolo;
 	private String luogo;
 	private String obiettivi;
 	private String modalita;
@@ -35,6 +37,7 @@ public class OffertaTirocinio {
 	public OffertaTirocinio() {
 		this.idTirocinio = 0;
 		this.azienda = "";
+		this.titolo = "";
 		this.luogo = "";
 		this.obiettivi = "";
 		this.modalita = "";
@@ -47,11 +50,12 @@ public class OffertaTirocinio {
 		this.visibile = false;
 	}
 	
-	public OffertaTirocinio(int idTirocinio, String azienda, String luogo, String obiettivi, String modalita,
+	public OffertaTirocinio(int idTirocinio, String azienda, String titolo, String luogo, String obiettivi, String modalita,
 			String rimborso, Date dataInizio, Date dataFine, Time oraInizio, Time oraFine, int numeroOre,
 			boolean visibile) {
 		this.idTirocinio = idTirocinio;
 		this.azienda = azienda;
+		this.titolo = titolo;
 		this.luogo = luogo;
 		this.obiettivi = obiettivi;
 		this.modalita = modalita;
@@ -78,6 +82,14 @@ public class OffertaTirocinio {
 
 	public void setAzienda(String azienda) {
 		this.azienda = azienda;
+	}
+	
+	public String getTitolo() {
+		return titolo;
+	}
+
+	public void setTitolo(String titolo) {
+		this.titolo = titolo;
 	}
 
 	public String getLuogo() {
