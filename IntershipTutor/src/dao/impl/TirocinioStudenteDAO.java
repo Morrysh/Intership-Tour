@@ -8,12 +8,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dao.TirocinioStudenteDAOInterface;
-import database.DBConnector;
-import model.OffertaTirocinio;
-import model.Studente;
-import model.TirocinioStudente;
-import model.Utente;
-import model.enumeration.TipoUtente;
+import data.database.DBConnector;
+import data.model.OffertaTirocinio;
+import data.model.Studente;
+import data.model.TirocinioStudente;
+import data.model.Utente;
+import data.model.enumeration.TipoUtente;
 
 public class TirocinioStudenteDAO implements TirocinioStudenteDAOInterface {
 

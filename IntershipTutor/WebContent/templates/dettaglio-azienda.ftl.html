@@ -7,19 +7,31 @@
     <!-- Left Column -->
     <div class="w3-quarter">
     
-      <div class="w3-white w3-text-grey w3-card w3-round">
+      <div class="w3-card w3-round">
         <div class="w3-container w3-padding">
           <h2 id="nome-azienda">${azienda.nome}</h2>
           <hr />
-          <p><i class="fa fa-briefcase fa-fw w3-margin-right w3-large w3-text-teal"></i>${azienda.nomeRappresentante} ${azienda.cognomeRappresentante}</p>
-          <p><i class="fa fa-home fa-fw w3-margin-right w3-large w3-text-teal"></i>${azienda.regione}</p>
-          <p><i class="fa fa-envelope fa-fw w3-margin-right w3-large w3-text-teal"></i>${azienda.email}</p>
-          <p><i class="fa fa-phone fa-fw w3-margin-right w3-large w3-text-teal"></i>${azienda.telefono}</p>
+          <p class="info">
+			<i class="fa fa-briefcase fa-fw w3-margin-right"></i>
+			${azienda.nomeRappresentante} ${azienda.cognomeRappresentante}
+		  </p>
+          <p class="info">
+          	<i class="fa fa-home fa-fw w3-margin-right"></i>
+          	${azienda.regione}
+          </p>
+          <p class="info">
+          	<i class="fa fa-envelope fa-fw w3-margin-right"></i>
+          	${azienda.email}
+          </p>
+          <p class="info">
+          	<i class="fa fa-phone fa-fw w3-margin-right"></i>
+          	${azienda.telefono}
+          </p>
           <hr />
-          <p class="w3-large"><b><i class="fa fa-chart-bar fa-fw w3-margin-right w3-text-teal"></i>Valutazione</b></p>
+          <p class="w3-large"><b><i class="fa fa-chart-bar fa-fw w3-margin-right"></i>Valutazione</b></p>
           <p class ="w3-text-grey">Voto</p>
-          <div class="w3-light-grey w3-round-xlarge w3-small">
-            <div class="w3-container w3-center w3-round-xlarge w3-teal" style="width:${voto}%">${voto/20}</div>
+          <div class=" w3-round-xlarge w3-small w3-light-grey">
+            <div class="w3-container w3-center w3-round-xlarge univaq-color-background" style="width:${voto}%">${voto/20}</div>
           </div>
          <br>
         </div>
@@ -31,17 +43,17 @@
     <!-- Right Column -->
     <div class="w3-threequarter">
     
-      <div class="w3-container w3-card w3-round w3-white w3-margin-bottom">
-        <h2 id="tirocini-disponibili" class="w3-text-grey w3-padding-16">
-        	<i class="fa fa-suitcase fa-fw w3-margin-right w3-xlarge w3-text-teal"></i>
+      <div class="w3-padding w3-card w3-round w3-margin-bottom">
+        <h2 id="tirocini-disponibili" class="w3-text-grey w3-padding">
+        	<i class="fa fa-suitcase fa-fw w3-margin-right w3-xlarge"></i>
         	Tirocini proposti
         </h2>
         <#list tirocini as tirocinio>
-	        <div class="w3-container">
+	        <div class="w3-container azienda">
 	        <hr>
-	          <h5 class="w3-opacity"><b>Tirocinio ${tirocinio.idTirocinio}</b></h5>
-	          <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>Jan 2015 - <span class="w3-tag w3-teal w3-round">Current</span></h6>
-	          <p class="descrizione-tirocinio">Lorem ipsum dolor sit amet. Praesentium magnam consectetur vel in deserunt aspernatur est reprehenderit sunt hic. Nulla tempora soluta ea et odio, unde doloremque repellendus iure, iste.</p>
+	          <h5 class="w3-opacity">Tirocinio ${tirocinio.titolo}</h5>
+	          <h6 class=""><i class="fa fa-calendar fa-fw w3-margin-right"></i>Jan 2015 - <span class="w3-tag univaq-color-background w3-round">Current</span></h6>
+	          <p class="descrizione-tirocinio">${tirocinio.modalita}</p>
 	        </div>
         </#list>
         

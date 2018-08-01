@@ -1,4 +1,4 @@
-package model.enumeration;
+package data.model.enumeration;
 
 public enum StatoRichiestaTirocinio {
 	

@@ -4,22 +4,40 @@
 
 html,
 body {
- height: 100%;
- position: relative;
- margin: 0
+	height: 100%;
+	margin: 0
 }
 
-#pagination{
-    margin-top: 20px
+h1{
+    margin-top: 40px;
+    font-weight: 500;
 }
 
-a{
-	text-decoration: none;
+h2{
+	margin-bottom: 0;
+	font-size: 140% !important
+}
+
+h4{
+	font-size: 105%;
+	margin: 0;
+	font-weight: 500;
+	transition: .2s all ease;
+}
+
+.fa,
+.fas,
+.far{
+	color: #822627;
 }
 
 /* Useful in different parts */
 .no-padding{
     padding: 0 !important;
+}
+
+.no-margin {
+	margin: 0 !important;
 }
 
 .univaq-color-background{
@@ -33,7 +51,17 @@ a{
 }
 /* End useful in different parts */
 
-input.w3-input{
+/* w3 css override */
+
+.w3-button{
+    outline-color: #822627;
+    transition: .2s all ease-in;
+    border-color: #dddeee !important;
+    margin-bottom: 15px
+}
+
+
+.w3-input{
     margin-top: 5px;
     margin-bottom: 15px;
     padding: 5px;
@@ -43,7 +71,7 @@ input.w3-input{
     transition: all .2s ease-in-out
 }
 
-input.w3-input:focus{
+.w3-input:focus{
     border-color: #822627
 }
 
@@ -56,8 +84,21 @@ input.w3-input:focus{
     border-color: #eeeeee !important;
 }
 
-/* Collapsible */
+.w3-opacity{
+    font-size: 18px;
+    font-weight: 500;
+    transition: .2s all ease-in;
+    opacity: .8;
+}
 
+.w3-opacity:hover{
+    /* color: F90200; */
+    color: #822627;
+    cursor: pointer;
+}
+/* End w3 css override */
+
+/* Collapsible */
 input#menu-1,
 input#menu {
     display: none;
@@ -95,11 +136,30 @@ input:checked ~ #label-search:after {
     content: "\f068"; /* Unicode character for "minus" sign (-) */
     color: #822627;
 }
+/* End collapsible */
+
+/* My classes */
+.info{
+    font-size: 15px;
+    margin: 13px 0
+}
+/* End my classes */
 
 .fa.fa-bars.w3-right{
     padding-top: 4px
 }
 
+a{
+	text-decoration: none;
+}
+
+#pagination{
+    margin-top: 20px
+}
+
+#pagination .w3-button{
+	margin: 0
+}
 
 /* End Collapsible */
 

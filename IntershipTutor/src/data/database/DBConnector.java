@@ -1,4 +1,4 @@
-package database;
+package data.database;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -6,7 +6,7 @@ import javax.sql.DataSource;
 
 public class DBConnector {
 	
-    private static DataSource dataSource;
+	private static DataSource dataSource;
     private static InitialContext ctx;
 
     private static void init() {

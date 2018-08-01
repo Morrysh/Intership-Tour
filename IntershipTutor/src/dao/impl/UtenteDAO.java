@@ -6,9 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import dao.UtenteDAOInterface;
-import database.DBConnector;
-import model.Utente;
-import model.enumeration.TipoUtente;
+import data.database.DBConnector;
+import data.model.Utente;
+import data.model.enumeration.TipoUtente;
 
 public class UtenteDAO implements UtenteDAOInterface {
 

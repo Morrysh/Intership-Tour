@@ -1,6 +1,6 @@
-package model;
+package data.model;
 
-import model.enumeration.VotoAzienda;
+import data.model.enumeration.VotoAzienda;
 
 public class ParereAzienda {
 	

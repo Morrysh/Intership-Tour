@@ -7,7 +7,7 @@
 	   <!-- Left Column -->
 	   <div class="w3-quarter" id="left-column">
 	       <!-- Profile -->
-	       <div class="w3-card w3-round w3-white">
+	       <div class="w3-card w3-round">
 	           <div class="w3-container profile-container">
 	               <h4 class="w3-center">Stefano Martella</h4>
 	               <hr>
@@ -23,23 +23,23 @@
 	           </div>
 	       </div>
 	
-	       <div class="w3-card w3-round w3-white">
+	       <div class="w3-card w3-round">
 	           <p id="aziende-convenzionate">Aziende convenzionate</p>
 	           <div class="w3-container aziende" id="aziende-container">
 	               <#list aziende as azienda>
 	               	   <hr>
-	                   <div class="azienda w3-padding">
+	                   <div class="azienda">
 	                    <a href="azienda?azienda=${azienda.codiceFiscale}">
 	                        <h4>
-	                        	<i class="far fa-building fa-fw w3-margin-right univaq-color"></i> 
+	                        	<i class="far fa-building fa-fw w3-margin-right"></i> 
 	                        	${azienda.nome}
 	                        </h4>
 	                        <p class="info">
-	                        	<i class="fas fa-map-marked-alt fa-fw w3-margin-right univaq-color"></i>
+	                        	<i class="fas fa-map-marked-alt fa-fw w3-margin-right"></i>
 	                        	${azienda.regione}
 	                        </p>
 	                        <p class="info">
-	                        	<i class="fas fa-phone fa-fw w3-margin-right univaq-color"></i>
+	                        	<i class="fas fa-phone fa-fw w3-margin-right"></i>
 	                        	${azienda.telefono}
 	                        </p>
 	                    </a>
@@ -55,7 +55,7 @@
 	   <div class="w3-threequarter" id="right-column">
 	
 	         <div id="search-bar">
-	             <div class="w3-card w3-round w3-white">
+	             <div class="w3-card w3-round">
 	                 <div class="w3-container intership">
 	                     <div class="search-form collapsible-menu">
 	                      <input type="checkbox" id="menu" />
@@ -75,8 +75,8 @@
 	         	</div>
 	     	</div>
 	       
-	       <div id="offerte-container" class="w3-margin-top w3-margin-bottom w3-card w3-round w3-white w3-padding">
-				<h2 id="tirocini-disponibili" class="w3-text-grey w3-padding-16">
+	       <div id="offerte-container" class="w3-margin-top w3-margin-bottom w3-card w3-round w3-padding">
+				<h2 id="tirocini-disponibili" class=" w3-padding w3-text-grey">
 					<i class="fas fa-book-reader fa-fw w3-margin-right w3-xlarge"></i>
 					Tirocini disponibili
 				</h2>
@@ -85,19 +85,19 @@
 					<div class="w3-padding w3-container">
 						<hr>
 						<a href="offertaTirocinio?offertaTirocinio=${offerta.idTirocinio}">
-							<h6 class="w3-opacity">
-							<#if offerta.titolo?length &lt; 150>
-								${offerta.titolo}
-							<#else>
-								${offerta.titolo?substring(0,150)}...
-							</#if>
-							</h6>
+							<h5 class="w3-opacity">
+								<#if offerta.titolo?length &lt; 150>
+									${offerta.titolo}
+								<#else>
+									${offerta.titolo?substring(0,150)}...
+								</#if>
+							</h5>
 						</a>
-						<p class="univaq-color luogo-tirocinio">
+						<p class="luogo-tirocinio">
 							<i class="fas fa-map-marker-alt fa-fw w3-margin-right"></i>
 							 ${offerta.luogo}
 						</p>
-						<p class="univaq-color data-tirocinio">
+						<p class="data-tirocinio">
 							<i class="fa fa-calendar fa-fw w3-margin-right"></i>
 							Dal ${offerta.dataInizio} al ${offerta.dataFine}
 						</p>

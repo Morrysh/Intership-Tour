@@ -1,6 +1,6 @@
-package model;
+package data.model;
 
-import model.enumeration.TipoUtente;
+import data.model.enumeration.TipoUtente;
 
 public class Utente {
 	

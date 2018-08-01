@@ -1,6 +1,6 @@
-package model;
+package data.model;
 
-import model.enumeration.StatoRichiestaTirocinio;
+import data.model.enumeration.StatoRichiestaTirocinio;
 
 public class TirocinioStudente {
 

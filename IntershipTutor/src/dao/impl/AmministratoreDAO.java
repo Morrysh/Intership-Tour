@@ -6,10 +6,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import dao.AmministratoreDAOInterface;
-import database.DBConnector;
-import model.Amministratore;
-import model.Utente;
-import model.enumeration.TipoUtente;
+import data.database.DBConnector;
+import data.model.Amministratore;
+import data.model.Utente;
+import data.model.enumeration.TipoUtente;
 
 public class AmministratoreDAO implements AmministratoreDAOInterface {
 

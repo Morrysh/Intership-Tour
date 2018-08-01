@@ -1,8 +1,8 @@
-package model;
+package data.model;
 
 import java.sql.Date;
 
-import model.enumeration.TipoUtente;
+import data.model.enumeration.TipoUtente;
 
 public class Studente extends Utente {
 

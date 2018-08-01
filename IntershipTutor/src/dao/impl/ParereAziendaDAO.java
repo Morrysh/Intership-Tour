@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dao.ParereAziendaDAOInterface;
-import database.DBConnector;
-import model.Azienda;
-import model.ParereAzienda;
+import data.database.DBConnector;
+import data.model.Azienda;
+import data.model.ParereAzienda;
 
 public class ParereAziendaDAO implements ParereAziendaDAOInterface {
 

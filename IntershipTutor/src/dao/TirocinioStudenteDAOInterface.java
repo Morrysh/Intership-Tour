@@ -1,19 +1,20 @@
 package dao;
 
+import java.sql.SQLException;
 import java.util.List;
 
-import model.OffertaTirocinio;
-import model.Studente;
-import model.TirocinioStudente;
+import data.model.OffertaTirocinio;
+import data.model.Studente;
+import data.model.TirocinioStudente;
 
 public interface TirocinioStudenteDAOInterface {
 	
-	int insert(TirocinioStudente tirocinioStudente);
+	int insert(TirocinioStudente tirocinioStudente) throws SQLException;
 	
-	int update(TirocinioStudente tirocinioStudente);
+	int update(TirocinioStudente tirocinioStudente) throws SQLException;
 	
-	int delete(TirocinioStudente tirocinioStudente);
+	int delete(TirocinioStudente tirocinioStudente) throws SQLException;
 	
-	List<Studente> getStudentiPerTirocinio(OffertaTirocinio offertaTirocinio);
+	List<Studente> getStudentiPerTirocinio(OffertaTirocinio offertaTirocinio) throws SQLException;
 
 }

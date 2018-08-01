@@ -1,25 +1,27 @@
 package dao;
 
-import model.Utente;
+import java.sql.SQLException;
+
+import data.model.Utente;
 
 public interface UtenteDAOInterface {
 
-	int insert(Utente utente);
+	int insert(Utente utente) throws SQLException;
 	
-	int update(Utente utente);
+	int update(Utente utente) throws SQLException;
 	
-	int delete(Utente utente);
+	int delete(Utente utente) throws SQLException;
 	
-	boolean checkEmailDisponibile(String email);
+	boolean checkEmailDisponibile(String email) throws SQLException;
 	
-	boolean checkUsernameDisponibile(String username);
+	boolean checkUsernameDisponibile(String username) throws SQLException;
 	
-	boolean checkTelefonoDisponibile(String telefono);
+	boolean checkTelefonoDisponibile(String telefono) throws SQLException;
 	
-	Utente getUtenteByUsernameAndPassword(String username, String password);
+	Utente getUtenteByUsernameAndPassword(String username, String password) throws SQLException;
 	
-	Utente getUtenteByCF(String codiceFiscale);
+	Utente getUtenteByCF(String codiceFiscale) throws SQLException;
 	
-	Object getLogged(String username, String password);
+	Object getLogged(String username, String password) throws SQLException;
 	
 }

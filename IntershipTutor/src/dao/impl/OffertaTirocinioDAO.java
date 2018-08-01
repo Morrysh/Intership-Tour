@@ -9,12 +9,12 @@ import java.util.List;
 import java.util.Map;
 
 import dao.OffertaTirocinioDAOInterface;
-import database.DBConnector;
-import model.Azienda;
-import model.OffertaTirocinio;
-import model.Utente;
-import model.enumeration.CampoRicercaTirocinio;
-import model.enumeration.TipoUtente;
+import data.database.DBConnector;
+import data.model.Azienda;
+import data.model.OffertaTirocinio;
+import data.model.Utente;
+import data.model.enumeration.CampoRicercaTirocinio;
+import data.model.enumeration.TipoUtente;
 
 public class OffertaTirocinioDAO implements OffertaTirocinioDAOInterface {
 

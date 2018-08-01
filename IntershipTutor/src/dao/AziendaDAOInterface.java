@@ -1,24 +1,25 @@
 package dao;
 
+import java.sql.SQLException;
 import java.util.List;
 
-import model.Azienda;
-import model.Utente;
+import data.model.Azienda;
+import data.model.Utente;
 
 public interface AziendaDAOInterface {
 	
-	int insert(Azienda azienda);
+	int insert(Azienda azienda) throws SQLException;
 	
-	int update(Azienda azienda);
+	int update(Azienda azienda) throws SQLException;
 	
-	boolean setConvenzione(Azienda azienda, boolean convezione);
+	boolean setConvenzione(Azienda azienda, boolean convezione) throws SQLException;
 	
-	Azienda getAziendaByCF(String codiceFiscale);
+	Azienda getAziendaByCF(String codiceFiscale) throws SQLException;
 
-	List<Azienda> allAziendeAccordingToConvention(boolean convenzione);
+	List<Azienda> allAziendeAccordingToConvention(boolean convenzione) throws SQLException;
 	
-	List<Azienda> allAziende();
+	List<Azienda> allAziende() throws SQLException;
 	
-	Azienda getAziendaByUtente(Utente utente);
+	Azienda getAziendaByUtente(Utente utente) throws SQLException;
 	
 }

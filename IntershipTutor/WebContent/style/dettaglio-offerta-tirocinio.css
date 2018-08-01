@@ -1,18 +1,12 @@
-p{
-    margin: 15px 0
-}
-
 #nome-azienda{
 	color:#822627;
 	line-height:7px;
 	font-weight: 500;
-	padding: 10px
 }
 
 #tirocini-disponibili{
-	margin-bottom: 0;
+	margin: 0;
 }
-
 
 .azienda-info{
     min-width: 33.3%;
@@ -41,9 +35,5 @@ p{
 	.azienda-info{
 	    min-width: 100%;
 	    background-color: #ffffff
-	}
-	
-	.w3-quarter{
-		margin-bottom: 20px
 	}
 }

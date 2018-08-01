@@ -1,42 +1,75 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" version="3.1">
-  
+  <!-- Context parameters -->
+	<context-param>
+		<param-name>view.outline_template</param-name>
+		<param-value>container.ftl.html</param-value>
+    </context-param>
+    <context-param>
+        <param-name>view.date_format</param-name>
+        <param-value>dd/MM/yyyy hh:mm:ss</param-value>
+    </context-param>
+    <context-param>
+        <param-name>view.debug</param-name>
+        <param-value>true</param-value>
+    </context-param>
+    <context-param>
+        <param-name>view.template_directory</param-name>
+        <param-value>templates</param-value>
+    </context-param>
+    <context-param>
+        <param-name>view.data.author</param-name>
+        <param-value>Stefano Martella</param-value>
+    </context-param>
+    <context-param>
+        <param-name>view.data.homepage_url</param-name>
+        <param-value>homepage</param-value>
+    </context-param>
+    <context-param>
+        <param-name>view.encoding</param-name>
+        <param-value>ISO-8859-1</param-value>
+    </context-param>
+    <context-param>  
+        <param-name>view.error_template</param-name>
+        <param-value>errore.ftl.html</param-value>
+    </context-param>
+    
+  <!-- End context parameters -->
   <!-- Servlets -->
-  <servlet>
-	<servlet-name>HomePage</servlet-name>
-    <servlet-class>servlet.HomePage</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>HomePage</servlet-name>
-    <url-pattern></url-pattern>
-  </servlet-mapping>
-  <servlet>
-	<servlet-name>DettaglioAzienda</servlet-name>
-    <servlet-class>servlet.DettaglioAzienda</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>DettaglioAzienda</servlet-name>
-    <url-pattern>/azienda</url-pattern>
-  </servlet-mapping>
-  <servlet>
-	<servlet-name>DettaglioOT</servlet-name>
-    <servlet-class>servlet.DettaglioOT</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>DettaglioOT</servlet-name>
-    <url-pattern>/offertaTirocinio</url-pattern>
-  </servlet-mapping>
+	<servlet>
+		<servlet-name>HomePage</servlet-name>
+		<servlet-class>controller.HomePage</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>DettaglioAzienda</servlet-name>
+		<servlet-class>controller.DettaglioAzienda</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>DettaglioOffertaTirocinio</servlet-name>
+		<servlet-class>controller.DettaglioOffertaTirocinio</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>HomePage</servlet-name>
+		<url-pattern></url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>DettaglioAzienda</servlet-name>
+		<url-pattern>/azienda</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>DettaglioOffertaTirocinio</servlet-name>
+		<url-pattern>/offertaTirocinio</url-pattern>
+	</servlet-mapping>
   <!-- End servlets -->
-  
-  <display-name>Homepage</display-name>
-  <resource-ref>
-    <description>DB Connection</description>
-    <res-ref-name>jdbc/intershiptutor_database</res-ref-name>
-    <res-type>javax.sql.DataSource</res-type>
-    <res-auth>Container</res-auth>
-   </resource-ref>
-   <welcome-file-list>
-	<welcome-file>templates/container.ftl.html</welcome-file>
-   </welcome-file-list>
+ 
+	<resource-ref>
+		<description>DB Connection</description>
+		<res-ref-name>jdbc/intershiptutor_database</res-ref-name>
+		<res-type>javax.sql.DataSource</res-type>
+		<res-auth>Container</res-auth>
+	</resource-ref>
+	<welcome-file-list>
+		<welcome-file>homepage</welcome-file>
+	</welcome-file-list>
     
 </web-app>

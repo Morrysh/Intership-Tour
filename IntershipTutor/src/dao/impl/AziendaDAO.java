@@ -8,10 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dao.AziendaDAOInterface;
-import database.DBConnector;
-import model.Azienda;
-import model.Utente;
-import model.enumeration.TipoUtente;
+import data.database.DBConnector;
+import data.model.Azienda;
+import data.model.Utente;
+import data.model.enumeration.TipoUtente;
 
 public class AziendaDAO implements AziendaDAOInterface {
 
