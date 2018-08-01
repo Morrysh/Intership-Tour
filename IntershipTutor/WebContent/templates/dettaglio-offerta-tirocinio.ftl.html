@@ -10,22 +10,26 @@
     
       <div class="w3-card w3-round">
         <div class="w3-container w3-padding">
-          <h2 id="nome-azienda">${azienda.nome}</h2>
+          <a href="./azienda?azienda=${azienda.utente}">
+          	<h2 id="nome-azienda">
+          		${azienda.nome}
+            </h2>
+          </a>
           <hr />
           <p class="info">
-          	<i class="fa fa-user fa-fw w3-margin-right w3-large"></i>
+          	<i class="fa fa-user fa-fw w3-margin-right"></i>
           	${azienda.nomeResponsabile} ${azienda.cognomeResponsabile}
           </p>
           <p class="info">
-          	<i class="fa fa-home fa-fw w3-margin-right w3-large"></i>
-          	${offertaTirocinio.luogo}
+          	<i class="fas fa-map-marked-alt fa-fw w3-margin-right"></i>
+          	${azienda.regione}
           </p>
           <p class="info">
-          	<i class="fa fa-envelope fa-fw w3-margin-right w3-large"></i>
+          	<i class="fa fa-envelope fa-fw w3-margin-right"></i>
           	${azienda.email}
           </p>
           <p class="info">
-          	<i class="fa fa-phone fa-fw w3-margin-right w3-large"></i>
+          	<i class="fa fa-phone fa-fw w3-margin-right"></i>
           	${azienda.telefono}
           </p> 
         </div>
@@ -41,27 +45,28 @@
     <!-- Right Column -->
     <div class="w3-threequarter">
     
-      <div class="w3-padding w3-card w3-margin-bottom">
-        <h2 id="tirocini-disponibili" class="w3-text-grey w3-padding">
+      <div class="w3-padding w3-card w3-round w3-margin-bottom">
+        <h2 id="titolo-tirocinio" class="w3-text-grey w3-padding">
         	<i class="fa fa-suitcase fa-fw w3-margin-right w3-xlarge"></i>
         	${offertaTirocinio.titolo}
         </h2>
-	        <div class="w3-container">
-	        <hr>
-	          <h6>
-	          	<i class="fa fa-calendar fa-fw w3-margin-right"></i>
-	          	${offertaTirocinio.dataInizio} - ${offertaTirocinio.dataFine} 
-	          	<span class="w3-tag w3-round univaq-color-background">Current</span>
-	          </h6>
-	          <h5 class="w3-opacity"><b>Obiettivi</b></h5>
-	          <p class="descrizione-tirocinio">${offertaTirocinio.obiettivi}</p>
-	       
-	        
-	        <hr>
-	          <h5 class="w3-opacity"><b>Modalità</b></h5>
-	          <p class="descrizione-tirocinio">${offertaTirocinio.modalita}</p>
-	        </div>
-        
+        <div class="w3-container">
+        	<hr>
+          	<h6>
+          		<i class="fas fa-map-marker-alt fa-fw w3-margin-right"></i>
+          		${offertaTirocinio.luogo}
+          	</h6>
+          	<h6>
+          		<i class="fa fa-calendar fa-fw w3-margin-right"></i>
+          		${offertaTirocinio.dataInizio} - ${offertaTirocinio.dataFine} 
+          		<span class="w3-tag w3-round univaq-color-background">Current</span>
+          	</h6>
+          	<h5 class="bold"><b>Obiettivi</b></h5>
+          		<p class="descrizione-tirocinio">${offertaTirocinio.obiettivi}</p>	        
+        		<hr>
+          	<h5 class="bold"><b>Modalità</b></h5>
+          	<p class="descrizione-tirocinio">${offertaTirocinio.modalita}</p>
+        </div>
       </div>
 
 

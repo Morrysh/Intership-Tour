@@ -18,6 +18,10 @@ h2{
 	font-size: 140% !important
 }
 
+h2 a{
+	font-weight: 500
+}
+
 h4{
 	font-size: 105%;
 	margin: 0;
@@ -47,7 +51,14 @@ h4{
 
 .univaq-color{
     background-color: #ffffff;
-    color: #822627
+    color: #822627;
+}
+
+.bold{
+    font-size: 18px;
+    font-weight: 500;
+    transition: .2s all ease-in;
+    opacity: .8;
 }
 /* End useful in different parts */
 
@@ -82,13 +93,6 @@ h4{
 
 .w3-border{
     border-color: #eeeeee !important;
-}
-
-.w3-opacity{
-    font-size: 18px;
-    font-weight: 500;
-    transition: .2s all ease-in;
-    opacity: .8;
 }
 
 .w3-opacity:hover{

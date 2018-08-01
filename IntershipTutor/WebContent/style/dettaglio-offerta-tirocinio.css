@@ -4,31 +4,14 @@
 	font-weight: 500;
 }
 
-#tirocini-disponibili{
-	margin: 0;
-}
-
-.azienda-info{
-    min-width: 33.3%;
-}
-
-.section{
-    font-size: 23px;
+#titolo-tirocinio{
+	margin-bottom: 0;
 }
 
 .descrizione-tirocinio{
 	line-height: 2;
 	font-size: 14px
 }
-
-.persone,
-.contatti{
-    margin: 0;
-    font-style: italic;
-    font-size: 14px;
-    color: white;
-}
-
 
 /* Tablet and smartphone */
 @media  (max-width: 701px){
