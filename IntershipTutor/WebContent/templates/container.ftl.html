@@ -21,10 +21,10 @@
 	<!-- NAVBAR PC -->
 	<div class="w3-bar univaq-color-background w3-large w3-padding-large w3-hide-small">
 	    <a href="../IntershipTutor" class="w3-bar-item no-padding">
-	        <i class="fa fa-home w3-margin-right univaq-color-background"></i>
+	        <i class="fa fa-home w3-margin-right univaq-color-background pointer"></i>
 	        IntershipTutor
 	    </a>
-	    <a href="#" class="w3-bar-item w3-right no-padding">
+	    <a href="#login-modal" class="w3-bar-item w3-right no-padding pointer">
 	        Accedi
 	        <i class="fa fa-user w3-margin-left univaq-color-background"></i>
 	    </a>
@@ -40,7 +40,7 @@
 	            <label for="menu-1"><i class="fa fa-bars w3-right univaq-color-background"></i></label>
 	        <div class="menu-content-1">
 	            <ul>
-	                <li><a href="#" class="w3-bar-item">Accedi</a></li>
+	                <li><a href="#login-modal" class="w3-bar-item">Accedi</a></li>
 	                <li><a href="./aziende-smartphone.html" class="w3-bar-item">Aziende convenzionate</a></li>
 	            </ul>                    
 	        </div>
@@ -58,6 +58,32 @@
     <footer class="w3-container univaq-color-background">
         <h5>Footer</h5>
     </footer>
+    
+    <!-- Modals -->
+    <div id="login-modal" class="overlay">
+	    <div class="w3-card w3-white w3-round popup">
+	
+	      <div class="w3-center"><br>
+	      	<a href="#" class="w3-button w3-xlarge w3-display-topright">&times;</a>
+	        <h2>Effettua il login</h2>
+	      </div>
+	      <form class="w3-container" action="./login" method="post">
+	        <div class="w3-section">
+	          <label><b>Username</b></label>
+	          <input class="w3-input w3-border-bottom w3-margin-bottom" type="text" placeholder="Inserisci il tuo username" name="username" required>
+	          <label><b>Password</b></label>
+	          <input class="w3-input w3-border-bottom w3-margin-bottom" type="password" placeholder="Inserisci la tua password" name="password" required>
+	          <button class="w3-button w3-block w3-section w3-padding univaq-color-background" type="submit">Login</button>
+	        </div>
+	      </form>
+	      
+	      <div class="w3-container w3-border-top w3-padding w3-round-bottom">
+	        <span class="w3-left w3-padding-large pointer">Registrati</span>
+	        <span class="w3-right w3-padding-large pointer">Password dimenticata?</span>
+	      </div>
+	      </div>
+      </div>
+    
     <!-- Scripts -->
     <script src="js/jquery-3.3.1.min.js" ></script>
     <script src="js/index.js"></script>

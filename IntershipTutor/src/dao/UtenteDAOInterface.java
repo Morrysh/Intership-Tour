@@ -22,6 +22,6 @@ public interface UtenteDAOInterface {
 	
 	Utente getUtenteByCF(String codiceFiscale) throws SQLException;
 	
-	Object getLogged(String username, String password) throws SQLException;
+	Utente getLogged(String username, String password) throws SQLException;
 	
 }

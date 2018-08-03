@@ -240,41 +240,31 @@ public class OffertaTirocinioDAO implements OffertaTirocinioDAOInterface {
 	public List<OffertaTirocinio> filtraPerCampo(Map<CampoRicercaTirocinio, String> campoRicerca) {
 		List<OffertaTirocinio> offerteTirocinio = new ArrayList<>();
 		PreparedStatement preparedStatement;
-		String query = "SELECT * FROM offertatirocinio WHERE ";
+		String query = "SELECT * FROM offertatirocinio JOIN azienda ON azienda = utente WHERE visibile = 1 AND " + 
+					   "UPPER(nome) LIKE UPPER(?) AND " +
+					   "UPPER(luogo) LIKE UPPER(?) AND " +
+					   "UPPER(obiettivi) LIKE UPPER(?) AND " +
+					   "UPPER(modalita) LIKE UPPER(?) AND " +
+					   "ROUND((data_fine - data_inizio)/60) LIKE ?;";
 		
 		try (Connection connection = DBConnector.getDatasource().getConnection()) {
 			
-			int counter = 0;
-			
-			// Building query according to campoRicerca entries
-			for(Map.Entry<CampoRicercaTirocinio, String> entry : campoRicerca.entrySet()) {
-				if(counter != 0) query += " AND ";
-				switch(entry.getKey()) {
-					case durata: 
-						query += "ROUND((data_fine - data_inizio)/60) = ?";
-				        break;
-		
-					default:
-						query += "UPPER(" + entry.getKey() + ") LIKE UPPER(?)";
-				}
-				counter++;
-			}
 			
 			preparedStatement = connection.prepareStatement(query);
 			
-			// Preparing statement according to campoRicerca entries
-			counter = 1;
-			for(Map.Entry<CampoRicercaTirocinio, String> entry : campoRicerca.entrySet()) {
-				switch(entry.getKey()) {
-					case durata:
-						preparedStatement.setString(counter++, entry.getValue());
-						break;
-
-					default:
-						preparedStatement.setString(counter++, "%" + entry.getValue() + "%");
-				}
-			}
-
+			preparedStatement.setString(1, campoRicerca.get(CampoRicercaTirocinio.azienda) == null ? "%" 
+					: "%" + campoRicerca.get(CampoRicercaTirocinio.azienda) + "%");
+			preparedStatement.setString(2, campoRicerca.get(CampoRicercaTirocinio.luogo) == null ? "%" 
+					: "%" + campoRicerca.get(CampoRicercaTirocinio.luogo) + "%");
+			preparedStatement.setString(3, campoRicerca.get(CampoRicercaTirocinio.obiettivi) == null ? "%" 
+					: "%" + campoRicerca.get(CampoRicercaTirocinio.obiettivi) + "%");
+			preparedStatement.setString(4, campoRicerca.get(CampoRicercaTirocinio.modalita) == null ? "%" 
+					: "%" + campoRicerca.get(CampoRicercaTirocinio.modalita) + "%");
+			preparedStatement.setString(5, campoRicerca.get(CampoRicercaTirocinio.durata) == null ? "%" 
+					:       campoRicerca.get(CampoRicercaTirocinio.durata));
+			
+			System.out.println(preparedStatement);
+			
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 OffertaTirocinio offertaTirocinio = new OffertaTirocinio(

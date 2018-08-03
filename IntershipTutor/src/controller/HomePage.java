@@ -2,20 +2,26 @@ package controller;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import dao.impl.AziendaDAO;
 import dao.impl.OffertaTirocinioDAO;
+import data.model.Amministratore;
 import data.model.Azienda;
 import data.model.OffertaTirocinio;
+import data.model.Studente;
 import data.model.enumeration.CampoRicercaTirocinio;
 import framework.result.FailureResult;
 import framework.result.TemplateManagerException;
 import framework.result.TemplateResult;
+import framework.security.SecurityLayer;
 
 @SuppressWarnings("serial")
 public class HomePage extends IntershipTutorBaseController {
@@ -33,12 +39,46 @@ public class HomePage extends IntershipTutorBaseController {
         
         CampoRicercaTirocinio[] campiRicerca = CampoRicercaTirocinio.values();
         List<Azienda> aziende = new AziendaDAO().allAziendeAccordingToConvention(true);
-        List<OffertaTirocinio> offerte = new OffertaTirocinioDAO().allOfferteTirocinioAccordingToVisibilita(true);
+        List<OffertaTirocinio> offerte;
+        
+        Map<CampoRicercaTirocinio, String> campiDaCercare = new HashMap<>();
+        
+        for(CampoRicercaTirocinio campoRicerca : campiRicerca) {
+        	if(request.getParameter(campoRicerca.name()) != "" &&
+        	   request.getParameter(campoRicerca.name()) != null) {
+        		campiDaCercare.put(campoRicerca, (String) request.getParameter(campoRicerca.name()));
+        	}
+        }
+        
+        if(campiDaCercare.size() != 0) {
+        	// Tutte le offerte in base alla ricerca
+        	offerte = new OffertaTirocinioDAO().filtraPerCampo(campiDaCercare);
+        }
+        else {
+        	// Tutte le offerte senza filtraggio
+            offerte = new OffertaTirocinioDAO().allOfferteTirocinioAccordingToVisibilita(true);
+        }
+        
+        
+        Object utente = null;
+        
+        HttpSession s = SecurityLayer.checkSession(request);
+        
+        if(s != null) {
+        	if(s.getAttribute("utente") instanceof Studente)
+        		utente = (Studente) s.getAttribute("utente");
+        	else if(s.getAttribute("utente") instanceof Azienda)
+        		utente = (Azienda) s.getAttribute("utente");
+        	else
+        		utente = (Amministratore) s.getAttribute("utente");
+        }
         
         request.setAttribute("page_css", "homepage");
         request.setAttribute("campiRicerca", campiRicerca);
 		request.setAttribute("offerte", offerte);
 		request.setAttribute("aziende", aziende);
+		request.setAttribute("utente", utente);
+		
 		
 		res.activate("homepage.ftl.html", request, response);
     }

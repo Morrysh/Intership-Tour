@@ -21,7 +21,7 @@ public class AmministratoreDAO implements AmministratoreDAOInterface {
 
 	@Override
 	public Amministratore getAmministratoreByCF(String codiceFiscale) {
-		String query = "SELECT * FROM azienda JOIN utente ON utente = codice_fiscale WHERE utente = ?;";
+		String query = "SELECT * FROM amministratore JOIN utente ON utente = codice_fiscale WHERE utente = ?;";
         PreparedStatement preparedStatement;
         Amministratore amministratore = null;
 

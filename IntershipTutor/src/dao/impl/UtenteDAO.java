@@ -124,12 +124,10 @@ public class UtenteDAO implements UtenteDAOInterface {
 	}
 
 	@Override
-	public Object getLogged(String username, String password) {
-		String queryUtente = "SELECT tipo, codice_fiscale FROM utente WHERE username = ? AND password = ?;";
+	public Utente getLogged(String username, String password) {
+		String queryUtente = "SELECT * FROM utente WHERE username = ? AND password = ?;";
         PreparedStatement preparedStatement;
-        Object utente = null;
-        String codiceFiscale = "";
-        TipoUtente tipoUtente = null;
+        Utente utente = null;
 
         try (Connection connection = DBConnector.getDatasource().getConnection()) {
             preparedStatement = connection.prepareStatement(queryUtente);
@@ -138,21 +136,14 @@ public class UtenteDAO implements UtenteDAOInterface {
             preparedStatement.setString(2, password);
 
             ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                codiceFiscale = resultSet.getString(Utente.CODICE_FISCALE);
-                tipoUtente = TipoUtente.valueOf(resultSet.getString(Utente.TIPO_UTENTE));
-                
-                switch(tipoUtente) {
-	            	case studente:
-	            		utente = new StudenteDAO().getStudenteByCF(codiceFiscale);
-	            		break;
-	            	case azienda:
-	            		utente = new AziendaDAO().getAziendaByCF(codiceFiscale);
-	            		break;
-	            	case amministratore:
-	            		utente = new AmministratoreDAO().getAmministratoreByCF(codiceFiscale);
-	           }
-
+            	if (resultSet.next()) {
+            		utente = new Utente(
+                		resultSet.getString(Utente.CODICE_FISCALE),
+                        resultSet.getString(Utente.EMAIL),
+                        resultSet.getString(Utente.USERNAME),
+                        resultSet.getString(Utente.PASSWORD),
+                        resultSet.getString(Utente.TELEFONO),
+                        TipoUtente.valueOf(resultSet.getString(Utente.TIPO_UTENTE)));
             }
             
             connection.close();

@@ -83,7 +83,7 @@ h4{
 }
 
 .w3-input:focus{
-    border-color: #822627
+    border-color: #822627 !important
 }
 
 .w3-button:hover{
@@ -142,10 +142,44 @@ input:checked ~ #label-search:after {
 }
 /* End collapsible */
 
+/* Modals without js */
+#login-modal{
+	position: fixed
+}
+
+.overlay {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background: rgba(0,0,0,0.5);
+	transition: opacity 200ms;
+	visibility: hidden;
+	opacity: 0;
+}
+
+.overlay:target{
+   visibility: visible;
+   opacity: 1; 
+}
+
+.popup {
+	margin: auto;
+	margin-top: 8%;
+	max-width: 600px;
+	position: relative;
+}
+/* End modals without js */
+
 /* My classes */
 .info{
     font-size: 15px;
     margin: 13px 0
+}
+
+.pointer{
+	cursor: pointer;
 }
 /* End my classes */
 
@@ -164,8 +198,6 @@ a{
 #pagination .w3-button{
 	margin: 0
 }
-
-/* End Collapsible */
 
 /* Computer */
 @media (min-device-width: 500px){
@@ -203,5 +235,9 @@ a{
 
     .menu-content-1 ul li a{
         padding: 0 !important
+    }
+    
+    .overlay{
+    	padding: 0 8px
     }
 }
