@@ -15,6 +15,8 @@ public interface AziendaDAOInterface {
 	boolean setConvenzione(Azienda azienda, boolean convezione) throws SQLException;
 	
 	Azienda getAziendaByCF(String codiceFiscale) throws SQLException;
+	
+	Azienda getAziendaByIDTirocinio(int id) throws SQLException;
 
 	List<Azienda> allAziendeAccordingToConvention(boolean convenzione) throws SQLException;
 	

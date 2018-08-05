@@ -4,7 +4,6 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
-import data.model.Azienda;
 import data.model.OffertaTirocinio;
 import data.model.enumeration.CampoRicercaTirocinio;
 
@@ -18,15 +17,19 @@ public interface OffertaTirocinioDAOInterface {
 	
 	int setVisibilita(OffertaTirocinio offertaTirocinio, boolean visibilita) throws SQLException;
 	
+	int getCountAccordingToConvention(boolean visbile) throws SQLException;
+	
+	int getCountAccordingToRicerca(Map<CampoRicercaTirocinio, String> campoRicerca) throws SQLException;
+	
 	OffertaTirocinio getOffertaByID(int id) throws SQLException;
 	
-	Azienda getAziendaByIDTirocinio(int id) throws SQLException;
+	List<OffertaTirocinio> allOfferteInRange(int pagina) throws SQLException;
 	
 	List<OffertaTirocinio> allOfferteTirocinio() throws SQLException;
 	
 	List<OffertaTirocinio> allOfferteTirocinioAccordingToVisibilita(boolean visibile) throws SQLException;
 	
-	List<OffertaTirocinio> filtraPerCampo(Map<CampoRicercaTirocinio, String> campoRicerca) throws SQLException;
+	List<OffertaTirocinio> filtraPerCampo(Map<CampoRicercaTirocinio, String> campoRicerca, int paginaCorrente) throws SQLException;
 	
 	List<OffertaTirocinio> offerteTirocinioByIDAzienda(String utente) throws SQLException;
 }

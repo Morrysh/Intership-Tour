@@ -10,11 +10,8 @@ import java.util.Map;
 
 import dao.OffertaTirocinioDAOInterface;
 import data.database.DBConnector;
-import data.model.Azienda;
 import data.model.OffertaTirocinio;
-import data.model.Utente;
 import data.model.enumeration.CampoRicercaTirocinio;
-import data.model.enumeration.TipoUtente;
 
 public class OffertaTirocinioDAO implements OffertaTirocinioDAOInterface {
 
@@ -85,10 +82,74 @@ public class OffertaTirocinioDAO implements OffertaTirocinioDAOInterface {
 		
 		return status;
 	}
+	
+	@Override
+	public int getCountAccordingToConvention(boolean visibile) throws SQLException{
+		String insertQuery = "SELECT COUNT(*) AS count FROM offertatirocinio WHERE visibile = ?";
+		PreparedStatement preparedStatement;
+        int count = 0;
+        
+        try (Connection connection = DBConnector.getDatasource().getConnection()) {
+            preparedStatement = connection.prepareStatement(insertQuery);
+            preparedStatement.setInt(1, visibile ? 1 : 0);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            
+            if(resultSet.next()) {
+            	count = resultSet.getInt("count");
+            }
+
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+		
+		return count;
+	}
+	
+	@Override
+	public int getCountAccordingToRicerca(Map<CampoRicercaTirocinio, String> campoRicerca) throws SQLException {
+		String query = "SELECT COUNT(*) as count FROM offertatirocinio JOIN " +
+					   "azienda ON azienda = utente WHERE visibile = 1 AND " + 
+				       "UPPER(nome) LIKE UPPER(?) AND " +
+				       "UPPER(luogo) LIKE UPPER(?) AND " +
+				       "UPPER(obiettivi) LIKE UPPER(?) AND " +
+				       "UPPER(modalita) LIKE UPPER(?) AND " +
+				       "ROUND((data_fine - data_inizio)/60) LIKE ?;";
+		PreparedStatement preparedStatement;
+        int count = 0;
+        
+        try (Connection connection = DBConnector.getDatasource().getConnection()) {
+            preparedStatement = connection.prepareStatement(query);
+        	
+        	preparedStatement.setString(1, campoRicerca.get(CampoRicercaTirocinio.azienda) == null ? "%" 
+        			: "%" + campoRicerca.get(CampoRicercaTirocinio.azienda) + "%");
+        	preparedStatement.setString(2, campoRicerca.get(CampoRicercaTirocinio.luogo) == null ? "%" 
+        			: "%" + campoRicerca.get(CampoRicercaTirocinio.luogo) + "%");
+        	preparedStatement.setString(3, campoRicerca.get(CampoRicercaTirocinio.obiettivi) == null ? "%" 
+        			: "%" + campoRicerca.get(CampoRicercaTirocinio.obiettivi) + "%");
+        	preparedStatement.setString(4, campoRicerca.get(CampoRicercaTirocinio.modalita) == null ? "%" 
+        			: "%" + campoRicerca.get(CampoRicercaTirocinio.modalita) + "%");
+        	preparedStatement.setString(5, campoRicerca.get(CampoRicercaTirocinio.durata) == null ? "%" 
+        			:       campoRicerca.get(CampoRicercaTirocinio.durata));
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            
+            if(resultSet.next()) {
+            	count = resultSet.getInt("count");
+            }
+
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+		
+		return count;
+	}
 
 	@Override
 	public OffertaTirocinio getOffertaByID(int id){
-		OffertaTirocinio ot = null;
+		OffertaTirocinio offertaTirocinio = null;
 		PreparedStatement preparedStatement;
 		String query = "SELECT * FROM offertatirocinio WHERE id_tirocinio = ?;";
 		
@@ -98,7 +159,7 @@ public class OffertaTirocinioDAO implements OffertaTirocinioDAOInterface {
 
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-            	ot = new OffertaTirocinio(
+            	offertaTirocinio = new OffertaTirocinio(
                 		resultSet.getInt(OffertaTirocinio.ID_TIROCINIO),
                 		resultSet.getString(OffertaTirocinio.AZIENDA),
                 		resultSet.getString(OffertaTirocinio.TITOLO),
@@ -119,47 +180,46 @@ public class OffertaTirocinioDAO implements OffertaTirocinioDAOInterface {
             e.printStackTrace();
         }
 		
-		return ot;
+		return offertaTirocinio;
 	}
 	
 	@Override
-	public Azienda getAziendaByIDTirocinio(int id){
-		String query = "SELECT * FROM azienda JOIN utente ON azienda.utente = utente.codice_fiscale "
-				+ "WHERE utente = (SELECT azienda FROM offertatirocinio WHERE id_tirocinio = ?);";
-        PreparedStatement preparedStatement;
-        Azienda azienda = null;
-
-        try (Connection connection = DBConnector.getDatasource().getConnection()) {
+	public List<OffertaTirocinio> allOfferteInRange(int paginaCorrente) throws SQLException{
+		List<OffertaTirocinio> offerteTirocinio = new ArrayList<>();
+		PreparedStatement preparedStatement;
+		// Il limite di offerte visibili per pagina è 5
+		String query = "SELECT * FROM offertatirocinio WHERE visibile = 1 LIMIT ?, 5;";
+		
+		try (Connection connection = DBConnector.getDatasource().getConnection()) {
             preparedStatement = connection.prepareStatement(query);
-
-            preparedStatement.setInt(1, id);
+            // Se la pagina è la prima si parte da 5, se è la seconda da 10 etc.
+            preparedStatement.setInt(1, paginaCorrente * 5);
 
             ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                azienda = new Azienda(
-                		resultSet.getString(Utente.CODICE_FISCALE),
-                		resultSet.getString(Utente.EMAIL),
-                		resultSet.getString(Utente.USERNAME),
-                		resultSet.getString(Utente.PASSWORD),
-                		resultSet.getString(Utente.TELEFONO),
-                		TipoUtente.valueOf(resultSet.getString(Utente.TIPO_UTENTE)),
-                		resultSet.getString(Azienda.UTENTE),
-                		resultSet.getString(Azienda.NOME),
-                        resultSet.getString(Azienda.REGIONE),
-                        resultSet.getString(Azienda.INDIRIZZO_SEDE_LEGALE),
-                        resultSet.getString(Azienda.FORO_COMPETENTE),
-                        resultSet.getString(Azienda.NOME_RAPPRESENTANTE),
-                        resultSet.getString(Azienda.COGNOME_RAPPRESENTANTE),
-                        resultSet.getString(Azienda.NOME_RESPONSABILE),
-                        resultSet.getString(Azienda.COGNOME_RESPONSABILE),
-                        resultSet.getBoolean(Azienda.CONVENZIONATA));
+            while (resultSet.next()) {
+                OffertaTirocinio offertaTirocinio = new OffertaTirocinio(
+                		resultSet.getInt(OffertaTirocinio.ID_TIROCINIO),
+                		resultSet.getString(OffertaTirocinio.AZIENDA),
+                		resultSet.getString(OffertaTirocinio.TITOLO),
+		 				resultSet.getString(OffertaTirocinio.LUOGO),
+                        resultSet.getString(OffertaTirocinio.OBIETTIVI),
+                        resultSet.getString(OffertaTirocinio.MODALITA),
+                        resultSet.getString(OffertaTirocinio.RIMBORSO),
+                        resultSet.getDate(OffertaTirocinio.DATA_INIZIO),
+                        resultSet.getDate(OffertaTirocinio.DATA_FINE),
+                        resultSet.getTime(OffertaTirocinio.ORA_INIZIO),
+                        resultSet.getTime(OffertaTirocinio.ORA_FINE),
+                        resultSet.getInt(OffertaTirocinio.NUMERO_ORE),
+                        resultSet.getBoolean(OffertaTirocinio.VISIBILE));
+                offerteTirocinio.add(offertaTirocinio);
             }
 
             connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return azienda;
+		
+		return offerteTirocinio;
 	}
 	
 	@Override
@@ -236,8 +296,7 @@ public class OffertaTirocinioDAO implements OffertaTirocinioDAOInterface {
 	}
 
 	@Override
-	// IllegalArgumentException management, not here
-	public List<OffertaTirocinio> filtraPerCampo(Map<CampoRicercaTirocinio, String> campoRicerca) {
+	public List<OffertaTirocinio> filtraPerCampo(Map<CampoRicercaTirocinio, String> campoRicerca, int paginaCorrente) {
 		List<OffertaTirocinio> offerteTirocinio = new ArrayList<>();
 		PreparedStatement preparedStatement;
 		String query = "SELECT * FROM offertatirocinio JOIN azienda ON azienda = utente WHERE visibile = 1 AND " + 
@@ -245,7 +304,7 @@ public class OffertaTirocinioDAO implements OffertaTirocinioDAOInterface {
 					   "UPPER(luogo) LIKE UPPER(?) AND " +
 					   "UPPER(obiettivi) LIKE UPPER(?) AND " +
 					   "UPPER(modalita) LIKE UPPER(?) AND " +
-					   "ROUND((data_fine - data_inizio)/60) LIKE ?;";
+					   "ROUND((data_fine - data_inizio)/60) LIKE ? LIMIT ?, 5;";
 		
 		try (Connection connection = DBConnector.getDatasource().getConnection()) {
 			
@@ -262,8 +321,7 @@ public class OffertaTirocinioDAO implements OffertaTirocinioDAOInterface {
 					: "%" + campoRicerca.get(CampoRicercaTirocinio.modalita) + "%");
 			preparedStatement.setString(5, campoRicerca.get(CampoRicercaTirocinio.durata) == null ? "%" 
 					:       campoRicerca.get(CampoRicercaTirocinio.durata));
-			
-			System.out.println(preparedStatement);
+			preparedStatement.setInt(6, paginaCorrente * 5);
 			
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {

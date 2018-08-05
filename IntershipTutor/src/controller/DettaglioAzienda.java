@@ -40,7 +40,7 @@ public class DettaglioAzienda extends IntershipTutorBaseController {
         request.setAttribute("tirocini", offerte);
         request.setAttribute("voto", voto);
         request.setAttribute("page_css", "dettaglio-azienda");
-		
+        
 		res.activate("dettaglio-azienda.ftl.html", request, response);
     }
 

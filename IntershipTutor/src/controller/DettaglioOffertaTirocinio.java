@@ -7,6 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import dao.impl.AziendaDAO;
 import dao.impl.OffertaTirocinioDAO;
 import data.model.Azienda;
 import data.model.OffertaTirocinio;
@@ -30,11 +31,12 @@ public class DettaglioOffertaTirocinio extends IntershipTutorBaseController{
         
         int codiceOffertaTirocinio = Integer.parseInt(request.getParameter("offertaTirocinio"));
         OffertaTirocinio offertaTirocinio = new OffertaTirocinioDAO().getOffertaByID(codiceOffertaTirocinio);
-        Azienda azienda = new OffertaTirocinioDAO().getAziendaByIDTirocinio(codiceOffertaTirocinio);
+        Azienda azienda = new AziendaDAO().getAziendaByIDTirocinio(codiceOffertaTirocinio);
         
         request.setAttribute("offertaTirocinio", offertaTirocinio);
         request.setAttribute("azienda", azienda);
         request.setAttribute("page_css", "dettaglio-offerta-tirocinio");
+        
 		
 		res.activate("dettaglio-offerta-tirocinio.ftl.html", request, response);
     }

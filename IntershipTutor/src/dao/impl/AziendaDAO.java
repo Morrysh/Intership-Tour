@@ -95,6 +95,46 @@ public class AziendaDAO implements AziendaDAOInterface {
         }
         return azienda;
 	}
+	
+	@Override
+	public Azienda getAziendaByIDTirocinio(int id){
+		String query = "SELECT * FROM azienda JOIN utente ON azienda.utente = utente.codice_fiscale "
+					 + "WHERE utente = (SELECT azienda FROM offertatirocinio WHERE id_tirocinio = ?);";
+        PreparedStatement preparedStatement;
+        Azienda azienda = null;
+
+        try (Connection connection = DBConnector.getDatasource().getConnection()) {
+            preparedStatement = connection.prepareStatement(query);
+
+            preparedStatement.setInt(1, id);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                azienda = new Azienda(
+                		resultSet.getString(Utente.CODICE_FISCALE),
+                		resultSet.getString(Utente.EMAIL),
+                		resultSet.getString(Utente.USERNAME),
+                		resultSet.getString(Utente.PASSWORD),
+                		resultSet.getString(Utente.TELEFONO),
+                		TipoUtente.valueOf(resultSet.getString(Utente.TIPO_UTENTE)),
+                		resultSet.getString(Azienda.UTENTE),
+                		resultSet.getString(Azienda.NOME),
+                        resultSet.getString(Azienda.REGIONE),
+                        resultSet.getString(Azienda.INDIRIZZO_SEDE_LEGALE),
+                        resultSet.getString(Azienda.FORO_COMPETENTE),
+                        resultSet.getString(Azienda.NOME_RAPPRESENTANTE),
+                        resultSet.getString(Azienda.COGNOME_RAPPRESENTANTE),
+                        resultSet.getString(Azienda.NOME_RESPONSABILE),
+                        resultSet.getString(Azienda.COGNOME_RESPONSABILE),
+                        resultSet.getBoolean(Azienda.CONVENZIONATA));
+            }
+
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return azienda;
+	}
 
 	@Override
 	public List<Azienda> allAziende() {
