@@ -64,12 +64,12 @@ public class GestoreOffertaTirocinio extends IntershipTutorBaseController{
 	}
 	
 	// Aggiorna offerta tirocinio
-	private void action_aggiorna(HttpServletRequest request, HttpServletResponse response) {
+	private void action_aggiorna(HttpServletRequest request, HttpServletResponse response, int codiceOffertaTirocinio) {
 		
 	}
 	
 	// Rimuovi offerta tirocinio
-	private void action_rimuovi(HttpServletRequest request, HttpServletResponse response) {
+	private void action_rimuovi(HttpServletRequest request, HttpServletResponse response, int codiceOffertaTirocinio) {
 		
 	}
 	
@@ -113,22 +113,19 @@ public class GestoreOffertaTirocinio extends IntershipTutorBaseController{
 			if(request.getParameter("aggiungi") != null) {
 				action_aggiungi(request, response);
 			}
-			else if(request.getParameter("aggiorna") != null) {
-				action_aggiorna(request, response);
-			}
-			else if(request.getParameter("rimuovi") != null) {
-				action_rimuovi(request, response);
-			}
 			else if (request.getParameter("offertaTirocinio") != null) {
+				int codiceOffertaTirocinio = SecurityLayer.checkNumeric(request.getParameter("offertaTirocinio"));
 				if(request.getParameter("iscriviti") != null) {
-	    			int codiceOffertaTirocinio = SecurityLayer.checkNumeric(request.getParameter("offertaTirocinio"));
 	    			action_iscriviti(request, response, codiceOffertaTirocinio);
 	    		}
+				else if(request.getParameter("rimuovi") != null) {
+					action_rimuovi(request, response, codiceOffertaTirocinio);
+				}
+				else if(request.getParameter("aggiorna") != null) {
+					action_aggiorna(request, response, codiceOffertaTirocinio);
+				}
 				else {
-					if(request.getParameter("offertaTirocinio") != null) {
-		    			int codiceOffertaTirocinio = SecurityLayer.checkNumeric(request.getParameter("offertaTirocinio"));
-		    			action_default(request, response, codiceOffertaTirocinio);
-					}
+		    		action_default(request, response, codiceOffertaTirocinio);
 				}
 			}
 			else {

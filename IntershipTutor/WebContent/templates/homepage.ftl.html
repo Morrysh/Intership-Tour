@@ -126,7 +126,7 @@
 	                          <form action="." method="get">
 		                          <#list campiRicerca as campoRicerca>
 		                              <label class="field-filter">${campoRicerca?capitalize}</label>
-		                              <input name="${campoRicerca}" class="w3-input" />
+		                              <input name="${campoRicerca}" class="w3-input" autocomplete="off" />
 		                          </#list>
 		                          <button type="submit" class="w3-button w3-right w3-border w3-round">Cerca</button>
 	                          </form>
@@ -395,7 +395,7 @@
 		         	  <input id="oraFine" class="w3-input w3-border-bottom w3-margin-bottom" type="time" placeholder="Inserisci l'orario di fine" name="ora_fine" />
 		         	  <label for="numeroOre"><b>Numero ore</b></label>
 		         	  <input id="numeroOre" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="5" type="number" placeholder="Inserisci il numero di ore previste per il tirocinio" name="numero_ore" autocomplete="off" required />
-		          	  <button class="w3-button w3-block w3-section w3-padding univaq-color-background" type="submit" name="aggiungi" value="aggiungi">Modifica</button>
+		          	  <button class="w3-button w3-block w3-section w3-padding univaq-color-background" type="submit" name="aggiungi" value="aggiungi">Aggiungi</button>
 			        </div>
 			      </form>
 		      </div>
