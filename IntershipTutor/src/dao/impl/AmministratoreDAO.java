@@ -10,17 +10,18 @@ import data.database.DBConnector;
 import data.model.Amministratore;
 import data.model.Utente;
 import data.model.enumeration.TipoUtente;
+import framework.data.DataLayerException;
 
 public class AmministratoreDAO implements AmministratoreDAOInterface {
 
 	@Override
-	public Amministratore getAmministratoreByUtente(Utente utente) {
+	public Amministratore getAmministratoreByUtente(Utente utente) throws DataLayerException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Amministratore getAmministratoreByCF(String codiceFiscale) {
+	public Amministratore getAmministratoreByCF(String codiceFiscale) throws DataLayerException{
 		String query = "SELECT * FROM amministratore JOIN utente ON utente = codice_fiscale WHERE utente = ?;";
         PreparedStatement preparedStatement;
         Amministratore amministratore = null;
@@ -46,7 +47,7 @@ public class AmministratoreDAO implements AmministratoreDAOInterface {
 
             connection.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+        	throw new DataLayerException("Unable to get admin by CF", e);
         }
         return amministratore;
 	}

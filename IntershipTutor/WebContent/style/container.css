@@ -35,6 +35,13 @@ h4{
 	color: #822627;
 }
 
+/* Error page */
+#back-home{
+	text-decoration: underline;
+	color: #0000ee;
+}
+/* End error page */
+
 /* Useful in different parts */
 .no-padding{
     padding: 0 !important;
@@ -159,6 +166,7 @@ input:checked ~ #label-search:after {
 /* End collapsible */
 
 /* Modals without js */
+#pareri-azienda-modal,
 #update-student-modal,
 #login-modal{
 	position: fixed;
@@ -166,6 +174,7 @@ input:checked ~ #label-search:after {
 	overflow-y: scroll;
 }
 
+#pareri-azienda-modal::-webkit-scrollbar,
 #update-student-modal::-webkit-scrollbar,
 #login-modal::-webkit-scrollbar { 
     display: none; 

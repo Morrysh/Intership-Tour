@@ -1,20 +1,21 @@
 package dao;
 
-import java.sql.SQLException;
-import java.util.List;
+
+import java.util.Map;
 
 import data.model.Azienda;
 import data.model.ParereAzienda;
+import framework.data.DataLayerException;
 
 public interface ParereAziendaDAOInterface {
 	
-	int insert(ParereAzienda parereAzienda) throws SQLException;
+	int insert(ParereAzienda parereAzienda) throws DataLayerException;
 	
-	int update(ParereAzienda parereAzienda) throws SQLException;
+	int update(ParereAzienda parereAzienda) throws DataLayerException;
 	
-	int delete(ParereAzienda parereAzienda) throws SQLException;
+	int delete(ParereAzienda parereAzienda) throws DataLayerException;
 
-	List<String> getPareriAzienda(Azienda azienda) throws SQLException;
+	Map<String, String> getPareriAzienda(Azienda azienda) throws DataLayerException;
 	
-	int getMediaVoto(Azienda azienda) throws SQLException;
+	int getMediaVoto(Azienda azienda) throws DataLayerException;
 }

@@ -10,7 +10,9 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link href="style/w3.css" rel="stylesheet">
-    <link href="style/${page_css}.css" rel="stylesheet">
+    <#if page_css??>
+    	<link href="style/${page_css}.css" rel="stylesheet">
+    </#if>
     <link href="style/container.css" rel="stylesheet">
     <script src="js/index.js"></script>
     
@@ -41,8 +43,10 @@
 	<!-- NAVBAR MOBILE -->
 	<div class="w3-bar univaq-color-background w3-large  w3-hide-medium">
 	    <div class="collapsible-menu-1 w3-padding-large w3-hide-large">
+	    	<a href="../IntershipTutor">
 	            <i class="fa fa-home w3-margin-right univaq-color-background"></i>
 	            IntershipTutor
+	        </a>
 	            <input type="checkbox" id="menu-1">
 	            <label for="menu-1"><i class="fa fa-bars w3-right univaq-color-background"></i></label>
 	        <div class="menu-content-1">
@@ -80,13 +84,13 @@
 	      	<a href="#" class="w3-button w3-xlarge w3-display-topright">&times;</a>
 	        <h2>Effettua il login</h2>
 	      </div>
-	      <form class="w3-container" action="./login" method="post">
+	      <form class="w3-container" action="login" method="post">
 	        <div class="w3-section">
 	          <label><b>Username</b></label>
 	          <input class="w3-input w3-border-bottom w3-margin-bottom" type="text" placeholder="Inserisci il tuo username" name="username" required>
 	          <label><b>Password</b></label>
 	          <input class="w3-input w3-border-bottom w3-margin-bottom" type="password" placeholder="Inserisci la tua password" name="password" required>
-	          <button class="w3-button w3-block w3-section w3-padding univaq-color-background" type="submit">Login</button>
+	          <button class="w3-button w3-block w3-section w3-padding univaq-color-background" type="submit" name="login" value="login">Login</button>
 	        </div>
 	      </form>
 	      
@@ -94,32 +98,6 @@
 	        <span class="w3-left w3-padding-large pointer">Registrati</span>
 	        <span class="w3-right w3-padding-large pointer">Password dimenticata?</span>
 	      </div>
-	      </div>
-      </div>
-      
-      <!-- Update student profile modal -->
-      <div id="update-student-modal" class="overlay">
-	    <div class="w3-card w3-white w3-round popup w3-padding">
-	
-	      <div class="w3-center"><br>
-	      	<a href="#" class="w3-button w3-xlarge w3-display-topright">&times;</a>
-	        <h2>Modifica informazioni</h2>
-	      </div>
-		      <form class="w3-container" action="./studente" method="post">
-		        <div class="w3-section">
-		          <label for="nome"><b>Nome</b></label>
-		          <input class="w3-input w3-border-bottom w3-margin-bottom" type="text" value="${utente.nome}" placeholder="Inserisci il tuo nome" name="nome" required>
-		          <label for="cognome"><b>Cognome</b></label>
-		          <input class="w3-input w3-border-bottom w3-margin-bottom" type="text" value="${utente.cognome}" placeholder="Inserisci il tuo cognome" name="cognome" required>
-		          <label for="password"><b>Email</b></label>
-	         	  <input class="w3-input w3-border-bottom w3-margin-bottom" type="text" value="${utente.email}" placeholder="Inserisci la tua email" name="email" required>
-		          <label for="telefono"><b>Telefono</b></label>
-	          	  <input class="w3-input w3-border-bottom w3-margin-bottom" type="text" value="${utente.telefono}" placeholder="Inserisci il tuo telefono" name="telefono" required>
-		          <label for="password"><b>Password</b></label>
-	          	  <input class="w3-input w3-border-bottom w3-margin-bottom" type="password" value="${utente.password}" placeholder="Inserisci la password" name="password" required>
-	          	  <button class="w3-button w3-block w3-section w3-padding univaq-color-background" type="submit">Modifica</button>
-		        </div>
-		      </form>
 	      </div>
       </div>
     

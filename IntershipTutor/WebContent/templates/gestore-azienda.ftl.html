@@ -1,0 +1,204 @@
+<!-- Page Container -->
+<div id="dettaglio-azienda-container" class="w3-content">
+
+  <!-- The Grid -->
+  <div class="w3-row-padding">
+  
+    <!-- Left Column -->
+    <div class="w3-quarter">
+    
+      <div class="w3-card w3-round">
+        <div class="w3-padding">
+          <h2 id="nome-azienda">
+          	${azienda.nome}
+          </h2>
+          <hr />
+          <p class="info">
+			<i class="fas fa-user fa-fw w3-margin-right"></i>
+			${azienda.nomeResponsabile} ${azienda.cognomeResponsabile}
+		  </p>
+          <p class="info">
+			<i class="far fa-user fa-fw w3-margin-right"></i>
+			${azienda.nomeRappresentante} ${azienda.cognomeRappresentante}
+		  </p>
+          <p class="info">
+          	<i class="fas fa-map-marked-alt fa-fw w3-margin-right"></i>
+          	${azienda.regione}
+          </p>
+          <p class="info">
+          	<i class="fas fa-map-marker-alt fa-fw w3-margin-right"></i>
+          	${azienda.indirizzoSedeLegale}
+          </p>
+          <p class="info">
+          	<i class="fa fa-envelope fa-fw w3-margin-right"></i>
+          	${azienda.email}
+          </p>
+          <p class="info">
+          	<i class="fa fa-phone fa-fw w3-margin-right"></i>
+          	${azienda.telefono}
+          </p>
+          <hr />
+          <p class="w3-large"><b><i class="fa fa-chart-bar fa-fw w3-margin-right"></i>Valutazione</b></p>
+          <p class ="w3-text-grey">Voto</p>
+          <div class=" w3-round-xlarge w3-small w3-light-grey">
+            <div class="w3-container w3-center w3-round-xlarge univaq-color-background" style="width:${voto}%">${voto/20}</div>
+          </div>
+         <#if pareriAzienda?size gt 0>
+         	<hr />
+         	<a href="#pareri-azienda-modal">
+	         	<p class="info pointer">
+		         	<i class="fas fa-clipboard-list fa-fw w3-margin-right w3-large"></i>
+		          	Pareri
+		         </p>
+	         </a>
+         <#else>
+         	<br />
+         </#if>
+        </div>
+      </div>
+
+    <!-- End Left Column -->
+    </div>
+
+    <!-- Right Column -->
+    <div class="w3-threequarter">
+    
+      <div class="w3-padding w3-card w3-round w3-margin-bottom">
+        <h2 id="tirocini-disponibili" class="w3-text-grey w3-padding">
+        	<i class="fa fa-suitcase fa-fw w3-margin-right w3-xlarge"></i>
+        	Tirocini proposti
+        </h2>
+        <#list tirocini as tirocinio>
+	        <div class="w3-container azienda">
+	        <hr>
+	          <h5 class="bold">
+		          <a href="offertaTirocinio?offertaTirocinio=${tirocinio.idTirocinio}">Tirocinio ${tirocinio.titolo}</a>
+	          </h5>
+	          <h6 class="">
+	          	<i class="fa fa-calendar fa-fw w3-margin-right"></i>
+	          	Jan 2015 - <span class="w3-tag univaq-color-background w3-round">Current</span>
+	          </h6>
+	          <p class="descrizione-tirocinio">${tirocinio.modalita}</p>
+	        </div>
+        </#list>
+        
+      </div>
+      
+      <!-- Pagination -->
+	       <div class="w3-center">
+	           <div id="pagination" class="w3-bar w3-border">
+	           		
+	           		<!-- back button only present if at least 2 pages are present -->
+	           		<#if (paginaCorrente + 1) gt 1>
+	           			<a href="?pagina=${(paginaCorrente - 1) + queryString}" class="padding-edge w3-a w3-hover-univaq-color-background">
+	           				&laquo;
+	           			</a>
+	           		</#if>
+	           		
+	           		<!-- Limit view if number of pages is greater than 5 -->
+	           		<#if numeroPagine gt 5>	           			
+	           				<a href="?pagina=0${queryString}" 
+	           				   class="w3-button 
+	           				   <#if (paginaCorrente + 1) == 1> 
+	           				   		univaq-color-background 
+	           				   <#else>
+	           				   		w3-hover-univaq-color-background
+	           				   </#if>">
+	           					1
+	           				</a>
+	           				<#if (paginaCorrente + 1) gt 3>...</#if>
+	           				
+	           				<#if paginaCorrente - 1 gt 0>
+	           					<a href="?pagina=${paginaCorrente - 1 + queryString}" class="w3-button w3-hover-univaq-color-background">
+									${paginaCorrente}
+								</a>
+	           				</#if>
+	           				
+	           				<#if (paginaCorrente) != 0 && paginaCorrente != numeroPagine - 1>
+	           					<a href="?pagina=${paginaCorrente + queryString}" class="w3-button univaq-color-background">
+			           				${paginaCorrente + 1}
+			           			</a>
+	           				</#if>
+	           				
+	           				<#if paginaCorrente + 1 lt numeroPagine - 1>
+	           					<a href="?pagina=${paginaCorrente + 1 + queryString}" class="w3-button w3-hover-univaq-color-background">
+									${paginaCorrente + 2}
+								</a>
+	           				</#if>
+	           				
+	           				<#if numeroPagine gt (paginaCorrente + 3)>...</#if>
+	           				
+	           				<a href="?pagina=${(numeroPagine - 1) + queryString}" 
+	           				   class="w3-button 
+	           				   <#if (paginaCorrente + 1) == numeroPagine > 
+	           				   		univaq-color-background 
+	           				   <#else>
+	           				   		w3-hover-univaq-color-background
+	           				   </#if>">
+	           					${numeroPagine}
+	           				</a>
+	           			
+	           		<!-- Show all pages number if number of pages is less than 5 -->
+	           		<#else>
+	           	
+	           			<#if numeroPagine gt 0>
+	           			<#assign pagine = (numeroPagine - 1)>
+	           			<#else>
+	           			<#assign pagine = 0>
+	           			</#if>
+						<#list 0..pagine as pagina>
+							<#if paginaCorrente == pagina>
+								<a href="?pagina=${pagina + queryString}"
+							       class="w3-button univaq-color-background">
+									${pagina + 1}
+								</a>
+							<#else>
+								<a href="?pagina=${pagina + queryString}"
+							       class="w3-button w3-hover-univaq-color-background">
+									${pagina + 1}
+								</a>
+							</#if>
+						</#list>
+					
+					</#if>
+					
+					<!-- forward button only present if current page is less then number of pages -->
+					<#if (paginaCorrente + 1) lt numeroPagine>
+	           			<a href="?pagina=${(paginaCorrente + 1) + queryString}" class="padding-edge w3-a w3-hover-univaq-color-background">
+	           				&raquo;
+	           			</a>
+	           		</#if>
+	           		
+	           </div>
+	       </div>
+	       <!-- End pagination -->
+
+    <!-- End Right Column -->
+    </div>
+    
+  <!-- End Grid -->
+  </div>
+  
+  <!-- End Page Container -->
+</div>
+
+
+<!-- Modals -->
+    
+	<!-- Read reviews modal -->
+    <div id="pareri-azienda-modal" class="overlay">
+	    <div class="w3-card w3-white w3-round popup w3-padding">
+	
+	      <div class="w3-center"><br>
+	      	<a href="#" class="w3-button w3-xlarge w3-display-topright">&times;</a>
+	        <h2>Pareri su ${azienda.nome}</h2>
+	      </div>
+	        <div class="w3-section">
+				<#list pareriAzienda?keys as studente>
+					<hr />
+					<p class="no-margin"><b>${studente}</b></p>
+					<p>${pareriAzienda[studente]}</p>
+				</#list>
+	        </div>
+	      </div>
+      </div>

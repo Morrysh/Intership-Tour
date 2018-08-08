@@ -41,12 +41,16 @@
 		<servlet-class>controller.HomePage</servlet-class>
 	</servlet>
 	<servlet>
-		<servlet-name>DettaglioAzienda</servlet-name>
-		<servlet-class>controller.DettaglioAzienda</servlet-class>
+		<servlet-name>GestoreAzienda</servlet-name>
+		<servlet-class>controller.GestoreAzienda</servlet-class>
 	</servlet>
 	<servlet>
-		<servlet-name>DettaglioOffertaTirocinio</servlet-name>
-		<servlet-class>controller.DettaglioOffertaTirocinio</servlet-class>
+		<servlet-name>GestoreOffertaTirocinio</servlet-name>
+		<servlet-class>controller.GestoreOffertaTirocinio</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>GestoreStudente</servlet-name>
+		<servlet-class>controller.GestoreStudente</servlet-class>
 	</servlet>
 	<servlet>
 		<servlet-name>Login</servlet-name>
@@ -61,12 +65,16 @@
 		<url-pattern></url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
-		<servlet-name>DettaglioAzienda</servlet-name>
+		<servlet-name>GestoreAzienda</servlet-name>
 		<url-pattern>/azienda</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
-		<servlet-name>DettaglioOffertaTirocinio</servlet-name>
+		<servlet-name>GestoreOffertaTirocinio</servlet-name>
 		<url-pattern>/offertaTirocinio</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>GestoreStudente</servlet-name>
+		<url-pattern>/studente</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>Login</servlet-name>

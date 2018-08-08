@@ -47,11 +47,11 @@ public class Studente extends Utente {
 	}
 
 	public Studente(String codiceFiscale, String email, String username, String password,
-			String telefono, TipoUtente tipoUtente,String utente, String nome, 
+			String telefono, TipoUtente tipoUtente, String utente, String nome, 
 			String cognome, Date dataNascita, String luogoNascita,
 			String provinciaNascita, String residenza, String provinciaResidenza, String tipoLaurea,
 			String corsoLaurea, boolean handicap) {
-		super(codiceFiscale, email, username, password, telefono, tipoUtente);
+		super(codiceFiscale, username, email, password, telefono, tipoUtente);
 		this.utente = utente;
 		this.nome = nome;
 		this.cognome = cognome;
@@ -153,6 +153,11 @@ public class Studente extends Utente {
 		this.handicap = handicap;
 	}
 	
-	
+	@Override
+	public String toString() {
+		return this.utente + " " + this.nome + " " + this.cognome + " " + this.dataNascita + " " + 
+			   this.luogoNascita + " " + this.provinciaNascita + " " + this.residenza + " " + 
+			   this.provinciaResidenza + " " + this.tipoLaurea + " " + this.corsoLaurea;
+	}
 
 }

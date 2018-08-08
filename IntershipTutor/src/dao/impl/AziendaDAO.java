@@ -12,14 +12,25 @@ import data.database.DBConnector;
 import data.model.Azienda;
 import data.model.Utente;
 import data.model.enumeration.TipoUtente;
+import framework.data.DataLayerException;
 
 public class AziendaDAO implements AziendaDAOInterface {
 
 	@Override
-	public int insert(Azienda azienda) {
+	public int insert(Azienda azienda) throws DataLayerException {
 		String insertQuery = "INSERT INTO azienda VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 		PreparedStatement preparedStatement;
         int status = 0;
+        
+        Utente utente = new Utente(
+        		azienda.getCodiceFiscale(),
+        		azienda.getUsername(),
+        		azienda.getEmail(),
+        		azienda.getPassword(),
+        		azienda.getTelefono(),
+        		azienda.getTipoUtente());
+        
+        new UtenteDAO().insert(utente);
         
         try (Connection connectionection = DBConnector.getDatasource().getConnection()) {
             preparedStatement = connectionection.prepareStatement(insertQuery);
@@ -33,32 +44,32 @@ public class AziendaDAO implements AziendaDAOInterface {
             preparedStatement.setString(7, azienda.getCognomeRappresentante());
             preparedStatement.setString(8, azienda.getNomeResponsabile());
             preparedStatement.setString(9, azienda.getCognomeResponsabile());
-            preparedStatement.setBoolean(10, azienda.getConvenzionata());
+            preparedStatement.setBoolean(10, azienda.isConvenzionata());
 
             status = preparedStatement.executeUpdate();
 
             connectionection.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+        	throw new DataLayerException("Unable to insert company", e);
         }
 		
 		return status;
 	}
 
 	@Override
-	public int update(Azienda azienda) {
+	public int update(Azienda azienda) throws DataLayerException {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public boolean setConvenzione(Azienda azienda, boolean convezione) {
+	public boolean setConvenzione(Azienda azienda, boolean convezione) throws DataLayerException  {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public Azienda getAziendaByCF(String codiceFiscale) {
+	public Azienda getAziendaByCF(String codiceFiscale) throws DataLayerException {
 		String query = "SELECT * FROM azienda JOIN utente ON utente = codice_fiscale WHERE utente = ?;";
         PreparedStatement preparedStatement;
         Azienda azienda = null;
@@ -91,13 +102,13 @@ public class AziendaDAO implements AziendaDAOInterface {
 
             connection.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+        	throw new DataLayerException("Unable to get company by CF", e);
         }
         return azienda;
 	}
 	
 	@Override
-	public Azienda getAziendaByIDTirocinio(int id){
+	public Azienda getAziendaByIDTirocinio(int id) throws DataLayerException {
 		String query = "SELECT * FROM azienda JOIN utente ON azienda.utente = utente.codice_fiscale "
 					 + "WHERE utente = (SELECT azienda FROM offertatirocinio WHERE id_tirocinio = ?);";
         PreparedStatement preparedStatement;
@@ -131,19 +142,19 @@ public class AziendaDAO implements AziendaDAOInterface {
 
             connection.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+        	throw new DataLayerException("Unable to get company by intership ID", e);
         }
         return azienda;
 	}
 
 	@Override
-	public List<Azienda> allAziende() {
+	public List<Azienda> allAziende() throws DataLayerException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<Azienda> allAziendeAccordingToConvention(boolean convenzione) {
+	public List<Azienda> allAziendeAccordingToConvention(boolean convenzione) throws DataLayerException {
 		List<Azienda> aziende = new ArrayList<>();
 		PreparedStatement preparedStatement;
 		String query = "SELECT * FROM azienda JOIN utente ON utente = codice_fiscale WHERE convenzionata = ?";
@@ -177,7 +188,7 @@ public class AziendaDAO implements AziendaDAOInterface {
 
             connection.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+        	throw new DataLayerException("Unable to get all companies according to convention", e);
         }
 		
 		return aziende;

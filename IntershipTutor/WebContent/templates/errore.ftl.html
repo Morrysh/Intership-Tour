@@ -3,12 +3,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <title>Errore</title>
-        <link rel="stylesheet" href="style/default.css" type="text/css"/>
+        <link rel="stylesheet" href="style/errore.css" type="text/css"/>
     </head>
     <body>
-        <div class="body">
-        <div><a href=".">Ritorna alla home</a></div>
-        <h1>Template Error</h1>
+        <div>
+        <h1>Errore</h1>
+        <p>Il sistema ha avuto un problema con la gestione delle richiesta: </p>
+        <p><b>${error!"Unknown error"}</b></p>
+        <div><a id="back-home" href=".">Ritorna alla homepage</a></div>
         </div>
     </body>
 </html>

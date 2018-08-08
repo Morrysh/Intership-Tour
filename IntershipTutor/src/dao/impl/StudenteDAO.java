@@ -10,14 +10,25 @@ import data.database.DBConnector;
 import data.model.Studente;
 import data.model.Utente;
 import data.model.enumeration.TipoUtente;
+import framework.data.DataLayerException;
 
 public class StudenteDAO implements StudenteDAOInterface {
 
 	@Override
-	public int insert(Studente studente) {
+	public int insert(Studente studente) throws DataLayerException {
 		String insertQuery = "INSERT INTO studente VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 		PreparedStatement preparedStatement;
         int status = 0;
+        
+        Utente utente = new Utente(
+        		studente.getCodiceFiscale(),
+        		studente.getUsername(),
+        		studente.getEmail(),
+        		studente.getPassword(),
+        		studente.getTelefono(),
+        		studente.getTipoUtente());
+        
+        new UtenteDAO().insert(utente);
         
         try (Connection connection = DBConnector.getDatasource().getConnection()) {
             preparedStatement = connection.prepareStatement(insertQuery);
@@ -38,26 +49,63 @@ public class StudenteDAO implements StudenteDAOInterface {
 
             connection.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+        	throw new DataLayerException("Unable to insert student", e);
         }
 		
 		return status;
 	}
 
 	@Override
-	public int update(Studente studente) {
+	public int update(Studente studente) throws DataLayerException {
+		String insertQuery = "UPDATE studente SET nome = ?, cognome = ?, data_nascita = ?, luogo_nascita = ?, " +
+				 			 "provincia_nascita = ?, residenza = ?, provincia_residenza = ?, " + 
+				             "tipo_laurea = ?, corso_laurea = ? WHERE utente = ?";
+		PreparedStatement preparedStatement;
+		int status = 0;
+		
+		Utente utente = new Utente(
+        		studente.getCodiceFiscale(),
+        		studente.getUsername(),
+        		studente.getEmail(),
+        		studente.getPassword(),
+        		studente.getTelefono(),
+        		studente.getTipoUtente());
+        
+        new UtenteDAO().update(utente);
+		
+		try (Connection connection = DBConnector.getDatasource().getConnection()) {
+			preparedStatement = connection.prepareStatement(insertQuery);
+			
+			preparedStatement.setString(1, studente.getNome());
+			preparedStatement.setString(2, studente.getCognome());
+			preparedStatement.setDate(3, studente.getDataNascita());
+			preparedStatement.setString(4, studente.getLuogoNascita());
+			preparedStatement.setString(5, studente.getProvinciaNascita());
+			preparedStatement.setString(6, studente.getResidenza());
+			preparedStatement.setString(7, studente.getProvinciaResidenza());
+			preparedStatement.setString(8, studente.getTipoLaurea());
+			preparedStatement.setString(9, studente.getCorsoLaurea());
+			preparedStatement.setString(10, studente.getCodiceFiscale());
+			
+			status = preparedStatement.executeUpdate();
+			
+			connection.close();
+		
+		} catch (SQLException e) {
+			throw new DataLayerException("Unable to update student", e);
+		}
+		
+		return status;
+	}
+
+	@Override
+	public int delete(Studente studente) throws DataLayerException {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public int delete(Studente studente) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public Studente getStudenteByCF(String codiceFiscale) {
+	public Studente getStudenteByCF(String codiceFiscale) throws DataLayerException {
 		String query = "SELECT * FROM studente JOIN utente ON utente = codice_fiscale WHERE utente = ?;";
         PreparedStatement preparedStatement;
         Studente studente = null;
@@ -91,7 +139,7 @@ public class StudenteDAO implements StudenteDAOInterface {
 
             connection.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+        	throw new DataLayerException("Unable to get student by CF", e);
         }
         return studente;
 	}

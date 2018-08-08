@@ -22,7 +22,7 @@ public class Amministratore extends Utente {
 	
 	public Amministratore(String codiceFiscale, String email, String username, String password, 
 			String telefono, TipoUtente tipoUtente, String utente, String nome, String cognome) {
-		super(codiceFiscale, email, username, password, telefono, tipoUtente);
+		super(codiceFiscale, username, email, password, telefono, tipoUtente);
 		this.utente = utente;
 		this.nome = nome;
 		this.cognome = cognome;

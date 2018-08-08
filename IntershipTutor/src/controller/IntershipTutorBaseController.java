@@ -19,7 +19,7 @@ public abstract class IntershipTutorBaseController extends HttpServlet {
 	protected abstract void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException;
 
     private void processBaseRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException {
-    	Object utente = null;
+    	Object utente;
         
     	// Controlliamo se esiste una sessione, in caso affermativo
     	// aggiungiamo l'informazione nella request
@@ -32,9 +32,9 @@ public abstract class IntershipTutorBaseController extends HttpServlet {
         		utente = (Azienda) session.getAttribute("utente");
         	else
         		utente = (Amministratore) session.getAttribute("utente");
+        	
+        	request.setAttribute("utente", utente);
         }
-        
-        request.setAttribute("utente", utente);
     	
     	processRequest(request, response);
     }

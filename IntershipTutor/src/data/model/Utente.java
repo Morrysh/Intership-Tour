@@ -6,33 +6,33 @@ public class Utente {
 	
 	// DB fields
 	public static final String CODICE_FISCALE = "codice_fiscale";
-	public static final String EMAIL = "email";
 	public static final String USERNAME = "username";
+	public static final String EMAIL = "email";
 	public static final String PASSWORD = "password";
 	public static final String TELEFONO = "telefono";
 	public static final String TIPO_UTENTE = "tipo";
 	
 	private String codiceFiscale;
-	private String email;
 	private String username;
+	private String email;
 	private String password;
 	private String telefono; 
 	private TipoUtente tipoUtente;
 	
 	public Utente() {
 		this.codiceFiscale = "";
-		this.email = "";
 		this.username = "";
+		this.email = "";
 		this.password = "";
 		this.telefono = "";
 		this.tipoUtente = null;
 	}
 	
-	public Utente(String codiceFiscale, String email, String username, String password,
+	public Utente(String codiceFiscale, String username, String email, String password,
 			String telefono, TipoUtente tipoUtente) {
 		this.codiceFiscale = codiceFiscale;
-		this.email = email;
 		this.username = username;
+		this.email = email;
 		this.password = password;
 		this.telefono = telefono;
 		this.tipoUtente = tipoUtente;
@@ -46,6 +46,14 @@ public class Utente {
 		this.codiceFiscale = codiceFiscale;
 	}
 	
+	public String getUsername() {
+		return username;
+	}
+	
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	
 	public String getEmail() {
 		return email;
 	}
@@ -54,13 +62,6 @@ public class Utente {
 		this.email = email;
 	}
 	
-	public String getUsername() {
-		return username;
-	}
-	
-	public void setUsername(String username) {
-		this.username = username;
-	}
 	
 	public String getPassword() {
 		return password;

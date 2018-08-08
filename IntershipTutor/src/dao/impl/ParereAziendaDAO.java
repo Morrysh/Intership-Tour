@@ -4,18 +4,20 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import dao.ParereAziendaDAOInterface;
 import data.database.DBConnector;
 import data.model.Azienda;
 import data.model.ParereAzienda;
+import data.model.Studente;
+import framework.data.DataLayerException;
 
 public class ParereAziendaDAO implements ParereAziendaDAOInterface {
 
 	@Override
-	public int insert(ParereAzienda parereAzienda) {
+	public int insert(ParereAzienda parereAzienda) throws DataLayerException {
 		String insertQuery = "INSERT INTO parereAzienda VALUES (?, ?, ?);";
 		PreparedStatement preparedStatement;
         int status = 0;
@@ -31,29 +33,29 @@ public class ParereAziendaDAO implements ParereAziendaDAOInterface {
 
             connection.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+        	throw new DataLayerException("Unable to insert company review", e);
         }
 		
 		return status;
 	}
 
 	@Override
-	public int update(ParereAzienda parereAzienda) {
+	public int update(ParereAzienda parereAzienda) throws DataLayerException {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public int delete(ParereAzienda parereAzienda) {
+	public int delete(ParereAzienda parereAzienda) throws DataLayerException {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public List<String> getPareriAzienda(Azienda azienda) {
-		List<String> pareri = new ArrayList<>();
+	public Map<String, String> getPareriAzienda(Azienda azienda) throws DataLayerException {
+		Map<String, String> pareri = new HashMap<>();
 		PreparedStatement preparedStatement;
-		String query = "SELECT * FROM parereazienda WHERE azienda = ?;";
+		String query = "SELECT * FROM parereazienda JOIN studente ON studente = utente WHERE azienda = ?;";
 		
 		try (Connection connection = DBConnector.getDatasource().getConnection()) {
             preparedStatement = connection.prepareStatement(query);
@@ -62,20 +64,22 @@ public class ParereAziendaDAO implements ParereAziendaDAOInterface {
 
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
+            	String nome = resultSet.getString(Studente.NOME);
+            	String cognome = resultSet.getString(Studente.COGNOME);
                 String parere = resultSet.getString(ParereAzienda.PARERE);
-                pareri.add(parere);
+                pareri.put(nome + " " + cognome, parere);
             }
 
             connection.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+        	throw new DataLayerException("Unable to get reviews", e);
         }
 		
 		return pareri;
 	}
 	
 	@Override
-	public int getMediaVoto(Azienda azienda){
+	public int getMediaVoto(Azienda azienda) throws DataLayerException {
 		
 		int voto = 0;
 		PreparedStatement preparedStatement;
@@ -93,7 +97,7 @@ public class ParereAziendaDAO implements ParereAziendaDAOInterface {
             
             connection.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+        	throw new DataLayerException("Unable to get rating average", e);
         }
 		
 		

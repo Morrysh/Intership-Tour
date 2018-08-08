@@ -14,11 +14,12 @@ import data.model.Studente;
 import data.model.TirocinioStudente;
 import data.model.Utente;
 import data.model.enumeration.TipoUtente;
+import framework.data.DataLayerException;
 
 public class TirocinioStudenteDAO implements TirocinioStudenteDAOInterface {
 
 	@Override
-	public int insert(TirocinioStudente tirocinioStudente) {
+	public int insert(TirocinioStudente tirocinioStudente) throws DataLayerException {
 		String insertQuery = "INSERT INTO tirociniostudente VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 		PreparedStatement preparedStatement;
         int status = 0;
@@ -42,14 +43,14 @@ public class TirocinioStudenteDAO implements TirocinioStudenteDAOInterface {
 
             connection.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+        	throw new DataLayerException("Unable to insert student intership", e);
         }
 		
 		return status;
 	}
 
 	@Override
-	public int update(TirocinioStudente tirocinioStudente) {
+	public int update(TirocinioStudente tirocinioStudente) throws DataLayerException {
 		// TODO Auto-generated method stub
 		return 0;
 	}
@@ -61,7 +62,7 @@ public class TirocinioStudenteDAO implements TirocinioStudenteDAOInterface {
 	}
 
 	@Override
-	public List<Studente> getStudentiPerTirocinio(OffertaTirocinio offertaTirocinio) {
+	public List<Studente> getStudentiPerTirocinio(OffertaTirocinio offertaTirocinio) throws DataLayerException {
 		List<Studente> studenti = new ArrayList<>();
 		PreparedStatement preparedStatement;
 		String query = "SELECT * FROM (tirociniostudente JOIN studente ON utente = studente)" + 
@@ -97,7 +98,7 @@ public class TirocinioStudenteDAO implements TirocinioStudenteDAOInterface {
 
             connection.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+        	throw new DataLayerException("Unable to get students opinions", e);
         }
 		
 		return studenti;

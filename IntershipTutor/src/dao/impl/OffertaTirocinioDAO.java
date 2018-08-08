@@ -10,13 +10,15 @@ import java.util.Map;
 
 import dao.OffertaTirocinioDAOInterface;
 import data.database.DBConnector;
+import data.model.Azienda;
 import data.model.OffertaTirocinio;
 import data.model.enumeration.CampoRicercaTirocinio;
+import framework.data.DataLayerException;
 
 public class OffertaTirocinioDAO implements OffertaTirocinioDAOInterface {
 
 	@Override
-	public int insert(OffertaTirocinio offertaTirocinio) {
+	public int insert(OffertaTirocinio offertaTirocinio) throws DataLayerException {
 		String insertQuery = "INSERT INTO offertatirocinio VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,?);";
 		PreparedStatement preparedStatement;
         int status = 0;
@@ -43,26 +45,26 @@ public class OffertaTirocinioDAO implements OffertaTirocinioDAOInterface {
 
             connection.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+        	throw new DataLayerException("Unable to insert intership", e);
         }
 		
 		return status;
 	}
 
 	@Override
-	public int update(OffertaTirocinio offertaTirocinio) {
+	public int update(OffertaTirocinio offertaTirocinio) throws DataLayerException {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public int delete(OffertaTirocinio offertaTirocinio) {
+	public int delete(OffertaTirocinio offertaTirocinio) throws DataLayerException {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public int setVisibilita(OffertaTirocinio offertaTirocinio, boolean visibilita) {
+	public int setVisibilita(OffertaTirocinio offertaTirocinio, boolean visibilita) throws DataLayerException {
 		String insertQuery = "UPDATE offertatirocinio SET visibile = ? WHERE id_tirocinio = ?;";
 		PreparedStatement preparedStatement;
         int status = 0;
@@ -77,14 +79,14 @@ public class OffertaTirocinioDAO implements OffertaTirocinioDAOInterface {
 
             connection.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+        	throw new DataLayerException("Unable to set visibility of intership", e);
         }
 		
 		return status;
 	}
 	
 	@Override
-	public int getCountAccordingToConvention(boolean visibile) throws SQLException{
+	public int getCountAccordingToConvention(boolean visibile) throws DataLayerException {
 		String insertQuery = "SELECT COUNT(*) AS count FROM offertatirocinio WHERE visibile = ?";
 		PreparedStatement preparedStatement;
         int count = 0;
@@ -101,14 +103,14 @@ public class OffertaTirocinioDAO implements OffertaTirocinioDAOInterface {
 
             connection.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+        	throw new DataLayerException("Unable to set convention of intership", e);
         }
 		
 		return count;
 	}
 	
 	@Override
-	public int getCountAccordingToRicerca(Map<CampoRicercaTirocinio, String> campoRicerca) throws SQLException {
+	public int getCountAccordingToRicerca(Map<CampoRicercaTirocinio, String> campoRicerca) throws DataLayerException {
 		String query = "SELECT COUNT(*) as count FROM offertatirocinio JOIN " +
 					   "azienda ON azienda = utente WHERE visibile = 1 AND " + 
 				       "UPPER(nome) LIKE UPPER(?) AND " +
@@ -141,14 +143,38 @@ public class OffertaTirocinioDAO implements OffertaTirocinioDAOInterface {
 
             connection.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+        	throw new DataLayerException("Unable to get count of filtered interships", e);
+        }
+		
+		return count;
+	}
+	
+	@Override
+	public int getCountAccordingToAzienda(Azienda azienda) throws DataLayerException {
+		String insertQuery = "SELECT COUNT(*) AS count FROM offertatirocinio WHERE azienda = ?";
+		PreparedStatement preparedStatement;
+        int count = 0;
+        
+        try (Connection connection = DBConnector.getDatasource().getConnection()) {
+            preparedStatement = connection.prepareStatement(insertQuery);
+            preparedStatement.setString(1, azienda.getCodiceFiscale());
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            
+            if(resultSet.next()) {
+            	count = resultSet.getInt("count");
+            }
+
+            connection.close();
+        } catch (SQLException e) {
+        	throw new DataLayerException("Unable to get intership count according to company", e);
         }
 		
 		return count;
 	}
 
 	@Override
-	public OffertaTirocinio getOffertaByID(int id){
+	public OffertaTirocinio getOffertaByID(int id) throws DataLayerException {
 		OffertaTirocinio offertaTirocinio = null;
 		PreparedStatement preparedStatement;
 		String query = "SELECT * FROM offertatirocinio WHERE id_tirocinio = ?;";
@@ -177,14 +203,14 @@ public class OffertaTirocinioDAO implements OffertaTirocinioDAOInterface {
 
             connection.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+        	throw new DataLayerException("Unable to get intership by id", e);
         }
 		
 		return offertaTirocinio;
 	}
 	
 	@Override
-	public List<OffertaTirocinio> allOfferteInRange(int paginaCorrente) throws SQLException{
+	public List<OffertaTirocinio> allOfferteInRange(int paginaCorrente) throws DataLayerException {
 		List<OffertaTirocinio> offerteTirocinio = new ArrayList<>();
 		PreparedStatement preparedStatement;
 		// Il limite di offerte visibili per pagina è 5
@@ -216,14 +242,14 @@ public class OffertaTirocinioDAO implements OffertaTirocinioDAOInterface {
 
             connection.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+        	throw new DataLayerException("Unable to get interships in range", e);
         }
 		
 		return offerteTirocinio;
 	}
 	
 	@Override
-	public List<OffertaTirocinio> allOfferteTirocinio() {
+	public List<OffertaTirocinio> allOfferteTirocinio() throws DataLayerException {
 		List<OffertaTirocinio> offerteTirocinio = new ArrayList<>();
 		PreparedStatement preparedStatement;
 		String query = "SELECT * FROM offertatirocinio;";
@@ -252,14 +278,14 @@ public class OffertaTirocinioDAO implements OffertaTirocinioDAOInterface {
 
             connection.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+        	throw new DataLayerException("Unable to get all interships", e);
         }
 		
 		return offerteTirocinio;
 	}
 	
 	@Override
-	public List<OffertaTirocinio> allOfferteTirocinioAccordingToVisibilita(boolean visibile) {
+	public List<OffertaTirocinio> allOfferteTirocinioAccordingToVisibilita(boolean visibile) throws DataLayerException {
 		List<OffertaTirocinio> offerteTirocinio = new ArrayList<>();
 		PreparedStatement preparedStatement;
 		String query = "SELECT * FROM offertatirocinio WHERE visibile = ?;";
@@ -289,14 +315,14 @@ public class OffertaTirocinioDAO implements OffertaTirocinioDAOInterface {
 
             connection.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+        	throw new DataLayerException("Unable get all interships according to visibility", e);
         }
 		
 		return offerteTirocinio;
 	}
 
 	@Override
-	public List<OffertaTirocinio> filtraPerCampo(Map<CampoRicercaTirocinio, String> campoRicerca, int paginaCorrente) {
+	public List<OffertaTirocinio> filtraPerCampo(Map<CampoRicercaTirocinio, String> campoRicerca, int paginaCorrente) throws DataLayerException {
 		List<OffertaTirocinio> offerteTirocinio = new ArrayList<>();
 		PreparedStatement preparedStatement;
 		String query = "SELECT * FROM offertatirocinio JOIN azienda ON azienda = utente WHERE visibile = 1 AND " + 
@@ -344,21 +370,22 @@ public class OffertaTirocinioDAO implements OffertaTirocinioDAOInterface {
 
             connection.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+        	throw new DataLayerException("Unable to filter according to fields", e);
         }
 		
 		return offerteTirocinio;
 	}
 	
 	@Override
-	public List<OffertaTirocinio> offerteTirocinioByIDAzienda(String utente){
+	public List<OffertaTirocinio> offerteTirocinioByAzienda(Azienda azienda, int paginaCorrente) throws DataLayerException {
 		List<OffertaTirocinio> offerteTirocinio = new ArrayList<>();
 		PreparedStatement preparedStatement;
-		String query = "SELECT * FROM offertatirocinio where azienda = ?";
+		String query = "SELECT * FROM offertatirocinio WHERE visibile = 1 AND azienda = ? LIMIT ?, 5";
 		
 		try (Connection connection = DBConnector.getDatasource().getConnection()) {
 			preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setString(1, utente);
+            preparedStatement.setString(1, azienda.getCodiceFiscale());
+            preparedStatement.setInt(2, paginaCorrente * 5);
 
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
@@ -381,7 +408,7 @@ public class OffertaTirocinioDAO implements OffertaTirocinioDAOInterface {
 
             connection.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+        	throw new DataLayerException("Unable to get intership according to company", e);
         }
 		
 		return offerteTirocinio;

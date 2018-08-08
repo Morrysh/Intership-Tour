@@ -46,7 +46,7 @@ public class Azienda extends Utente {
 			String indirizzoSedeLegale, String foroCompetente, String nomeRappresentante, 
 			String cognomeRappresentante, String nomeResponsabile, String cognomeResponsabile,
 			boolean convenzionata) {
-		super(codiceFiscale, email, username, password, telefono, tipoUtente);
+		super(codiceFiscale, username, email, password, telefono, tipoUtente);
 		this.utente = utente;
 		this.nome = nome;
 		this.regione = regione;
@@ -113,7 +113,7 @@ public class Azienda extends Utente {
 	public void setCognomeResponsabile(String cognomeResponsabile) {
 		this.cognomeResponsabile = cognomeResponsabile;
 	}
-	public boolean getConvenzionata() {
+	public boolean isConvenzionata() {
 		return convenzionata;
 	}
 	public void setConvenzionata(boolean convenzionata) {

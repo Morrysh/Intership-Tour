@@ -1,14 +1,13 @@
 package dao;
 
-import java.sql.SQLException;
-
 import data.model.Amministratore;
 import data.model.Utente;
+import framework.data.DataLayerException;
 
 public interface AmministratoreDAOInterface {
 	
-	Amministratore getAmministratoreByUtente(Utente utente) throws SQLException;
+	Amministratore getAmministratoreByUtente(Utente utente) throws DataLayerException;
 	
-	Amministratore getAmministratoreByCF(String codiceFiscale) throws SQLException;
+	Amministratore getAmministratoreByCF(String codiceFiscale) throws DataLayerException;
 
 }

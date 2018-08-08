@@ -54,10 +54,13 @@
 			                   <i class="fas fa-list-ul fa-fw w3-margin-right w3-text-theme"></i>
 			                   Tirocini pubblicati
 			                </p>
-			                <p class="info padding-top-bot pointer">
-			                   <i class="fas fa-plus fa-fw w3-margin-right w3-text-theme"></i>
-			                   Aggiungi tirocinio
-			                </p>
+			                <!-- Solo aziende convenzionate possono pubblicare offerte di tirocinio -->
+			                <#if utente.isConvenzionata()>
+				                <p class="info padding-top-bot pointer">
+				                   <i class="fas fa-plus fa-fw w3-margin-right w3-text-theme"></i>
+				                   Aggiungi tirocinio
+			                	</p>
+			                </#if>
 			                <p class="info padding-top-bot pointer">
 			                   <i class="far fa-edit fa-fw w3-margin-right w3-text-theme"></i>
 			                   Modifica Profilo
@@ -262,3 +265,51 @@
    <!-- End grid -->
         
 </div>
+
+<!-- Modals -->
+<!-- Update student profile modal -->
+      <#if utente?? && utente.tipoUtente.name() == "studente">
+	      <div id="update-student-modal" class="overlay">
+		    <div class="w3-card w3-white w3-round popup w3-padding">
+		
+		      <div class="w3-center"><br>
+		      	<a href="#" class="w3-button w3-xlarge w3-display-topright">&times;</a>
+		        <h2>Modifica informazioni</h2>
+		      </div>
+			      <form class="w3-container" action="./studente" method="post">
+			        <div class="w3-section">
+			          <!-- The user CF is hidden, it is used to retrieve the current user from database -->
+			          <input type="hidden" name="utente" value="${utente.utente}" />
+			          <label for="nome"><b>Nome</b></label>
+			          <input class="w3-input w3-border-bottom w3-margin-bottom" type="text" value="${utente.nome}" placeholder="Inserisci il tuo nome" name="nome" required>
+			          <label for="cognome"><b>Cognome</b></label>
+			          <input class="w3-input w3-border-bottom w3-margin-bottom" type="text" value="${utente.cognome}" placeholder="Inserisci il tuo cognome" name="cognome" required>
+			          <label for="dataNascita"><b>Data di nascita</b></label>
+			          <!-- Use type="date" -->
+			          <input class="w3-input w3-border-bottom w3-margin-bottom" type="text" value="${utente.dataNascita}" placeholder="Inserisci la tua data di nascita" name="data_nascita" required>
+			          <label for="luogoNascita"><b>Luogo di Nascita</b></label>
+					  <input class="w3-input w3-border-bottom w3-margin-bottom" type="text" value="${utente.luogoNascita}" placeholder="Inserisci il tuo luogo di nascita" name="luogo_nascita" required>
+					  <label for="provinciaNascita"><b>Provincia di Nascita</b></label>
+					  <input class="w3-input w3-border-bottom w3-margin-bottom" type="text" value="${utente.provinciaNascita}" placeholder="Inserisci la tua provincia di nascita" name="provincia_nascita" required>
+					  <label for="residenza"><b>Residenza</b></label>
+					  <input class="w3-input w3-border-bottom w3-margin-bottom" type="text" value="${utente.residenza}" placeholder="Inserisci la tua residenza" name="residenza" required>
+					  <label for="provinciaResidenza"><b>Provincia residenza</b></label>
+					  <input class="w3-input w3-border-bottom w3-margin-bottom" type="text" value="${utente.provinciaResidenza}" placeholder="Inserisci la provincia della tua residenza" name="provincia_residenza" required>
+					  <label for="tipoLaurea"><b>Tipo di laurea</b></label>
+					  <input class="w3-input w3-border-bottom w3-margin-bottom" type="text" value="${utente.tipoLaurea}" placeholder="Inserisci il tipo della tua laurea(Triennale/Magistrale)" name="tipo_laurea" required>
+					  <label for="corsoLaurea"><b>Corso di laurea</b></label>
+					  <input class="w3-input w3-border-bottom w3-margin-bottom" type="text" value="${utente.corsoLaurea}" placeholder="Inserisci il tuo corso di laurea" name="corso_laurea" required>
+			          <label for="email"><b>Email</b></label>
+		         	  <input class="w3-input w3-border-bottom w3-margin-bottom" type="text" value="${utente.email}" placeholder="Inserisci la tua email" name="email" required>
+		         	  <label for="username"><b>Username</b></label>
+		         	  <input class="w3-input w3-border-bottom w3-margin-bottom" type="text" value="${utente.username}" placeholder="Inserisci il tuo username" name="username" required>
+			          <label for="telefono"><b>Telefono</b></label>
+		          	  <input class="w3-input w3-border-bottom w3-margin-bottom" type="text" value="${utente.telefono}" placeholder="Inserisci il tuo telefono" name="telefono" required>
+			          <label for="password"><b>Password</b></label>
+		          	  <input class="w3-input w3-border-bottom w3-margin-bottom" type="password" value="${utente.password}" placeholder="Inserisci la password" name="password" required>
+		          	  <button class="w3-button w3-block w3-section w3-padding univaq-color-background" type="submit" name="aggiorna" value="aggiorna">Modifica</button>
+			        </div>
+			      </form>
+		      </div>
+	      </div>
+      </#if>

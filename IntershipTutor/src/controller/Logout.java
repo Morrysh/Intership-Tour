@@ -6,22 +6,25 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import framework.result.TemplateManagerException;
-import framework.result.TemplateResult;
+import framework.result.FailureResult;
 import framework.security.SecurityLayer;
 
 @SuppressWarnings("serial")
 public class Logout extends IntershipTutorBaseController{
 
-	private void action_error(HttpServletRequest request, HttpServletResponse response) throws TemplateManagerException {
-        TemplateResult result = new TemplateResult(getServletContext());
-        result.activate("errore.ftl.html", request, response);
+	private void action_error(HttpServletRequest request, HttpServletResponse response) {
+		if (request.getAttribute("exception") != null) {
+            (new FailureResult(getServletContext())).activate((Exception) request.getAttribute("exception"), request, response);
+        } else {
+            (new FailureResult(getServletContext())).activate((String) request.getAttribute("message"), request, response);
+        }
     }
 
     private void action_logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
         SecurityLayer.disposeSession(request);
         
         if (request.getParameter("referrer") != null) {
+        	// REMEMBER TO USE THIS TO REDIRECT ON THE PAGE WHERE THE USER UNLOGGED
             response.sendRedirect(request.getParameter("referrer"));
         } else {
             response.sendRedirect(".");
@@ -30,15 +33,12 @@ public class Logout extends IntershipTutorBaseController{
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException {
-        try {
+    	try {
             action_logout(request, response);
+
         } catch (IOException ex) {
             request.setAttribute("exception", ex);
-            try {
-				action_error(request, response);
-			} catch (TemplateManagerException e) {
-				e.printStackTrace();
-			}
+            action_error(request, response);
         }
     }
 
