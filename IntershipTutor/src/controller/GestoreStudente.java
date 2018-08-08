@@ -24,7 +24,7 @@ public class GestoreStudente extends IntershipTutorBaseController {
         }
     }
 	
-	private void action_aggiorna(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	private void action_aggiorna(HttpServletRequest request, HttpServletResponse response) {
 		try {
 			Studente studente = (Studente) request.getAttribute("utente");
 			

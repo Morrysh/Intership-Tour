@@ -13,6 +13,7 @@ import dao.impl.OffertaTirocinioDAO;
 import dao.impl.ParereAziendaDAO;
 import data.model.Azienda;
 import data.model.OffertaTirocinio;
+import data.model.Studente;
 import framework.data.DataLayerException;
 import framework.result.FailureResult;
 import framework.result.TemplateManagerException;
@@ -30,11 +31,37 @@ public class GestoreAzienda extends IntershipTutorBaseController {
         }
     }
 	
-	private void action_aggiorna(HttpServletRequest request, HttpServletResponse response, String codiceFiscale) {
-		
+	private void action_aggiorna(HttpServletRequest request, HttpServletResponse response) {
+		try {
+			Azienda azienda = (Azienda) request.getAttribute("utente");
+			
+			azienda.setNome(request.getParameter(Azienda.NOME));
+			azienda.setEmail(request.getParameter(Azienda.EMAIL));
+			azienda.setUsername(request.getParameter(Azienda.USERNAME));
+			azienda.setPassword(request.getParameter(Azienda.PASSWORD));
+			azienda.setTelefono(request.getParameter(Studente.TELEFONO));
+			azienda.setRegione(request.getParameter(Azienda.REGIONE));
+			azienda.setIndirizzoSedeLegale(request.getParameter(Azienda.INDIRIZZO_SEDE_LEGALE));
+			azienda.setForoCompetente(request.getParameter(Azienda.FORO_COMPETENTE));
+			azienda.setNomeRappresentante(request.getParameter(Azienda.NOME_RAPPRESENTANTE));
+			azienda.setCognomeRappresentante(request.getParameter(Azienda.COGNOME_RAPPRESENTANTE));
+			azienda.setNomeResponsabile(request.getParameter(Azienda.NOME_RESPONSABILE));
+			azienda.setCognomeResponsabile(request.getParameter(Azienda.COGNOME_RESPONSABILE));
+			
+			new AziendaDAO().update(azienda);
+			
+			response.sendRedirect(".");
+			
+		} catch (DataLayerException e) {
+			request.setAttribute("message", "Data access exception: " + e.getMessage());
+            action_error(request, response);
+		} catch (IOException e) {
+			request.setAttribute("message", "Data access exception: " + e.getMessage());
+            action_error(request, response);
+		}
 	}
 	
-	private void action_offerte_proposte(HttpServletRequest request, HttpServletResponse response, String codiceFiscale) {
+	private void action_offerte_proposte(HttpServletRequest request, HttpServletResponse response) {
 		
 	}
 
@@ -78,24 +105,23 @@ public class GestoreAzienda extends IntershipTutorBaseController {
 
     	try {
     		request.setAttribute("page_css", "gestore-azienda");
-    		if(request.getParameter("azienda") != null) { 
-    			String codiceFiscale = request.getParameter("azienda");
-	    		if(request.getParameter("aggiorna") != null) {
-	    			action_aggiorna(request, response, codiceFiscale);
-	    		}
-	    		else if(request.getParameter("offerte") != null) {
-	    			action_offerte_proposte(request, response, codiceFiscale);
-	    		}
-	    		else {
-	    			action_default(request, response, codiceFiscale);
-	    		}
+    		if(request.getParameter("aggiorna") != null) {
+    			action_aggiorna(request, response);
+    		}
+    		else if(request.getParameter("offerte") != null) {
+    			action_offerte_proposte(request, response);
     		}
     		else {
-    			request.setAttribute("message", "Non è stata specificata un'azienda");
-                action_error(request, response);
+    			if(request.getParameter("azienda") != null) { 
+    				String codiceFiscale = request.getParameter("azienda");
+    				action_default(request, response, codiceFiscale);
+    			}
+    			else {
+    				request.setAttribute("message", "Non è stata specificata un'azienda");
+    			    action_error(request, response);
+    			}
     		}
-
-        } catch (IOException ex) {
+		} catch (IOException ex) {
             request.setAttribute("exception", ex);
             action_error(request, response);
 

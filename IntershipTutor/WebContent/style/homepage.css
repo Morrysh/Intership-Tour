@@ -115,10 +115,9 @@
 /* Tablet and smartphone */
 @media  (max-width: 701px){
 
-    #left-column,
-    .aziende{
-        display: none;
-    }
+	#aziende-convenzionate-container{
+		display: none;
+	}
     
     .offerte{
     	padding: 0 !important

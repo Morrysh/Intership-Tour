@@ -56,14 +56,18 @@
 			                </p>
 			                <!-- Solo aziende convenzionate possono pubblicare offerte di tirocinio -->
 			                <#if utente.isConvenzionata()>
-				                <p class="info padding-top-bot pointer">
-				                   <i class="fas fa-plus fa-fw w3-margin-right w3-text-theme"></i>
-				                   Aggiungi tirocinio
-			                	</p>
+			                	<a href="#add-intership-modal">
+					                <p class="info padding-top-bot pointer">
+					                   <i class="fas fa-plus fa-fw w3-margin-right w3-text-theme"></i>
+					                   Aggiungi tirocinio
+				                	</p>
+			                	</a>
 			                </#if>
 			                <p class="info padding-top-bot pointer">
-			                   <i class="far fa-edit fa-fw w3-margin-right w3-text-theme"></i>
-			                   Modifica Profilo
+				                <a href="#update-company-modal">
+				                   <i class="far fa-edit fa-fw w3-margin-right w3-text-theme"></i>
+				                   Modifica Profilo
+				                </a>
 			                </p>
 			                
 			           <!-- Logged user is an admin -->
@@ -80,7 +84,7 @@
 		       </div>
 	       </#if>
 	
-	       <div class="w3-card w3-round">
+	       <div id="aziende-convenzionate-container" class="w3-card w3-round">
 	           <h2 id="aziende-convenzionate">Aziende convenzionate</h2>
 	           <div class="w3-container" id="aziende-container">
 	               <#list aziende as azienda>
@@ -280,36 +284,123 @@
 			        <div class="w3-section">
 			          <!-- The user CF is hidden, it is used to retrieve the current user from database -->
 			          <!-- <input type="hidden" name="utente" value="${utente.utente}" />  -->
-			          <label for="nome"><b>Nome</b></label>
-			          <input class="w3-input w3-border-bottom w3-margin-bottom" type="text" value="${utente.nome}" placeholder="Inserisci il tuo nome" name="nome" required>
-			          <label for="cognome"><b>Cognome</b></label>
-			          <input class="w3-input w3-border-bottom w3-margin-bottom" type="text" value="${utente.cognome}" placeholder="Inserisci il tuo cognome" name="cognome" required>
+			          <label for="nomeStudente"><b>Nome</b></label>
+			          <input id="nomeStudente" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" value="${utente.nome}" placeholder="Inserisci il tuo nome" name="nome" autocomplete="off" required />
+			          <label for="cognomeStudente"><b>Cognome</b></label>
+			          <input id="cognomeStudente" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" value="${utente.cognome}" placeholder="Inserisci il tuo cognome" name="cognome" autocomplete="off" required />
 			          <label for="dataNascita"><b>Data di nascita</b></label>
-			          <!-- Use type="date" -->
-			          <input type="date" class="w3-input w3-border-bottom w3-margin-bottom" type="text" value="${utente.dataNascita?iso_local}" placeholder="Inserisci la tua data di nascita" name="data_nascita" required>
+			          <input id="dataNascita" class="w3-input w3-border-bottom w3-margin-bottom" type="date" value="${utente.dataNascita?iso_local}" placeholder="Inserisci la tua data di nascita" name="data_nascita" autocomplete="off" required />
 			          <label for="luogoNascita"><b>Luogo di Nascita</b></label>
-					  <input class="w3-input w3-border-bottom w3-margin-bottom" type="text" value="${utente.luogoNascita}" placeholder="Inserisci il tuo luogo di nascita" name="luogo_nascita" required>
+					  <input id="luogoNascita" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" value="${utente.luogoNascita}" placeholder="Inserisci il tuo luogo di nascita" name="luogo_nascita" autocomplete="off" required />
 					  <label for="provinciaNascita"><b>Provincia di Nascita</b></label>
-					  <input class="w3-input w3-border-bottom w3-margin-bottom" type="text" value="${utente.provinciaNascita}" placeholder="Inserisci la tua provincia di nascita" name="provincia_nascita" required>
+					  <input id="provinciaNascita" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" value="${utente.provinciaNascita}" placeholder="Inserisci la tua provincia di nascita" name="provincia_nascita" autocomplete="off" required />
 					  <label for="residenza"><b>Residenza</b></label>
-					  <input class="w3-input w3-border-bottom w3-margin-bottom" type="text" value="${utente.residenza}" placeholder="Inserisci la tua residenza" name="residenza" required>
+					  <input id="residenza" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" value="${utente.residenza}" placeholder="Inserisci la tua residenza" name="residenza" autocomplete="off" required />
 					  <label for="provinciaResidenza"><b>Provincia residenza</b></label>
-					  <input class="w3-input w3-border-bottom w3-margin-bottom" type="text" value="${utente.provinciaResidenza}" placeholder="Inserisci la provincia della tua residenza" name="provincia_residenza" required>
+					  <input id="provinciaResidenza" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" value="${utente.provinciaResidenza}" placeholder="Inserisci la provincia della tua residenza" name="provincia_residenza" autocomplete="off" required />
 					  <label for="tipoLaurea"><b>Tipo di laurea</b></label>
-					  <input class="w3-input w3-border-bottom w3-margin-bottom" type="text" value="${utente.tipoLaurea}" placeholder="Inserisci il tipo della tua laurea(Triennale/Magistrale)" name="tipo_laurea" required>
+					  <input id="tipoLaurea" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" value="${utente.tipoLaurea}" placeholder="Inserisci il tipo della tua laurea(Triennale/Magistrale)" name="tipo_laurea" autocomplete="off" required />
 					  <label for="corsoLaurea"><b>Corso di laurea</b></label>
-					  <input class="w3-input w3-border-bottom w3-margin-bottom" type="text" value="${utente.corsoLaurea}" placeholder="Inserisci il tuo corso di laurea" name="corso_laurea" required>
-			          <label for="email"><b>Email</b></label>
-		         	  <input class="w3-input w3-border-bottom w3-margin-bottom" type="text" value="${utente.email}" placeholder="Inserisci la tua email" name="email" required>
-		         	  <label for="username"><b>Username</b></label>
-		         	  <input class="w3-input w3-border-bottom w3-margin-bottom" type="text" value="${utente.username}" placeholder="Inserisci il tuo username" name="username" required>
-			          <label for="telefono"><b>Telefono</b></label>
-		          	  <input class="w3-input w3-border-bottom w3-margin-bottom" type="text" value="${utente.telefono}" placeholder="Inserisci il tuo telefono" name="telefono" required>
-			          <label for="password"><b>Password</b></label>
-		          	  <input class="w3-input w3-border-bottom w3-margin-bottom" type="password" value="${utente.password}" placeholder="Inserisci la password" name="password" required>
+					  <input id="corsoLaurea" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" value="${utente.corsoLaurea}" placeholder="Inserisci il tuo corso di laurea" name="corso_laurea" autocomplete="off" required />
+			          <label for="emailStudente"><b>Email</b></label>
+		         	  <input id="emailStudente" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" value="${utente.email}" placeholder="Inserisci la tua email" name="email" autocomplete="off" required />
+		         	  <label for="usernameStudente"><b>Username</b></label>
+		         	  <input id="usernameStudente" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="15" type="text" value="${utente.username}" placeholder="Inserisci il tuo username" name="username" autocomplete="off" required />
+			          <label for="telefonoStudente"><b>Telefono</b></label>
+		          	  <input id="telefonoStudente" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="20" type="number" value="${utente.telefono}" placeholder="Inserisci il tuo telefono" name="telefono" autocomplete="off" required />
+			          <label for="passwordStudente"><b>Password</b></label>
+		          	  <input id="passwordStudente" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="password" value="${utente.password}" placeholder="Inserisci la password" name="password" autocomplete="off" required />
 		          	  <button class="w3-button w3-block w3-section w3-padding univaq-color-background" type="submit" name="aggiorna" value="aggiorna">Modifica</button>
 			        </div>
 			      </form>
 		      </div>
 	      </div>
       </#if>
+      
+<!-- Update company profile modal -->
+<#if utente?? && utente.tipoUtente.name() == "azienda">
+	<div id="update-company-modal" class="overlay">
+		    <div class="w3-card w3-white w3-round popup w3-padding">
+		
+		      <div class="w3-center"><br>
+		      	<a href="#" class="w3-button w3-xlarge w3-display-topright">&times;</a>
+		        <h2>Modifica informazioni</h2>
+		      </div>
+			      <form class="w3-container" action="./azienda" method="post">
+			        <div class="w3-section">
+			          <!-- The user CF is hidden, it is used to retrieve the current user from database -->
+			          <!-- <input type="hidden" name="utente" value="${utente.utente}" />  -->
+			          <label for="nomeAzienda"><b>Nome</b></label>
+			          <input id="nomeAzienda" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" value="${utente.nome}" placeholder="Inserisci il tuo nome" name="nome" autocomplete="off" required />
+			          <label for="regioneAzienda"><b>Regione</b></label>
+			          <input id="regioneAzienda" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" value="${utente.regione}" placeholder="Inserisci la regione della tua azienda" name="regione" autocomplete="off" required />
+			          <label for="indirizzoSedeLegale"><b>Indirizzo sede legale</b></label>
+					  <input id="indirizzoSedeLegale" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" value="${utente.indirizzoSedeLegale}" placeholder="Inserisci l'indirizzo della sede legale" name="indirizzo_sede_legale" autocomplete="off" required />
+					  <label for="foroCompetente"><b>Foro competente</b></label>
+					  <input id="foroCompetente" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" value="${utente.foroCompetente}" placeholder="Inserisci il foro competente" name="foro_competente" autocomplete="off" required />
+					  <label for="nomeRappresentante"><b>Nome rappresentante</b></label>
+					  <input id="nomeRappresentante" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" value="${utente.nomeRappresentante}" placeholder="Inserisci il nome del rappresentante" name="nome_rappresentante" autocomplete="off" required />
+					  <label for="cognomeRappresentante"><b>Cognome Rappresentante</b></label>
+					  <input id="cognomeRappresentante" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" value="${utente.cognomeRappresentante}" placeholder="Inserisci il cognome del rappresentante" name="cognome_rappresentante" autocomplete="off" required />
+					  <label for="nomeResponsabile"><b>Nome responsabile</b></label>
+					  <input id="nomeResponsabile" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" value="${utente.nomeResponsabile}" placeholder="Inserisci il nome del responsabile" name="nome_responsabile" autocomplete="off" required />
+					  <label for="cognomeResponsabile"><b>Cognome Responsabile</b></label>
+					  <input id="cognomeResponsabile" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" value="${utente.cognomeResponsabile}" placeholder="Inserisci il cognome del responsabile" name="cognome_responsabile" autocomplete="off" required />					  
+			          <label for="emailAzienda"><b>Email</b></label>
+		         	  <input id="emailAzienda" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" value="${utente.email}" placeholder="Inserisci la tua email" name="email" autocomplete="off" required />
+		         	  <label for="usernameAzienda"><b>Username</b></label>
+		         	  <input id="usernameAzienda" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="15" type="text" value="${utente.username}" placeholder="Inserisci il tuo username" name="username" autocomplete="off" required />
+			          <label for="telefonoAzienda"><b>Telefono</b></label>
+		          	  <input id="telefonoAzienda" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="20" type="number" value="${utente.telefono}" placeholder="Inserisci il tuo telefono" name="telefono" autocomplete="off" required />
+			          <label for="passwordAzienda"><b>Password</b></label>
+		          	  <input id="passwordAzienda" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="password" value="${utente.password}" placeholder="Inserisci la password" name="password" autocomplete="off" required />
+		          	  <button class="w3-button w3-block w3-section w3-padding univaq-color-background" type="submit" name="aggiorna" value="aggiorna">Modifica</button>
+			        </div>
+			      </form>
+		      </div>
+	      </div>
+</#if>
+
+<!-- Add intership modal -->
+<!-- Update company profile modal -->
+<#if utente?? && utente.tipoUtente.name() == "azienda">
+	<div id="add-intership-modal" class="overlay">
+		    <div class="w3-card w3-white w3-round popup w3-padding">
+		
+		      <div class="w3-center"><br>
+		      	<a href="#" class="w3-button w3-xlarge w3-display-topright">&times;</a>
+		        <h2>Aggiungi tirocinio</h2>
+		      </div>
+			      <form class="w3-container" action="./offertaTirocinio" method="post">
+			        <div class="w3-section">
+			          <!-- The user CF is hidden, it is used to retrieve the current user from database -->
+			          <!-- <input type="hidden" name="utente" value="${utente.utente}" />  -->
+			          <label for="titoloOffertaTirocinio"><b>Titolo</b></label>
+			          <input id="titoloOffertaTirocinio" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="255" type="text" placeholder="Inserisci una breve descrizione" name="titolo" autocomplete="off" required />
+			          <label for="luogoOffertaTirocinio"><b>Luogo</b></label>
+			          <input id="luogoOffertaTirocinio" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" placeholder="Inserisci il luogo in cui avverrà il tirocinio" name="luogo" autocomplete="off" required />
+			          <label for="obiettivi"><b>Obiettivi</b></label>
+					  <textarea id="obiettivi" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="2500" placeholder="Inserisci gli obiettivi da raggiungere" name="obiettivi" autocomplete="off" required></textarea>
+					  <label for="modalita"><b>Modalit&agrave;</b></label>
+					  <textarea id="modalita" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="2500" placeholder="Inserisci le modalita con cui verrà effettuato il tirocinio" name="modalita" autocomplete="off" required></textarea>
+					  <label for="rimborso"><b>Rimborso</b></label>
+					  <input id="rimborso" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="255" type="text" placeholder="Inserisci l'importo del rimborso se previsto" name="rimborso" />
+					  <label for="dataInizio"><b>Data inizio</b></label>
+					  <input id="dataInizio" class="w3-input w3-border-bottom w3-margin-bottom" type="date" placeholder="Inserisci la data di inizio del tirocinio" name="data_inizio" autocomplete="off" required />
+					  <label for="dataFine"><b>Data fine</b></label>
+					  <input id="dataFine" class="w3-input w3-border-bottom w3-margin-bottom" type="date" placeholder="Inserisci la data in cui si concluderà il tirocinio" name="data_fine" autocomplete="off" required />
+					  <label for="oraInizio"><b>Ora inizio</b></label>
+					  <input id="oraInizio" class="w3-input w3-border-bottom w3-margin-bottom" type="time" placeholder="Inserisci l'orario di inizio" name="ora_inizio" />					  
+			          <label for="oraFine"><b>Ora fine</b></label>
+		         	  <input id="oraFine" class="w3-input w3-border-bottom w3-margin-bottom" type="time" placeholder="Inserisci l'orario di fine" name="ora_fine" />
+		         	  <label for="numeroOre"><b>Numero ore</b></label>
+		         	  <input id="numeroOre" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="5" type="number" placeholder="Inserisci il numero di ore previste per il tirocinio" name="numero_ore" autocomplete="off" required />
+		          	  <button class="w3-button w3-block w3-section w3-padding univaq-color-background" type="submit" name="aggiungi" value="aggiungi">Modifica</button>
+			        </div>
+			      </form>
+		      </div>
+	      </div>
+
+</#if>
+
+

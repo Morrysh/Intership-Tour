@@ -1,6 +1,8 @@
 package controller;
 
 import java.io.IOException;
+import java.sql.Date;
+import java.sql.Time;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -29,6 +31,35 @@ public class GestoreOffertaTirocinio extends IntershipTutorBaseController{
 	
 	// Aggiungi offerta tirocinio
 	private void action_aggiungi(HttpServletRequest request, HttpServletResponse response) {
+		
+		try {
+			Azienda azienda = (Azienda) request.getAttribute("utente");
+			
+			OffertaTirocinio nuovaOfferta = new OffertaTirocinio(
+					azienda.getCodiceFiscale(),
+					request.getParameter(OffertaTirocinio.TITOLO),
+					request.getParameter(OffertaTirocinio.LUOGO),
+					request.getParameter(OffertaTirocinio.OBIETTIVI),
+					request.getParameter(OffertaTirocinio.MODALITA),
+					request.getParameter(OffertaTirocinio.RIMBORSO),
+					Date.valueOf(request.getParameter(OffertaTirocinio.DATA_INIZIO)),
+					Date.valueOf(request.getParameter(OffertaTirocinio.DATA_FINE)),
+					Time.valueOf(request.getParameter(OffertaTirocinio.ORA_INIZIO) + ":00"),
+					Time.valueOf(request.getParameter(OffertaTirocinio.ORA_FINE) + ":00"),
+					Integer.valueOf(request.getParameter(OffertaTirocinio.NUMERO_ORE)));
+			
+			new OffertaTirocinioDAO().insert(nuovaOfferta);
+			
+			response.sendRedirect(".");
+				
+		} catch (DataLayerException e) {
+			request.setAttribute("message", "Data access exception: " + e.getMessage());
+            action_error(request, response);
+		}
+		catch(IOException ex) {
+            request.setAttribute("message", "Data access exception: " + ex.getMessage());
+            action_error(request, response);
+        }
 		
 	}
 	
@@ -61,7 +92,7 @@ public class GestoreOffertaTirocinio extends IntershipTutorBaseController{
 			if(azienda != null)
 				res.activate("gestore-offerta-tirocinio.ftl.html", request, response);
 			else {
-				request.setAttribute("message", "Nessun azienda trovata");
+				request.setAttribute("message", "Nessun'azienda trovata");
 	            action_error(request, response);
 			}
     	}
@@ -76,25 +107,34 @@ public class GestoreOffertaTirocinio extends IntershipTutorBaseController{
             throws ServletException {
 
     	try {
-    		if(request.getParameter("offertaTirocinio") != null) {
-    			request.setAttribute("page_css", "gestore-offerta-tirocinio");
-    			int codiceOffertaTirocinio = SecurityLayer.checkNumeric(request.getParameter("offertaTirocinio"));
-    			if(request.getParameter("aggiungi") != null) {
-    				action_aggiungi(request, response);
-    			}
-    			else if(request.getParameter("aggiorna") != null) {
-    				action_aggiorna(request, response);
-    			}
-    			else if(request.getParameter("rimuovi") != null) {
-    				action_rimuovi(request, response);
-    			}
-    			else if(request.getParameter("iscriviti") != null) {
-    				action_iscriviti(request, response, codiceOffertaTirocinio);
-    			}
-    			else {
-    				action_default(request, response, codiceOffertaTirocinio);
-    			}
-    		}
+    		
+			request.setAttribute("page_css", "gestore-offerta-tirocinio");
+			
+			if(request.getParameter("aggiungi") != null) {
+				action_aggiungi(request, response);
+			}
+			else if(request.getParameter("aggiorna") != null) {
+				action_aggiorna(request, response);
+			}
+			else if(request.getParameter("rimuovi") != null) {
+				action_rimuovi(request, response);
+			}
+			else if (request.getParameter("offertaTirocinio") != null) {
+				if(request.getParameter("iscriviti") != null) {
+	    			int codiceOffertaTirocinio = SecurityLayer.checkNumeric(request.getParameter("offertaTirocinio"));
+	    			action_iscriviti(request, response, codiceOffertaTirocinio);
+	    		}
+				else {
+					if(request.getParameter("offertaTirocinio") != null) {
+		    			int codiceOffertaTirocinio = SecurityLayer.checkNumeric(request.getParameter("offertaTirocinio"));
+		    			action_default(request, response, codiceOffertaTirocinio);
+					}
+				}
+			}
+			else {
+				request.setAttribute("message", "Non è stato specificato un tirocinio valido");
+			    action_error(request, response);
+			}
     	}
 		catch (IOException e) {
 			request.setAttribute("exception", e);

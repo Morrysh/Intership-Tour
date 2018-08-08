@@ -58,8 +58,43 @@ public class AziendaDAO implements AziendaDAOInterface {
 
 	@Override
 	public int update(Azienda azienda) throws DataLayerException {
-		// TODO Auto-generated method stub
-		return 0;
+		String insertQuery = "UPDATE azienda SET nome = ?, regione = ?, indirizzo_sede_legale = ?, " +
+							 "foro_competente = ?, nome_rappresentante = ?, cognome_rappresentante = ?, " +
+							 "nome_responsabile = ?, cognome_responsabile = ? WHERE utente = ?";
+		PreparedStatement preparedStatement;
+		int status = 0;
+		
+		Utente utente = new Utente(
+			azienda.getCodiceFiscale(),
+			azienda.getUsername(),
+			azienda.getEmail(),
+			azienda.getPassword(),
+			azienda.getTelefono(),
+			azienda.getTipoUtente());
+		
+		new UtenteDAO().update(utente);
+		
+		try (Connection connectionection = DBConnector.getDatasource().getConnection()) {
+            preparedStatement = connectionection.prepareStatement(insertQuery);
+
+            preparedStatement.setString(1, azienda.getNome());
+            preparedStatement.setString(2, azienda.getRegione());
+            preparedStatement.setString(3, azienda.getIndirizzoSedeLegale());
+            preparedStatement.setString(4, azienda.getForoCompetente());
+            preparedStatement.setString(5, azienda.getNomeRappresentante());
+            preparedStatement.setString(6, azienda.getCognomeRappresentante());
+            preparedStatement.setString(7, azienda.getNomeResponsabile());
+            preparedStatement.setString(8, azienda.getCognomeResponsabile());
+            preparedStatement.setString(9, azienda.getUtente());
+
+            status = preparedStatement.executeUpdate();
+
+            connectionection.close();
+        } catch (SQLException e) {
+        	throw new DataLayerException("Unable to update company", e);
+        }
+		
+		return status;
 	}
 
 	@Override

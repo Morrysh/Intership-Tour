@@ -29,6 +29,10 @@ h4{
 	transition: .2s all ease;
 }
 
+textarea {
+    max-width: 100%; 
+}
+
 .fa,
 .fas,
 .far{
@@ -166,16 +170,20 @@ input:checked ~ #label-search:after {
 /* End collapsible */
 
 /* Modals without js */
+#add-intership-modal,
 #pareri-azienda-modal,
 #update-student-modal,
+#update-company-modal,
 #login-modal{
 	position: fixed;
 	/* Doesn't work on edge and firefox, find a workaround or keep the ugly effect */
 	overflow-y: scroll;
 }
 
+#add-intership-modal::-webkit-scrollbar,
 #pareri-azienda-modal::-webkit-scrollbar,
 #update-student-modal::-webkit-scrollbar,
+#update-company-modal::-webkit-scrollbar,
 #login-modal::-webkit-scrollbar { 
     display: none; 
 }
