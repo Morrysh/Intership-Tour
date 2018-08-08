@@ -24,10 +24,9 @@ public class GestoreStudente extends IntershipTutorBaseController {
         }
     }
 	
-	private void action_aggiorna(HttpServletRequest request, HttpServletResponse response, String codiceFiscale) throws IOException {
+	private void action_aggiorna(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		try {
-			//Studente studente = (Studente) request.getAttribute("utente");
-			Studente studente = new StudenteDAO().getStudenteByCF(codiceFiscale);
+			Studente studente = (Studente) request.getAttribute("utente");
 			
 			studente.setNome(request.getParameter(Studente.NOME));
 			studente.setCognome(request.getParameter(Studente.COGNOME));
@@ -35,7 +34,7 @@ public class GestoreStudente extends IntershipTutorBaseController {
 			studente.setUsername(request.getParameter(Studente.USERNAME));
 			studente.setPassword(request.getParameter(Studente.PASSWORD));
 			studente.setTelefono(request.getParameter(Studente.TELEFONO));
-			studente.setDataNascita(new Date(System.currentTimeMillis())); // DA MODIFICARE
+			studente.setDataNascita(Date.valueOf(request.getParameter(Studente.DATA_NASCITA)));
 			studente.setLuogoNascita(request.getParameter(Studente.LUOGO_NASCITA));
 			studente.setProvinciaNascita(request.getParameter(Studente.PROVINCIA_NASCITA));
 			studente.setResidenza(request.getParameter(Studente.RESIDENZA));
@@ -57,7 +56,7 @@ public class GestoreStudente extends IntershipTutorBaseController {
         }
 	}
 
-    private void action_default(HttpServletRequest request, HttpServletResponse response, String codiceFiscale) throws IOException, ServletException, TemplateManagerException {
+    private void action_default(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException {
         
     }
 
@@ -66,21 +65,14 @@ public class GestoreStudente extends IntershipTutorBaseController {
             throws ServletException {
 
     	try {
-    		if(request.getParameter(Studente.UTENTE) != null) { 
-    			String codiceFiscale = request.getParameter(Studente.UTENTE);
-	    		if(request.getParameter("aggiorna") != null) {
-	    			action_aggiorna(request, response, codiceFiscale);
-	    		}
-	    		else {
-	    			action_default(request, response, codiceFiscale);
-	    		}
-    		}
-    		else {
-    			request.setAttribute("message", "Non è stata specificato uno studente");
-                action_error(request, response);
-    		}
-
-        } catch (IOException ex) {
+			if(request.getParameter("aggiorna") != null) {
+				action_aggiorna(request, response);
+			}
+			else {
+				action_default(request, response);
+			}
+        }
+    	catch (IOException ex) {
             request.setAttribute("exception", ex);
             action_error(request, response);
 

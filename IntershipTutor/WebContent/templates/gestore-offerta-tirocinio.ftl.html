@@ -52,15 +52,15 @@
         </h2>
         <div class="w3-container">
         	<hr>
-          	<h6>
+          	<p class="info">
           		<i class="fas fa-map-marker-alt fa-fw w3-margin-right"></i>
           		${offertaTirocinio.luogo}
-          	</h6>
-          	<h6>
-          		<i class="fa fa-calendar fa-fw w3-margin-right"></i>
-          		${offertaTirocinio.dataInizio} - ${offertaTirocinio.dataFine} 
+          	</p>
+          	<p class="info">
+          		<i class="far fa-calendar-alt fa-fw w3-margin-right"></i>
+          		da ${offertaTirocinio.dataInizio?iso_local} al ${offertaTirocinio.dataFine?iso_local} 
           		<span class="w3-tag w3-round univaq-color-background">Current</span>
-          	</h6>
+          	</p>
           	<h5 class="bold"><b>Obiettivi</b></h5>
           		<p class="descrizione-tirocinio">${offertaTirocinio.obiettivi}</p>	        
         		<hr>

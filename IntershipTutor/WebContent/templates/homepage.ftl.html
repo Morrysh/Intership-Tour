@@ -24,7 +24,7 @@
 			                </p>
 			                <p class="info padding-top-bot">
 			                   <i class="fa fa-birthday-cake fa-fw w3-margin-right w3-text-theme"></i>
-			                   ${utente.dataNascita}
+			                   ${utente.dataNascita?iso_local}
 			                </p>
 			                <p class="info padding-top-bot">
 			                   <i class="fas fa-phone fa-fw w3-margin-right w3-text-theme"></i>
@@ -150,13 +150,13 @@
 								</#if>
 							</h5>
 						</a>
-						<p class="luogo-tirocinio">
+						<p class="info">
 							<i class="fas fa-map-marker-alt fa-fw w3-margin-right"></i>
 							 ${offerta.luogo}
 						</p>
-						<p class="data-tirocinio">
-							<i class="fa fa-calendar fa-fw w3-margin-right"></i>
-							Dal ${offerta.dataInizio} al ${offerta.dataFine}
+						<p class="info">
+							<i class="far fa-calendar-alt fa-fw w3-margin-right"></i>
+							Dal ${offerta.dataInizio?iso_local} al ${offerta.dataFine?iso_local}
 						</p>
 						<p  class="proposte-tirocinio">
 						    <#if offerta.modalita?length &lt; 500>
@@ -279,14 +279,14 @@
 			      <form class="w3-container" action="./studente" method="post">
 			        <div class="w3-section">
 			          <!-- The user CF is hidden, it is used to retrieve the current user from database -->
-			          <input type="hidden" name="utente" value="${utente.utente}" />
+			          <!-- <input type="hidden" name="utente" value="${utente.utente}" />  -->
 			          <label for="nome"><b>Nome</b></label>
 			          <input class="w3-input w3-border-bottom w3-margin-bottom" type="text" value="${utente.nome}" placeholder="Inserisci il tuo nome" name="nome" required>
 			          <label for="cognome"><b>Cognome</b></label>
 			          <input class="w3-input w3-border-bottom w3-margin-bottom" type="text" value="${utente.cognome}" placeholder="Inserisci il tuo cognome" name="cognome" required>
 			          <label for="dataNascita"><b>Data di nascita</b></label>
 			          <!-- Use type="date" -->
-			          <input class="w3-input w3-border-bottom w3-margin-bottom" type="text" value="${utente.dataNascita}" placeholder="Inserisci la tua data di nascita" name="data_nascita" required>
+			          <input type="date" class="w3-input w3-border-bottom w3-margin-bottom" type="text" value="${utente.dataNascita?iso_local}" placeholder="Inserisci la tua data di nascita" name="data_nascita" required>
 			          <label for="luogoNascita"><b>Luogo di Nascita</b></label>
 					  <input class="w3-input w3-border-bottom w3-margin-bottom" type="text" value="${utente.luogoNascita}" placeholder="Inserisci il tuo luogo di nascita" name="luogo_nascita" required>
 					  <label for="provinciaNascita"><b>Provincia di Nascita</b></label>
