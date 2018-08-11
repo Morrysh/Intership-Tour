@@ -58,7 +58,7 @@ public class AziendaDAO implements AziendaDAOInterface {
 
 	@Override
 	public int update(Azienda azienda) throws DataLayerException {
-		String insertQuery = "UPDATE azienda SET nome = ?, regione = ?, indirizzo_sede_legale = ?, " +
+		String updateQuery = "UPDATE azienda SET nome = ?, regione = ?, indirizzo_sede_legale = ?, " +
 							 "foro_competente = ?, nome_rappresentante = ?, cognome_rappresentante = ?, " +
 							 "nome_responsabile = ?, cognome_responsabile = ? WHERE utente = ?";
 		PreparedStatement preparedStatement;
@@ -75,7 +75,7 @@ public class AziendaDAO implements AziendaDAOInterface {
 		new UtenteDAO().update(utente);
 		
 		try (Connection connectionection = DBConnector.getDatasource().getConnection()) {
-            preparedStatement = connectionection.prepareStatement(insertQuery);
+            preparedStatement = connectionection.prepareStatement(updateQuery);
 
             preparedStatement.setString(1, azienda.getNome());
             preparedStatement.setString(2, azienda.getRegione());

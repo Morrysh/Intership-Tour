@@ -10,7 +10,7 @@
       <div class="w3-card w3-round">
         <div class="w3-padding">
           <h2 id="nome-azienda">
-          	${azienda.nome}
+          	<a>${azienda.nome}</a>
           </h2>
           <hr />
           <p class="info">
@@ -43,7 +43,7 @@
           <div class=" w3-round-xlarge w3-small w3-light-grey">
             <div class="w3-container w3-center w3-round-xlarge univaq-color-background" style="width:${voto}%">${voto/20}</div>
           </div>
-         <#if pareriAzienda?size gt 0>
+          <#if pareriAzienda?size gt 0>
          	<hr />
          	<a href="#pareri-azienda-modal">
 	         	<p class="info pointer">
@@ -51,9 +51,9 @@
 		          	Pareri
 		         </p>
 	         </a>
-         <#else>
+          <#else>
          	<br />
-         </#if>
+          </#if>
         </div>
       </div>
 
@@ -72,7 +72,7 @@
 	        <div class="w3-container azienda">
 	        <hr>
 	          <h5 class="bold">
-		          <a href="offertaTirocinio?offertaTirocinio=${tirocinio.idTirocinio}">Tirocinio ${tirocinio.titolo}</a>
+		          <a href="offertaTirocinio?id_tirocinio=${tirocinio.idTirocinio}">Tirocinio ${tirocinio.titolo}</a>
 	          </h5>
 	          <p class="info">
 	          	<i class="far fa-calendar-alt fa-fw w3-margin-right"></i>

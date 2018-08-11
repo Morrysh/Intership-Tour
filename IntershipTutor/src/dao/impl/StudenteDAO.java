@@ -34,8 +34,8 @@ public class StudenteDAO implements StudenteDAOInterface {
             preparedStatement = connection.prepareStatement(insertQuery);
 
             preparedStatement.setString(1, studente.getUtente());
-            preparedStatement.setString(3, studente.getNome());
-            preparedStatement.setString(4, studente.getCognome());
+            preparedStatement.setString(2, studente.getNome());
+            preparedStatement.setString(3, studente.getCognome());
             preparedStatement.setDate(4, studente.getDataNascita());
             preparedStatement.setString(5, studente.getLuogoNascita());
             preparedStatement.setString(6, studente.getProvinciaNascita());
@@ -57,7 +57,7 @@ public class StudenteDAO implements StudenteDAOInterface {
 
 	@Override
 	public int update(Studente studente) throws DataLayerException {
-		String insertQuery = "UPDATE studente SET nome = ?, cognome = ?, data_nascita = ?, luogo_nascita = ?, " +
+		String updateQuery = "UPDATE studente SET nome = ?, cognome = ?, data_nascita = ?, luogo_nascita = ?, " +
 				 			 "provincia_nascita = ?, residenza = ?, provincia_residenza = ?, " + 
 				             "tipo_laurea = ?, corso_laurea = ? WHERE utente = ?";
 		PreparedStatement preparedStatement;
@@ -74,7 +74,7 @@ public class StudenteDAO implements StudenteDAOInterface {
         new UtenteDAO().update(utente);
 		
 		try (Connection connection = DBConnector.getDatasource().getConnection()) {
-			preparedStatement = connection.prepareStatement(insertQuery);
+			preparedStatement = connection.prepareStatement(updateQuery);
 			
 			preparedStatement.setString(1, studente.getNome());
 			preparedStatement.setString(2, studente.getCognome());

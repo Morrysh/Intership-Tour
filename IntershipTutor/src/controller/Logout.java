@@ -27,7 +27,7 @@ public class Logout extends IntershipTutorBaseController{
         	// REMEMBER TO USE THIS TO REDIRECT ON THE PAGE WHERE THE USER UNLOGGED
             response.sendRedirect(request.getParameter("referrer"));
         } else {
-            response.sendRedirect(".");
+            response.sendRedirect(request.getContextPath());
         }
     }
 

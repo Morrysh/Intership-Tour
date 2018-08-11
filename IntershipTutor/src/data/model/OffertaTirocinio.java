@@ -67,6 +67,22 @@ public class OffertaTirocinio {
 	}
 	
 	public OffertaTirocinio(int idTirocinio, String azienda, String titolo, String luogo, String obiettivi, String modalita,
+			String rimborso, Date dataInizio, Date dataFine, Time oraInizio, Time oraFine, int numeroOre) {
+		this.idTirocinio = idTirocinio;
+		this.azienda = azienda;
+		this.titolo = titolo;
+		this.luogo = luogo;
+		this.obiettivi = obiettivi;
+		this.modalita = modalita;
+		this.rimborso = rimborso;
+		this.dataInizio = dataInizio;
+		this.dataFine = dataFine;
+		this.oraInizio = oraInizio;
+		this.oraFine = oraFine;
+		this.numeroOre = numeroOre;
+	}
+	
+	public OffertaTirocinio(int idTirocinio, String azienda, String titolo, String luogo, String obiettivi, String modalita,
 			String rimborso, Date dataInizio, Date dataFine, Time oraInizio, Time oraFine, int numeroOre,
 			boolean visibile) {
 		this.idTirocinio = idTirocinio;

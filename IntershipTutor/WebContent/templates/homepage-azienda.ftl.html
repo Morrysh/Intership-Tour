@@ -1,0 +1,290 @@
+<!-- Page Container -->
+<div id="homepage-container" class="w3-content">
+
+  <!-- The Grid -->
+  <div class="w3-row-padding">
+
+	   <!-- Left Column -->
+	   <div class="w3-quarter" id="left-column">
+	       <!-- Profile -->
+		       <div class="w3-card w3-round">
+		           <div class="w3-container profile-container w3-margin-bottom">
+
+	           	   		<h2 id="nome-utente" class="w3-center univaq-color">${utente.nome} </h2>
+	           	   		<p class="info padding-top-bot">
+			               <i class="fa fa-home fa-fw w3-margin-right w3-text-theme"></i>
+	                       ${utente.regione}
+		                </p>
+		                <p class="info padding-top-bot">
+		                   <i class="fas fa-phone fa-fw w3-margin-right w3-text-theme"></i>
+		                   ${utente.telefono}
+		                </p>
+		                <hr class="no-margin" />
+		                <!-- Solo aziende convenzionate possono pubblicare offerte di tirocinio -->
+		                <#if utente.isConvenzionata()>
+			                <p class="info padding-top-bot pointer">
+			                   <a href="#add-intership-modal">
+				                   <i class="fas fa-plus fa-fw w3-margin-right w3-text-theme"></i>
+				                   Aggiungi tirocinio
+			                   </a>
+		                	</p>
+		                </#if>
+		                <p class="info padding-top-bot pointer">
+			                <a href="#update-company-modal">
+			                   <i class="far fa-edit fa-fw w3-margin-right w3-text-theme"></i>
+			                   Modifica Profilo
+			                </a>
+		                </p>
+		                <hr />
+		               	<p class="w3-large"><b><i class="fa fa-chart-bar fa-fw w3-margin-right"></i>Valutazione</b></p>
+			            <p class ="w3-text-grey">Voto</p>
+			            <div class=" w3-round-xlarge w3-small w3-light-grey">
+			              <div class="w3-container w3-center w3-round-xlarge univaq-color-background" style="width:${voto}%">${voto/20}</div>
+			            </div>
+			            <#if pareriAzienda?size gt 0>
+			         	  <hr />
+			         	  <a href="#pareri-azienda-modal">
+				           	  <p class="info pointer w3-margin-bottom">
+					           	  <i class="fas fa-clipboard-list fa-fw w3-margin-right w3-large"></i>
+					          	  Pareri
+					          </p>
+				          </a>
+			            <#else>
+			         	  <br />
+			            </#if>
+		           </div>
+		       </div>
+	   </div>	
+	   <!-- End Left Column -->
+	
+	   <!-- Middle Column -->
+	   <div class="w3-threequarter" id="right-column">
+	
+	         <!-- <div id="search-bar">
+	             <div class="w3-card w3-round padding-edge">
+	                 <div class="w3-container intership">
+	                     <div class="search-form collapsible-menu">
+	                      <input type="checkbox" id="menu" />
+	                      <label id="label-search" for="menu">Filtra le proposte di tirocinio</label>
+	                      <div class="menu-content">
+	                          <br /><br />
+	                          <form action="." method="get">
+		                          <#list campiRicerca as campoRicerca>
+		                              <label class="field-filter">${campoRicerca?capitalize}</label>
+		                              <input name="${campoRicerca}" class="w3-input" autocomplete="off" />
+		                          </#list>
+		                          <button type="submit" class="w3-button w3-right w3-border w3-round">Cerca</button>
+	                          </form>
+	                      </div>
+	                 	</div>
+	             	</div>
+	         	</div>
+	     	</div> -->
+	       
+	       <div id="offerte-container" class="w3-margin-bottom w3-card w3-round w3-padding">
+				<h2 id="tirocini-disponibili" class=" w3-padding w3-text-grey">
+					<i class="fas fa-list-ul fa-fw w3-margin-right w3-xlarge"></i>
+					Offerte pubblicate
+				</h2>
+				<#list offerte as offerta>
+					<hr />
+					<div class="w3-padding w3-container offerta-container">
+						<h5 class="bold">
+							<#if offerta.titolo?length &lt; 150>
+								<a href="offertaTirocinio?id_tirocinio=${offerta.idTirocinio}">
+									${offerta.titolo}
+								</a>
+							<#else>
+								<a href="offertaTirocinio?id_tirocinio=${offerta.idTirocinio}">
+									${offerta.titolo?substring(0,150)}...
+								</a>
+							</#if>
+						</h5>
+						<p class="info">
+							<i class="fas fa-map-marker-alt fa-fw w3-margin-right"></i>
+							 ${offerta.luogo}
+						</p>
+						<p class="info">
+							<i class="far fa-calendar-alt fa-fw w3-margin-right"></i>
+							Dal ${offerta.dataInizio?iso_local} al ${offerta.dataFine?iso_local}
+						</p>
+						<p  class="proposte-tirocinio">
+						    <#if offerta.modalita?length &lt; 500>
+						        ${offerta.modalita}
+						    <#else>
+						        ${offerta.modalita?substring(0,500)}...
+						    </#if>
+						</p>
+						<div class="options w3-right">
+	                      <a href="#update-intership-modal-${offerta.idTirocinio}">
+							<button class="pointer"><i class="far fa-edit w3-large"></i></button>
+						  </a>
+						  <a href="offertaTirocinio?id_tirocinio=${offerta.idTirocinio}&rimuovi=true">
+							<button class="pointer"><i class="far fa-trash-alt w3-large"></i></button>
+						  </a>
+						  <a href="offertaTirocinio?id_tirocinio=${offerta.idTirocinio}&visibilita=${offerta.visibile?string('false','true')}">
+	                      	<button class="pointer">
+	                      		<#if offerta.visibile>
+	                      			<i class="far fa-eye w3-large"></i>
+	                      		<#else>
+	                      			<i class="far fa-eye-slash w3-large"></i>
+	                      		</#if>
+	                      	</button>
+	                      </a>
+	                    </div>
+					 </div>
+				</#list>
+		        
+		      </div>
+	       
+	       <!-- Including pagination -->
+	       <#include "components/pagination.ftl.html">
+	
+	   </div>
+   
+   </div>
+   <!-- End grid -->
+        
+</div>
+
+<!-- Modals -->
+<!-- Update company profile modal -->
+<div id="update-company-modal" class="overlay">
+    <div class="w3-card w3-white w3-round popup w3-padding">
+
+	      <div class="w3-center"><br>
+	      	<a href="#" class="w3-button w3-xlarge w3-display-topright">&times;</a>
+	        <h2>Modifica informazioni</h2>
+	      </div>
+	      <form class="w3-container" action="./azienda" method="post">
+	          <div class="w3-section">
+		          <!-- The user CF is hidden, it is used to retrieve the current user from database -->
+		          <!-- <input type="hidden" name="utente" value="${utente.utente}" />  -->
+		          <h3 class="univaq-color profile">Informazioni sull'azienda</h3>
+		          <label for="nomeAzienda"><b>Nome</b></label>
+		          <input id="nomeAzienda" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" value="${utente.nome}" placeholder="Inserisci il tuo nome" name="nome" autocomplete="off" required />
+		          <label for="regioneAzienda"><b>Regione</b></label>
+		          <input id="regioneAzienda" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" value="${utente.regione}" placeholder="Inserisci la regione della tua azienda" name="regione" autocomplete="off" required />
+		          <label for="indirizzoSedeLegale"><b>Indirizzo sede legale</b></label>
+				  <input id="indirizzoSedeLegale" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" value="${utente.indirizzoSedeLegale}" placeholder="Inserisci l'indirizzo della sede legale" name="indirizzo_sede_legale" autocomplete="off" required />
+				  <label for="foroCompetente"><b>Foro competente</b></label>
+				  <input id="foroCompetente" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" value="${utente.foroCompetente}" placeholder="Inserisci il foro competente" name="foro_competente" autocomplete="off" required />
+				  <label for="nomeRappresentante"><b>Nome rappresentante</b></label>
+				  <input id="nomeRappresentante" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" value="${utente.nomeRappresentante}" placeholder="Inserisci il nome del rappresentante" name="nome_rappresentante" autocomplete="off" required />
+				  <label for="cognomeRappresentante"><b>Cognome Rappresentante</b></label>
+				  <input id="cognomeRappresentante" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" value="${utente.cognomeRappresentante}" placeholder="Inserisci il cognome del rappresentante" name="cognome_rappresentante" autocomplete="off" required />
+				  <label for="nomeResponsabile"><b>Nome responsabile</b></label>
+				  <input id="nomeResponsabile" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" value="${utente.nomeResponsabile}" placeholder="Inserisci il nome del responsabile" name="nome_responsabile" autocomplete="off" required />
+				  <label for="cognomeResponsabile"><b>Cognome Responsabile</b></label>
+				  <input id="cognomeResponsabile" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" value="${utente.cognomeResponsabile}" placeholder="Inserisci il cognome del responsabile" name="cognome_responsabile" autocomplete="off" required />					  
+		          <h3 class="univaq-color profile">Account</h3>
+		          <label for="usernameAzienda"><b>Username</b></label>
+	         	  <input id="usernameAzienda" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="15" type="text" value="${utente.username}" placeholder="Inserisci il tuo username" name="username" autocomplete="off" required />
+		          <label for="emailAzienda"><b>Email</b></label>
+	         	  <input id="emailAzienda" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" value="${utente.email}" placeholder="Inserisci la tua email" name="email" autocomplete="off" required />
+		          <label for="telefonoAzienda"><b>Telefono</b></label>
+	          	  <input id="telefonoAzienda" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="20" type="number" value="${utente.telefono}" placeholder="Inserisci il tuo telefono" name="telefono" autocomplete="off" required />
+		          <label for="passwordAzienda"><b>Password</b></label>
+	          	  <input id="passwordAzienda" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="password" value="${utente.password}" placeholder="Inserisci la password" name="password" autocomplete="off" required />
+	          	  <button class="w3-button w3-block w3-section w3-padding univaq-color-background" type="submit" name="aggiorna" value="aggiorna">Modifica</button>
+	          </div>
+	      </form>
+      </div>
+   </div>
+
+<!-- Add intership offer -->
+<div id="add-intership-modal" class="overlay">
+    <div class="w3-card w3-white w3-round popup w3-padding">
+
+	      <div class="w3-center"><br>
+	      	<a href="#" class="w3-button w3-xlarge w3-display-topright">&times;</a>
+	        <h2>Aggiungi tirocinio</h2>
+	      </div>
+	      <form class="w3-container" action="./offertaTirocinio" method="post">
+	        <div class="w3-section">
+	          <!-- The user CF is hidden, it is used to retrieve the current user from database -->
+	          <!-- <input type="hidden" name="utente" value="${utente.utente}" />  -->
+	          <label for="titoloOffertaTirocinio"><b>Titolo</b></label>
+	          <input id="titoloOffertaTirocinio" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="255" type="text" placeholder="Inserisci una breve descrizione" name="titolo" autocomplete="off" required />
+	          <label for="luogoOffertaTirocinio"><b>Luogo</b></label>
+	          <input id="luogoOffertaTirocinio" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" placeholder="Inserisci il luogo in cui avverrà il tirocinio" name="luogo" autocomplete="off" required />
+	          <label for="obiettivi"><b>Obiettivi</b></label>
+			  <textarea id="obiettivi" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="2500" placeholder="Inserisci gli obiettivi da raggiungere" name="obiettivi" autocomplete="off" required></textarea>
+			  <label for="modalita"><b>Modalit&agrave;</b></label>
+			  <textarea id="modalita" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="2500" placeholder="Inserisci le modalita con cui verrà effettuato il tirocinio" name="modalita" autocomplete="off" required></textarea>
+			  <label for="rimborso"><b>Rimborso</b></label>
+			  <input id="rimborso" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="255" type="number" placeholder="Inserisci l'importo del rimborso se previsto" name="rimborso" />
+			  <label for="dataInizio"><b>Data inizio</b></label>
+			  <input id="dataInizio" class="w3-input w3-border-bottom w3-margin-bottom" type="date" placeholder="Inserisci la data di inizio del tirocinio" name="data_inizio" autocomplete="off" required />
+			  <label for="dataFine"><b>Data fine</b></label>
+			  <input id="dataFine" class="w3-input w3-border-bottom w3-margin-bottom" type="date" placeholder="Inserisci la data in cui si concluderà il tirocinio" name="data_fine" autocomplete="off" required />
+			  <label for="oraInizio"><b>Ora inizio</b></label>
+			  <input id="oraInizio" class="w3-input w3-border-bottom w3-margin-bottom" type="time" placeholder="Inserisci l'orario di inizio" name="ora_inizio" />					  
+	          <label for="oraFine"><b>Ora fine</b></label>
+         	  <input id="oraFine" class="w3-input w3-border-bottom w3-margin-bottom" type="time" placeholder="Inserisci l'orario di fine" name="ora_fine" />
+         	  <label for="numeroOre"><b>Numero ore</b></label>
+         	  <input id="numeroOre" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="5" type="number" placeholder="Inserisci il numero di ore previste per il tirocinio" name="numero_ore" autocomplete="off" required />
+          	  <button class="w3-button w3-block w3-section w3-padding univaq-color-background" type="submit" name="aggiungi" value="aggiungi">Aggiungi</button>
+	        </div>
+	      </form>
+      </div>
+</div>
+
+<!-- Update intership offers -->
+<#list offerte as offerta>
+	<div id="update-intership-modal-${offerta.idTirocinio}" class="overlay">
+	    <div class="w3-card w3-white w3-round popup w3-padding">
+	
+		      <div class="w3-center"><br>
+		      	<a href="#" class="w3-button w3-xlarge w3-display-topright">&times;</a>
+		        <h2>Aggiungi tirocinio</h2>
+		      </div>
+		      <form class="w3-container" action="./offertaTirocinio" method="post">
+		        <div class="w3-section">
+		          <!-- The idTirocinio is hidden, it is used on the server -->
+		          <input type="hidden" name="id_tirocinio" value="${offerta.idTirocinio}" />
+		          <label for="titoloOffertaTirocinio-${offerta.idTirocinio}"><b>Titolo</b></label>
+		          <input id="titoloOffertaTirocinio-${offerta.idTirocinio}" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="255" type="text" placeholder="Inserisci una breve descrizione" name="titolo" value="${offerta.titolo}" autocomplete="off" required />
+		          <label for="luogoOffertaTirocinio-${offerta.idTirocinio}"><b>Luogo</b></label>
+		          <input id="luogoOffertaTirocinio-${offerta.idTirocinio}" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" placeholder="Inserisci il luogo in cui avverrà il tirocinio" name="luogo" value="${offerta.luogo}" autocomplete="off" required />
+		          <label for="obiettivi-${offerta.idTirocinio}"><b>Obiettivi</b></label>
+				  <textarea id="obiettivi-${offerta.idTirocinio}" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="2500" placeholder="Inserisci gli obiettivi da raggiungere" name="obiettivi" autocomplete="off" required>${offerta.obiettivi}</textarea>
+				  <label for="modalita-${offerta.idTirocinio}"><b>Modalit&agrave;</b></label>
+				  <textarea id="modalita-${offerta.idTirocinio}" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="2500" placeholder="Inserisci le modalita con cui verrà effettuato il tirocinio" name="modalita" autocomplete="off" required>${offerta.modalita}</textarea>
+				  <label for="rimborso-${offerta.idTirocinio}"><b>Rimborso</b></label>
+				  <input id="rimborso-${offerta.idTirocinio}" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="255" type="number" placeholder="Inserisci l'importo del rimborso se previsto" <#if offerta.rimborso??>value="${offerta.rimborso}"</#if> name="rimborso" />
+				  <label for="dataInizio-${offerta.idTirocinio}"><b>Data inizio</b></label>
+				  <input id="dataInizio-${offerta.idTirocinio}" class="w3-input w3-border-bottom w3-margin-bottom" type="date" placeholder="Inserisci la data di inizio del tirocinio" name="data_inizio" value="${offerta.dataInizio?iso_local}" autocomplete="off" required />
+				  <label for="dataFine-${offerta.idTirocinio}"><b>Data fine</b></label>
+				  <input id="dataFine-${offerta.idTirocinio}" class="w3-input w3-border-bottom w3-margin-bottom" type="date" placeholder="Inserisci la data in cui si concluderà il tirocinio" name="data_fine" value="${offerta.dataFine?iso_local}" autocomplete="off" required />
+				  <label for="oraInizio-${offerta.idTirocinio}"><b>Ora inizio</b></label>
+				  <input id="oraInizio-${offerta.idTirocinio}" class="w3-input w3-border-bottom w3-margin-bottom" type="time" placeholder="Inserisci l'orario di inizio" <#if offerta.oraFine??> value="${offerta.oraInizio?iso_local[0..4]}"</#if> name="ora_inizio" />					  
+		          <label for="oraFine-${offerta.idTirocinio}"><b>Ora fine</b></label>
+	         	  <input id="oraFine-${offerta.idTirocinio}" class="w3-input w3-border-bottom w3-margin-bottom" type="time" placeholder="Inserisci l'orario di fine" <#if offerta.oraFine??>value="${offerta.oraFine?iso_local[0..4]}"</#if> name="ora_fine" />
+	         	  <label for="numeroOre-${offerta.idTirocinio}"><b>Numero ore</b></label>
+	         	  <input id="numeroOre-${offerta.idTirocinio}" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="5" type="number" placeholder="Inserisci il numero di ore previste per il tirocinio" name="numero_ore" value="${offerta.numeroOre}" autocomplete="off" required />
+	          	  <button class="w3-button w3-block w3-section w3-padding univaq-color-background" type="submit" name="aggiorna" value="aggiorna">Aggiorna</button>
+		        </div>
+		      </form>
+	      </div>
+	</div>
+</#list>
+
+<!-- Read reviews modal -->
+    <div id="pareri-azienda-modal" class="overlay">
+	    <div class="w3-card w3-white w3-round popup w3-padding">
+	
+	      <div class="w3-center"><br>
+	      	<a href="#" class="w3-button w3-xlarge w3-display-topright">&times;</a>
+	        <h2>Pareri su ${azienda.nome}</h2>
+	      </div>
+	        <div class="w3-section">
+				<#list pareriAzienda?keys as studente>
+					<hr />
+					<p class="no-margin"><b>${studente}</b></p>
+					<p>${pareriAzienda[studente]}</p>
+				</#list>
+	        </div>
+	      </div>
+      </div>
+

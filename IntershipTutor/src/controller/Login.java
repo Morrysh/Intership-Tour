@@ -35,7 +35,7 @@ public class Login extends IntershipTutorBaseController {
 	    	String username = request.getParameter("username");
 	        String password = request.getParameter("password");
 	
-	        if (!username.isEmpty() && !password.isEmpty()) {
+	        if (username != null && password != null) {
 	        	// Get user from database if exists;
 	            Utente utente = new UtenteDAO().getLogged(username, password);
 	            Object utenteLoggato = null;
@@ -53,25 +53,18 @@ public class Login extends IntershipTutorBaseController {
 		            }
 		            
 		            SecurityLayer.createSession(request, utenteLoggato);
-	            }
 	            
-	            //se è stato trasmesso un URL di origine, torniamo a quell'indirizzo
-	            //if an origin URL has been transmitted, return to it
-	            if (request.getParameter("referrer") != null) {
-	            	// REMEMBER TO USE THIS TO REDIRECT ON THE PAGE WHERE THE USER UNLOGGED
-	                response.sendRedirect(request.getParameter("referrer"));
-	            } else {
-	            	if(utente == null)
-	            		response.sendRedirect(".#login-modal");
-	            	// Rimandiamo al template dell'amministratore
-	            	else if(utente instanceof Amministratore)
-	            		response.sendRedirect("admin.ftl.html");
-	            	else
-	            		response.sendRedirect(".");
+	        		/*if(request.getParameter("referrer") != null)
+		                response.sendRedirect(request.getParameter("referrer"));
+	        		else*/
+	        			response.sendRedirect(request.getContextPath());
+		        }
+	            else {
+	        		response.sendRedirect(request.getContextPath() + "#access-manager-modal");
 	            }
-	        } else {
-	            request.setAttribute("exception", new Exception("Login failed"));
-	            action_error(request, response);
+	        }
+	        else {
+	        	response.sendRedirect(request.getContextPath() + "#access-manager-modal");
 	        }
         }
         catch (DataLayerException ex) {

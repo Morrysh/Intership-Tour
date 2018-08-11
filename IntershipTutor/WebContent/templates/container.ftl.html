@@ -32,7 +32,7 @@
 		        <i class="fas fa-sign-out-alt w3-margin-left univaq-color-background"></i>
 		    </a>
 	    <#else>
-	    	<a href="#login-modal" class="w3-bar-item w3-right no-padding pointer">
+	    	<a href="#access-manager-modal" class="w3-bar-item w3-right no-padding pointer">
 		        Accedi
 		        <i class="fas fa-sign-in-alt w3-margin-left univaq-color-background"></i>
 		    </a>
@@ -54,7 +54,7 @@
 	            	<#if utente??>
 	            		<li><a href="logout" class="w3-bar-item">Esci</a></li>
 	            	<#else>
-	            		<li><a href="#login-modal" class="w3-bar-item">Accedi</a></li>
+	            		<li><a href="#access-manager-modal" class="w3-bar-item">Accedi</a></li>
 	            	</#if>
 	                <li><a href="./aziende-smartphone.html" class="w3-bar-item">Aziende convenzionate</a></li>
 	            </ul>                    
@@ -71,39 +71,8 @@
 	</div>
     <!-- FOOTER -->
     <footer class="w3-container univaq-color-background">
-        <h5>Copyright &copy; 2018 Martella Stefano, Icaro Iari, Morelli Davide</h5>
+        <h5>Copyright &copy; 2018 Martella Stefano - Icaro Iari - Morelli Davide</h5>
     </footer>
-    
-    <!-- Modals -->
-    
-	<!-- Login modal form -->
-	<#if !utente??>
-	    <div id="login-modal" class="overlay">
-		    <div class="w3-card w3-white w3-round popup w3-padding">
-		
-		      <div class="w3-center"><br>
-		      	<a href="#" class="w3-button w3-xlarge w3-display-topright">&times;</a>
-		        <h2>Effettua il login</h2>
-		      </div>
-		      <form class="w3-container" action="login" method="post">
-		        <div class="w3-section">
-		          <label for="username"><b>Username</b></label>
-		          <input id="username" class="w3-input w3-border-bottom w3-margin-bottom" type="text" placeholder="Inserisci il tuo username" name="username" autocomplete="off" required />
-		          <label for="password"><b>Password</b></label>
-		          <input id="password" class="w3-input w3-border-bottom w3-margin-bottom" type="password" placeholder="Inserisci la tua password" name="password" required />
-		          <button class="w3-button w3-block w3-section w3-padding univaq-color-background" type="submit" name="login" value="login">Login</button>
-		        </div>
-		      </form>
-		      
-		      <div class="w3-container w3-border-top w3-padding w3-round-bottom">
-		        <span class="w3-left  pointer info">Registrati</span>
-		        <span class="w3-right pointer info">Password dimenticata?</span>
-		      </div>
-		      </div>
-	      </div>
-      </#if>
-    
-    <!-- End modals -->
     
     <!-- Scripts -->
     <script src="js/jquery-3.3.1.min.js" ></script>

@@ -100,7 +100,13 @@
 }
 /* End collapsible research */
 
-
+/* Homepage AZIENDA */
+.options button{
+	background-color: #ffffff;
+	border: none;
+	outline-color: #ffffff;
+}
+/* End homepage AZIENDA */
 
 @media (min-device-width: 500px){
 	.intership{

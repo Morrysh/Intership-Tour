@@ -35,6 +35,15 @@ public class GestoreOffertaTirocinio extends IntershipTutorBaseController{
 		try {
 			Azienda azienda = (Azienda) request.getAttribute("utente");
 			
+			Time oraInizio = null;
+			Time oraFine = null;
+			
+			// Controlliamo che gli orari inseriti non siano vuoti(sono opzionali)
+			if(!(request.getParameter(OffertaTirocinio.ORA_INIZIO)).isEmpty()) 
+				oraInizio = Time.valueOf(request.getParameter(OffertaTirocinio.ORA_INIZIO) + ":00");
+			if(!(request.getParameter(OffertaTirocinio.ORA_FINE)).isEmpty()) 
+				oraFine = Time.valueOf(request.getParameter(OffertaTirocinio.ORA_FINE) + ":00");
+			
 			OffertaTirocinio nuovaOfferta = new OffertaTirocinio(
 					azienda.getCodiceFiscale(),
 					request.getParameter(OffertaTirocinio.TITOLO),
@@ -44,13 +53,13 @@ public class GestoreOffertaTirocinio extends IntershipTutorBaseController{
 					request.getParameter(OffertaTirocinio.RIMBORSO),
 					Date.valueOf(request.getParameter(OffertaTirocinio.DATA_INIZIO)),
 					Date.valueOf(request.getParameter(OffertaTirocinio.DATA_FINE)),
-					Time.valueOf(request.getParameter(OffertaTirocinio.ORA_INIZIO) + ":00"),
-					Time.valueOf(request.getParameter(OffertaTirocinio.ORA_FINE) + ":00"),
+					oraInizio,
+					oraFine,
 					Integer.valueOf(request.getParameter(OffertaTirocinio.NUMERO_ORE)));
 			
 			new OffertaTirocinioDAO().insert(nuovaOfferta);
 			
-			response.sendRedirect(".");
+			response.sendRedirect(request.getContextPath());
 				
 		} catch (DataLayerException e) {
 			request.setAttribute("message", "Data access exception: " + e.getMessage());
@@ -66,16 +75,84 @@ public class GestoreOffertaTirocinio extends IntershipTutorBaseController{
 	// Aggiorna offerta tirocinio
 	private void action_aggiorna(HttpServletRequest request, HttpServletResponse response, int codiceOffertaTirocinio) {
 		
+		try {
+			Azienda azienda = (Azienda) request.getAttribute("utente");
+			
+			Time oraInizio = null;
+			Time oraFine = null;
+			
+			// Controlliamo che gli orari inseriti non siano vuoti(sono opzionali)
+			if(!(request.getParameter(OffertaTirocinio.ORA_INIZIO)).isEmpty()) 
+				oraInizio = Time.valueOf(request.getParameter(OffertaTirocinio.ORA_INIZIO) + ":00");
+			if(!(request.getParameter(OffertaTirocinio.ORA_FINE)).isEmpty()) 
+				oraFine = Time.valueOf(request.getParameter(OffertaTirocinio.ORA_FINE) + ":00");
+			
+			OffertaTirocinio nuovaOfferta = new OffertaTirocinio(
+					SecurityLayer.checkNumeric(request.getParameter(OffertaTirocinio.ID_TIROCINIO)),
+					azienda.getCodiceFiscale(),
+					request.getParameter(OffertaTirocinio.TITOLO),
+					request.getParameter(OffertaTirocinio.LUOGO),
+					request.getParameter(OffertaTirocinio.OBIETTIVI),
+					request.getParameter(OffertaTirocinio.MODALITA),
+					request.getParameter(OffertaTirocinio.RIMBORSO),
+					Date.valueOf(request.getParameter(OffertaTirocinio.DATA_INIZIO)),
+					Date.valueOf(request.getParameter(OffertaTirocinio.DATA_FINE)),
+					oraInizio,
+					oraFine,
+					Integer.valueOf(request.getParameter(OffertaTirocinio.NUMERO_ORE)));
+			
+			new OffertaTirocinioDAO().update(nuovaOfferta);
+			
+			response.sendRedirect(request.getContextPath());
+				
+		} catch (DataLayerException e) {
+			request.setAttribute("message", "Data access exception: " + e.getMessage());
+            action_error(request, response);
+		}
+		catch(IOException ex) {
+            request.setAttribute("message", "Data access exception: " + ex.getMessage());
+            action_error(request, response);
+        }
+		
 	}
 	
 	// Rimuovi offerta tirocinio
 	private void action_rimuovi(HttpServletRequest request, HttpServletResponse response, int codiceOffertaTirocinio) {
-		
+		try {
+			int idTirocinio = SecurityLayer.checkNumeric(request.getParameter(OffertaTirocinio.ID_TIROCINIO));
+			
+			new OffertaTirocinioDAO().delete(idTirocinio);
+			
+			response.sendRedirect(request.getContextPath());
+			
+		} catch (DataLayerException e) {
+			request.setAttribute("message", "Data access exception: " + e.getMessage());
+	        action_error(request, response);
+		}
+		catch(IOException ex) {
+            request.setAttribute("message", "Data access exception: " + ex.getMessage());
+            action_error(request, response);
+        }
 	}
 	
 	// Proponi lo studente per il tirocinio
 	private void action_iscriviti(HttpServletRequest request, HttpServletResponse response, int codiceOffertaTirocinio) {
 		
+	}
+	
+	private void action_visibilita(HttpServletRequest request, HttpServletResponse response, int codiceOffertaTirocinio) {
+		try {
+			new OffertaTirocinioDAO().setVisibilita(codiceOffertaTirocinio, Boolean.valueOf(request.getParameter("visibilita")));
+			response.sendRedirect(request.getContextPath());
+		}
+		catch(DataLayerException ex) {
+            request.setAttribute("message", "Data access exception: " + ex.getMessage());
+            action_error(request, response);
+        }
+		catch(IOException ex) {
+            request.setAttribute("message", "Data access exception: " + ex.getMessage());
+            action_error(request, response);
+        }
 	}
 	
 	// Mostra dettagli dell'offerta
@@ -90,7 +167,7 @@ public class GestoreOffertaTirocinio extends IntershipTutorBaseController{
 	        request.setAttribute("azienda", azienda);	
 	        
 			if(azienda != null)
-				res.activate("gestore-offerta-tirocinio.ftl.html", request, response);
+				res.activate("dettaglio-offerta-tirocinio.ftl.html", request, response);
 			else {
 				request.setAttribute("message", "Nessun'azienda trovata");
 	            action_error(request, response);
@@ -113,8 +190,8 @@ public class GestoreOffertaTirocinio extends IntershipTutorBaseController{
 			if(request.getParameter("aggiungi") != null) {
 				action_aggiungi(request, response);
 			}
-			else if (request.getParameter("offertaTirocinio") != null) {
-				int codiceOffertaTirocinio = SecurityLayer.checkNumeric(request.getParameter("offertaTirocinio"));
+			else if (request.getParameter(OffertaTirocinio.ID_TIROCINIO) != null) {
+				int codiceOffertaTirocinio = SecurityLayer.checkNumeric(request.getParameter(OffertaTirocinio.ID_TIROCINIO));
 				if(request.getParameter("iscriviti") != null) {
 	    			action_iscriviti(request, response, codiceOffertaTirocinio);
 	    		}
@@ -123,6 +200,9 @@ public class GestoreOffertaTirocinio extends IntershipTutorBaseController{
 				}
 				else if(request.getParameter("aggiorna") != null) {
 					action_aggiorna(request, response, codiceOffertaTirocinio);
+				}
+				else if(request.getParameter("visibilita") != null) {
+					action_visibilita(request, response, codiceOffertaTirocinio);
 				}
 				else {
 		    		action_default(request, response, codiceOffertaTirocinio);

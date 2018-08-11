@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import dao.impl.StudenteDAO;
 import data.model.Studente;
+import data.model.Utente;
+import data.model.enumeration.TipoUtente;
 import framework.data.DataLayerException;
 import framework.result.FailureResult;
 import framework.result.TemplateManagerException;
@@ -30,10 +32,10 @@ public class GestoreStudente extends IntershipTutorBaseController {
 			
 			studente.setNome(request.getParameter(Studente.NOME));
 			studente.setCognome(request.getParameter(Studente.COGNOME));
-			studente.setEmail(request.getParameter(Studente.EMAIL));
-			studente.setUsername(request.getParameter(Studente.USERNAME));
-			studente.setPassword(request.getParameter(Studente.PASSWORD));
-			studente.setTelefono(request.getParameter(Studente.TELEFONO));
+			studente.setEmail(request.getParameter(Utente.EMAIL));
+			studente.setUsername(request.getParameter(Utente.USERNAME));
+			studente.setPassword(request.getParameter(Utente.PASSWORD));
+			studente.setTelefono(request.getParameter(Utente.TELEFONO));
 			studente.setDataNascita(Date.valueOf(request.getParameter(Studente.DATA_NASCITA)));
 			studente.setLuogoNascita(request.getParameter(Studente.LUOGO_NASCITA));
 			studente.setProvinciaNascita(request.getParameter(Studente.PROVINCIA_NASCITA));
@@ -44,7 +46,42 @@ public class GestoreStudente extends IntershipTutorBaseController {
 			
 			new StudenteDAO().update(studente);
 			
-			response.sendRedirect(".");
+			response.sendRedirect(request.getContextPath());
+		}
+		catch(DataLayerException ex) {
+            request.setAttribute("message", "Data access exception: " + ex.getMessage());
+            action_error(request, response);
+        }
+		catch(IOException ex) {
+            request.setAttribute("message", "Data access exception: " + ex.getMessage());
+            action_error(request, response);
+        }
+	}
+	
+	private void action_registra(HttpServletRequest request, HttpServletResponse response) {
+		try {
+			Studente studente = new Studente(
+				request.getParameter(Utente.CODICE_FISCALE),
+				request.getParameter(Utente.EMAIL),
+				request.getParameter(Utente.USERNAME),
+				request.getParameter(Utente.PASSWORD),
+				request.getParameter(Utente.TELEFONO),
+				TipoUtente.studente,
+				request.getParameter(Studente.CODICE_FISCALE),
+				request.getParameter(Studente.NOME),
+				request.getParameter(Studente.COGNOME),
+				Date.valueOf(request.getParameter(Studente.DATA_NASCITA)),
+				request.getParameter(Studente.LUOGO_NASCITA),
+				request.getParameter(Studente.PROVINCIA_NASCITA),
+				request.getParameter(Studente.RESIDENZA),
+				request.getParameter(Studente.PROVINCIA_RESIDENZA),
+				request.getParameter(Studente.TIPO_LAUREA),
+				request.getParameter(Studente.CORSO_LAUREA),
+				Boolean.valueOf(request.getParameter(Studente.HANDICAP)));
+			
+			new StudenteDAO().insert(studente);
+			
+			response.sendRedirect(request.getContextPath());
 		}
 		catch(DataLayerException ex) {
             request.setAttribute("message", "Data access exception: " + ex.getMessage());
@@ -67,6 +104,9 @@ public class GestoreStudente extends IntershipTutorBaseController {
     	try {
 			if(request.getParameter("aggiorna") != null) {
 				action_aggiorna(request, response);
+			}
+			else if(request.getParameter("registrazione") != null) {
+				action_registra(request, response);
 			}
 			else {
 				action_default(request, response);
