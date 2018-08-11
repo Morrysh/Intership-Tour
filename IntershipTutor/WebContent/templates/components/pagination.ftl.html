@@ -15,7 +15,10 @@
 	           		</#if>
 	           		
 	           		<!-- Limit view if number of pages is greater than 5 -->
-	           		<#if numeroPagine gt 5>	           			
+	           		<#if !OFFERTE_PER_PAGINA??>
+	           		<#assign OFFERTE_PER_PAGINA = 1>
+	           		</#if>
+	           		<#if numeroPagine gt OFFERTE_PER_PAGINA>	           			
 	           				<a href="?pagina=0${queryString}" 
 	           				   class="w3-button 
 	           				   <#if (paginaCorrente + 1) == 1> 

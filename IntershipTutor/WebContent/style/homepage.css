@@ -100,6 +100,12 @@
 }
 /* End collapsible research */
 
+/* Homepage STUDENTE */
+button:hover i.fa-share-square{
+	color: #ffffff
+}
+/* End homepage STUDENTE */
+
 /* Homepage AZIENDA */
 .options button{
 	background-color: #ffffff;

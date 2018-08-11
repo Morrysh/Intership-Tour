@@ -6,7 +6,7 @@ public class TirocinioStudente {
 
 	// DB fields
 	public static final String STUDENTE = "studente";
-	public static final String TIROCINIO = "tirocinio";
+	public static final String ID_TIROCINIO = "id_tirocinio";
 	public static final String CFU = "cfu";
 	public static final String TUTORE_UNIVERSITARIO = "tutore_universitario";
 	public static final String TELEFONO_TUTORE = "telefono_tutore";

@@ -104,10 +104,12 @@
 							<i class="fas fa-map-marker-alt fa-fw w3-margin-right"></i>
 							 ${offerta.luogo}
 						</p>
-						<p class="info">
-							<i class="far fa-calendar-alt fa-fw w3-margin-right"></i>
-							Dal ${offerta.dataInizio?iso_local} al ${offerta.dataFine?iso_local}
-						</p>
+						<#if offerta.dataInizio?? && offerta.dataFine??>
+							<p class="info">
+								<i class="far fa-calendar-alt fa-fw w3-margin-right"></i>
+								Dal ${offerta.dataInizio?iso_local} al ${offerta.dataFine?iso_local}
+							</p>
+						</#if>
 						<p  class="proposte-tirocinio">
 						    <#if offerta.modalita?length &lt; 500>
 						        ${offerta.modalita}
@@ -215,9 +217,9 @@
 			  <label for="rimborso"><b>Rimborso</b></label>
 			  <input id="rimborso" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="255" type="number" placeholder="Inserisci l'importo del rimborso se previsto" name="rimborso" />
 			  <label for="dataInizio"><b>Data inizio</b></label>
-			  <input id="dataInizio" class="w3-input w3-border-bottom w3-margin-bottom" type="date" placeholder="Inserisci la data di inizio del tirocinio" name="data_inizio" autocomplete="off" required />
+			  <input id="dataInizio" class="w3-input w3-border-bottom w3-margin-bottom" type="date" placeholder="Inserisci la data di inizio del tirocinio" name="data_inizio" autocomplete="off" />
 			  <label for="dataFine"><b>Data fine</b></label>
-			  <input id="dataFine" class="w3-input w3-border-bottom w3-margin-bottom" type="date" placeholder="Inserisci la data in cui si concluderà il tirocinio" name="data_fine" autocomplete="off" required />
+			  <input id="dataFine" class="w3-input w3-border-bottom w3-margin-bottom" type="date" placeholder="Inserisci la data in cui si concluderà il tirocinio" name="data_fine" autocomplete="off" />
 			  <label for="oraInizio"><b>Ora inizio</b></label>
 			  <input id="oraInizio" class="w3-input w3-border-bottom w3-margin-bottom" type="time" placeholder="Inserisci l'orario di inizio" name="ora_inizio" />					  
 	          <label for="oraFine"><b>Ora fine</b></label>
@@ -254,9 +256,9 @@
 				  <label for="rimborso-${offerta.idTirocinio}"><b>Rimborso</b></label>
 				  <input id="rimborso-${offerta.idTirocinio}" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="255" type="number" placeholder="Inserisci l'importo del rimborso se previsto" <#if offerta.rimborso??>value="${offerta.rimborso}"</#if> name="rimborso" />
 				  <label for="dataInizio-${offerta.idTirocinio}"><b>Data inizio</b></label>
-				  <input id="dataInizio-${offerta.idTirocinio}" class="w3-input w3-border-bottom w3-margin-bottom" type="date" placeholder="Inserisci la data di inizio del tirocinio" name="data_inizio" value="${offerta.dataInizio?iso_local}" autocomplete="off" required />
+				  <input id="dataInizio-${offerta.idTirocinio}" class="w3-input w3-border-bottom w3-margin-bottom" type="date" placeholder="Inserisci la data di inizio del tirocinio" name="data_inizio" <#if offerta.dataInizio??> value="${offerta.dataInizio?iso_local}"</#if> autocomplete="off" />
 				  <label for="dataFine-${offerta.idTirocinio}"><b>Data fine</b></label>
-				  <input id="dataFine-${offerta.idTirocinio}" class="w3-input w3-border-bottom w3-margin-bottom" type="date" placeholder="Inserisci la data in cui si concluderà il tirocinio" name="data_fine" value="${offerta.dataFine?iso_local}" autocomplete="off" required />
+				  <input id="dataFine-${offerta.idTirocinio}" class="w3-input w3-border-bottom w3-margin-bottom" type="date" placeholder="Inserisci la data in cui si concluderà il tirocinio" name="data_fine" <#if offerta.dataFine??> value="${offerta.dataFine?iso_local}"</#if> autocomplete="off" />
 				  <label for="oraInizio-${offerta.idTirocinio}"><b>Ora inizio</b></label>
 				  <input id="oraInizio-${offerta.idTirocinio}" class="w3-input w3-border-bottom w3-margin-bottom" type="time" placeholder="Inserisci l'orario di inizio" <#if offerta.oraFine??> value="${offerta.oraInizio?iso_local[0..4]}"</#if> name="ora_inizio" />					  
 		          <label for="oraFine-${offerta.idTirocinio}"><b>Ora fine</b></label>

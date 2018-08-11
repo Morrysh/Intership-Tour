@@ -31,6 +31,10 @@ import framework.security.SecurityLayer;
  */
 @SuppressWarnings("serial")
 public class HomePage extends IntershipTutorBaseController {
+	
+	// Numero massimo di offerte per pagina per la paginazione,
+	// questo numero deve corrispondere a quello in offertaTirocinioDAO
+	final static double OFFERTE_PER_PAGINA = OffertaTirocinioDAO.OFFERTE_PER_PAGINA;
 
 	private void action_error(HttpServletRequest request, HttpServletResponse response) {
         if (request.getAttribute("exception") != null) {
@@ -50,10 +54,14 @@ public class HomePage extends IntershipTutorBaseController {
 	    	
 	    	Map<CampoRicercaTirocinio, String> campiDaCercare = new HashMap<>();
             
+	    	// Used to page filtered offers(without page number)
+            String queryString = "";
+    		
             for(CampoRicercaTirocinio campoRicerca : CampoRicercaTirocinio.values()) {
             	if(request.getParameter(campoRicerca.name()) != "" &&
             	   request.getParameter(campoRicerca.name()) != null) {
             		campiDaCercare.put(campoRicerca, (String) request.getParameter(campoRicerca.name()));
+            		queryString += "&" + campoRicerca + "=" + (String) request.getParameter(campoRicerca.name());
             	}
             }
             
@@ -70,7 +78,7 @@ public class HomePage extends IntershipTutorBaseController {
             	offerte = new OffertaTirocinioDAO().allOfferteInRangePerCampo(campiDaCercare, (int) request.getAttribute("paginaCorrente"));
             	// Massimo 5 offerte per pagina
                 // il .0 è necessario per il cast di Java (1.1 deve essere arrotondato a 2 per esempio)
-            	numeroPagine = (int) Math.ceil(new OffertaTirocinioDAO().getCountAccordingToRicerca(campiDaCercare) / 5.0);
+            	numeroPagine = (int) Math.ceil(new OffertaTirocinioDAO().getCountAccordingToRicerca(campiDaCercare) / OFFERTE_PER_PAGINA);
             }
             // Nessun filtraggio
             else {
@@ -78,12 +86,13 @@ public class HomePage extends IntershipTutorBaseController {
                 offerte = new OffertaTirocinioDAO().allOfferteInRangeAccordingToVisibilita(true, (int) request.getAttribute("paginaCorrente"));
              // Massimo 5 offerte per pagina
                 // il .0 è necessario per il cast di Java (1.1 deve essere arrotondato a 2 per esempio)
-                numeroPagine = (int) Math.ceil(new OffertaTirocinioDAO().getCountAccordingToVisibilita(true) / 5.0);
+                numeroPagine = (int) Math.ceil(new OffertaTirocinioDAO().getCountAccordingToVisibilita(true) / OFFERTE_PER_PAGINA);
             }
 	    	
 	        request.setAttribute("aziende", aziende);
 	        request.setAttribute("numeroPagine", numeroPagine);
 			request.setAttribute("offerte", offerte);
+			request.setAttribute("queryString", queryString);
 	        // Attiviamo il template per lo studente loggato
 			res.activate("homepage-studente.ftl.html", request, response);
         }
@@ -125,7 +134,7 @@ public class HomePage extends IntershipTutorBaseController {
             	offerte = new OffertaTirocinioDAO().allOfferteInRangePerCampo(campiDaCercare, (int) request.getAttribute("paginaCorrente"));
             	// Massimo 5 offerte per pagina
                 // il .0 è necessario per il cast di Java (1.1 deve essere arrotondato a 2 per esempio)
-            	numeroPagine = (int) Math.ceil(new OffertaTirocinioDAO().getCountAccordingToRicerca(campiDaCercare) / 5.0);
+            	numeroPagine = (int) Math.ceil(new OffertaTirocinioDAO().getCountAccordingToRicerca(campiDaCercare) / OFFERTE_PER_PAGINA);
             }*/
             // Nessun filtraggio
             //else {
@@ -133,7 +142,7 @@ public class HomePage extends IntershipTutorBaseController {
              offerte = new OffertaTirocinioDAO().allOfferteInRangeAccordingToAzienda(azienda, (int) request.getAttribute("paginaCorrente"));
              // Massimo 5 offerte per pagina
                 // il .0 è necessario per il cast di Java (1.1 deve essere arrotondato a 2 per esempio)
-             numeroPagine = (int) Math.ceil(new OffertaTirocinioDAO().getCountAccordingToAzienda(azienda) / 5.0);
+             numeroPagine = (int) Math.ceil(new OffertaTirocinioDAO().getCountAccordingToAzienda(azienda) / OFFERTE_PER_PAGINA);
             //}
     		
             request.setAttribute("azienda", azienda);
@@ -165,10 +174,14 @@ public class HomePage extends IntershipTutorBaseController {
     		
     		Map<CampoRicercaTirocinio, String> campiDaCercare = new HashMap<>();
             
+    		// Used to page filtered offers(without page number)
+            String queryString = "";
+    		
             for(CampoRicercaTirocinio campoRicerca : CampoRicercaTirocinio.values()) {
             	if(request.getParameter(campoRicerca.name()) != "" &&
             	   request.getParameter(campoRicerca.name()) != null) {
             		campiDaCercare.put(campoRicerca, (String) request.getParameter(campoRicerca.name()));
+            		queryString += "&" + campoRicerca + "=" + (String) request.getParameter(campoRicerca.name());
             	}
             }
             
@@ -185,7 +198,7 @@ public class HomePage extends IntershipTutorBaseController {
             	offerte = new OffertaTirocinioDAO().allOfferteInRangePerCampo(campiDaCercare, (int) request.getAttribute("paginaCorrente"));
             	// Massimo 5 offerte per pagina
                 // il .0 è necessario per il cast di Java (1.1 deve essere arrotondato a 2 per esempio)
-            	numeroPagine = (int) Math.ceil(new OffertaTirocinioDAO().getCountAccordingToRicerca(campiDaCercare) / 5.0);
+            	numeroPagine = (int) Math.ceil(new OffertaTirocinioDAO().getCountAccordingToRicerca(campiDaCercare) / OFFERTE_PER_PAGINA);
             }
             // Nessun filtraggio
             else {
@@ -193,10 +206,11 @@ public class HomePage extends IntershipTutorBaseController {
                 offerte = new OffertaTirocinioDAO().allOfferteInRangeAccordingToVisibilita(true, (int) request.getAttribute("paginaCorrente"));
              // Massimo 5 offerte per pagina
                 // il .0 è necessario per il cast di Java (1.1 deve essere arrotondato a 2 per esempio)
-                numeroPagine = (int) Math.ceil(new OffertaTirocinioDAO().getCountAccordingToVisibilita(true) / 5.0);
+                numeroPagine = (int) Math.ceil(new OffertaTirocinioDAO().getCountAccordingToVisibilita(true) / OFFERTE_PER_PAGINA);
             }
     		
 			request.setAttribute("aziende", aziende);
+			request.setAttribute("queryString", queryString);
 			request.setAttribute("numeroPagine", numeroPagine);
 			request.setAttribute("offerte", offerte);
 			// Attiviamo il template per l'utente non loggato
@@ -216,13 +230,9 @@ public class HomePage extends IntershipTutorBaseController {
         	paginaCorrente = (SecurityLayer.checkNumeric(request.getParameter("pagina")));
         }
         
-        // Per paginare le offerte filtrate
-        String queryString = "";
-        if(request.getQueryString() != null)
-        	queryString = "&" + request.getQueryString();
+       
         
 		request.setAttribute("paginaCorrente", paginaCorrente);
-		request.setAttribute("queryString", queryString);
 		request.setAttribute("campiRicerca", CampoRicercaTirocinio.values());
     	
     	
@@ -236,6 +246,7 @@ public class HomePage extends IntershipTutorBaseController {
     		
     		// Common css for homepages(student homepage, company homepage, admin homepage and anonymous homepage)
     		request.setAttribute("page_css", "homepage");
+    		request.setAttribute("OFFERTE_PER_PAGINA", OFFERTE_PER_PAGINA);
     		
     		if(request.getAttribute("utente") instanceof Studente)
     			action_student(request, response);

@@ -56,16 +56,35 @@
           		<i class="fas fa-map-marker-alt fa-fw w3-margin-right"></i>
           		${offertaTirocinio.luogo}
           	</p>
-          	<p class="info">
-          		<i class="far fa-calendar-alt fa-fw w3-margin-right"></i>
-          		da ${offertaTirocinio.dataInizio?iso_local} al ${offertaTirocinio.dataFine?iso_local} 
-          		<!-- <span class="w3-tag w3-round univaq-color-background">Current</span> -->
-          	</p>
+          	<#if offertaTirocinio.dataInizio?? && offertaTirocinio.dataFine??>
+	          	<p class="info">
+	          		<i class="far fa-calendar-alt fa-fw w3-margin-right"></i>
+	          		da ${offertaTirocinio.dataInizio?iso_local} al ${offertaTirocinio.dataFine?iso_local} 
+	          		<!-- <span class="w3-tag w3-round univaq-color-background">Current</span> -->
+	          	</p>
+          	</#if>
           	<h5 class="bold"><b>Obiettivi</b></h5>
           		<p class="descrizione-tirocinio">${offertaTirocinio.obiettivi}</p>	        
         		<hr>
           	<h5 class="bold"><b>Modalità</b></h5>
           	<p class="descrizione-tirocinio">${offertaTirocinio.modalita}</p>
+          	<!-- 
+          	<#if utente??>
+	          	<a href="#access-manager-modal">
+					<button class="w3-button w3-right w3-round">
+						<i class="far fa-share-square fa-fw w3-margin-right"></i>
+						Invia proposta
+					</button>
+				</a>
+			<#else>
+				<a href="#access-manager-modal">
+					<button class="w3-button w3-right w3-round">
+						<i class="far fa-share-square fa-fw w3-margin-right"></i>
+						Invia proposta
+					</button>
+				</a>
+			</#if>
+			 -->
         </div>
       </div>
 

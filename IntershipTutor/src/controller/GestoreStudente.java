@@ -8,12 +8,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import dao.impl.StudenteDAO;
+import dao.impl.TirocinioStudenteDAO;
 import data.model.Studente;
+import data.model.TirocinioStudente;
 import data.model.Utente;
 import data.model.enumeration.TipoUtente;
+import data.model.enumeration.StatoRichiestaTirocinio;
 import framework.data.DataLayerException;
 import framework.result.FailureResult;
 import framework.result.TemplateManagerException;
+import framework.security.SecurityLayer;
 
 @SuppressWarnings("serial")
 public class GestoreStudente extends IntershipTutorBaseController {
@@ -92,6 +96,34 @@ public class GestoreStudente extends IntershipTutorBaseController {
             action_error(request, response);
         }
 	}
+	
+	private void action_iscriviti(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException {
+        try {
+        	
+        	Utente utente = (Utente) request.getAttribute("utente");
+        	
+        	TirocinioStudente tirocinioStudente = new TirocinioStudente(
+        			utente.getCodiceFiscale(),
+        			SecurityLayer.checkNumeric(request.getParameter(TirocinioStudente.ID_TIROCINIO)),
+        			SecurityLayer.checkNumeric(request.getParameter(TirocinioStudente.CFU)),
+        			request.getParameter(TirocinioStudente.TUTORE_UNIVERSITARIO),
+        			request.getParameter(TirocinioStudente.TELEFONO_TUTORE),
+        			request.getParameter(TirocinioStudente.EMAIL_TUTORE),
+        			null, // descrizioneDettagliata
+        			0,    // oreSvolte
+        			null, // giudizioFinale
+        			null, // parere
+        			StatoRichiestaTirocinio.attesa);
+        	
+        	new TirocinioStudenteDAO().insert(tirocinioStudente);
+        	
+        	response.sendRedirect(request.getContextPath());
+        }
+        catch(DataLayerException ex) {
+            request.setAttribute("message", "Data access exception: " + ex.getMessage());
+            action_error(request, response);
+        }
+    }
 
     private void action_default(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException {
         
@@ -107,6 +139,15 @@ public class GestoreStudente extends IntershipTutorBaseController {
 			}
 			else if(request.getParameter("registrazione") != null) {
 				action_registra(request, response);
+			}
+			else if(request.getParameter("iscriviti") != null) {
+				if(request.getParameter(TirocinioStudente.ID_TIROCINIO) != null) {
+					action_iscriviti(request, response);
+				}
+				else {
+					request.setAttribute("message", "Non è stato specificato il tirocinio");
+    			    action_error(request, response);
+				}
 			}
 			else {
 				action_default(request, response);

@@ -113,10 +113,12 @@
 							<i class="fas fa-map-marker-alt fa-fw w3-margin-right"></i>
 							 ${offerta.luogo}
 						</p>
-						<p class="info">
-							<i class="far fa-calendar-alt fa-fw w3-margin-right"></i>
-							Dal ${offerta.dataInizio?iso_local} al ${offerta.dataFine?iso_local}
-						</p>
+						<#if offerta.dataInizio?? && offerta.dataFine??>
+							<p class="info">
+								<i class="far fa-calendar-alt fa-fw w3-margin-right"></i>
+								Dal ${offerta.dataInizio?iso_local} al ${offerta.dataFine?iso_local}
+							</p>
+						</#if>
 						<p  class="proposte-tirocinio">
 						    <#if offerta.modalita?length &lt; 500>
 						        ${offerta.modalita}
@@ -124,6 +126,12 @@
 						        ${offerta.modalita?substring(0,500)}...
 						    </#if>
 						</p>
+						<a href="#intership-subscription-modal-${offerta.idTirocinio}">
+							<button class="w3-button w3-right w3-round">
+								<i class="far fa-share-square fa-fw w3-margin-right w3-hover-univaq-color-background"></i>
+								Invia proposta
+							</button>
+						</a>
 					 </div>
 				</#list>
 		        
@@ -185,5 +193,33 @@
 		      </form>
 	      </div>
       </div>
+      
+      <!-- Inteship subscription modal -->
+      <#list offerte as offerta>
+	      <div id="intership-subscription-modal-${offerta.idTirocinio}" class="overlay">
+		    <div class="w3-card w3-white w3-round popup w3-padding">
+		      <div class="w3-center"><br>
+		      	<a href="#" class="w3-button w3-xlarge w3-display-topright">&times;</a>
+		        <h2>Inserisci le informazioni</h2>
+		      </div>
+			      <form class="w3-container" action="studente" method="post">
+			        <div class="w3-section">
+			        	<input type="hidden" name="id_tirocinio" value="${offerta.idTirocinio}" />
+			        	<h3 class="univaq-color profile">Informazioni sul tutore scelto</h3>
+						<label for="nomeTutore-${offerta.idTirocinio}"><b>Nome e Cognome Tutore</b></label>
+		          		<input id="nomeTutore-${offerta.idTirocinio}" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" placeholder="Inserisci il nome e cognome del tutore scelto" name="tutore_universitario" autocomplete="off" required />
+				        <label for="telefonoTutore-${offerta.idTirocinio}"><b>Telefono tutore</b></label>
+				        <input id="telefonoTutore-${offerta.idTirocinio}" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="15" type="number" placeholder="Inserisci il numero di telefono del tutore scelto" name="telefono_tutore" autocomplete="off" required />
+				        <label for="emailTutore-${offerta.idTirocinio}"><b>Email tutore</b></label>
+				        <input id="emailTutore-${offerta.idTirocinio}" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" placeholder="Inserisci l'email del tutore scelto" name="email_tutore" autocomplete="off" required />
+				        <h3 class="univaq-color profile">Informazioni aggiuntive</h3>
+				        <label for="cfu-${offerta.idTirocinio}"><b>CFU</b></label>
+						<input id="cfu-${offerta.idTirocinio}" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="11" type="number" placeholder="Inserisci i CFU che desideri conseguire con il tirocinio scelto" name="cfu" autocomplete="off" required />
+						<button class="w3-button w3-block w3-section w3-padding univaq-color-background" type="submit" name="iscriviti" value="iscriviti">Invia</button>
+			        </div>
+			      </form>
+		      </div>
+	      </div>
+      </#list>
 
 

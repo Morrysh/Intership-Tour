@@ -77,7 +77,132 @@
     <!-- Scripts -->
     <script src="js/jquery-3.3.1.min.js" ></script>
     <script src="js/index.js"></script>
-
+    
+    <!-- Modals -->
+    <#if !utente??>
+		<!-- Login modal form -->
+		<div id="access-manager-modal" class="overlay">
+			<div class="tab-frame">
+			
+				<div class="popup w3-card w3-round w3-padding w3-white">
+					<input type="radio" checked name="tab" id="tab1">
+					<label class="tab-label" for="tab1">Login</label>
+					
+					<input type="radio" name="tab" id="tab2">
+					<label class="tab-label" for="tab2">Registrazione</label>
+					
+					<input type="radio" name="tab" id="tab3">
+					<label class="tab-label" for="tab3">Azienda</label>
+					
+					
+					<!-- Login modal -->
+					<div id="login-modal" class="tab">
+						<div class="w3-center"><br>
+							<a href="#" class="w3-button w3-xlarge w3-display-topright">&times;</a>
+							<h2 class="w3-margin-bottom">Effettua il login</h2>
+						</div>
+						<form class="w3-container" action="login" method="post">
+							<div class="w3-section">
+								<label for="username"><b>Username</b></label>
+								<input id="username" class="w3-input w3-border-bottom" type="text" placeholder="Inserisci il tuo username" name="username" autocomplete="off" required />
+								<label for="password"><b>Password</b></label>
+								<input id="password" class="w3-input w3-border-bottom" type="password" placeholder="Inserisci la tua password" name="password" required />
+								<button class="w3-button w3-block w3-padding univaq-color-background" type="submit" name="login" value="login">Login</button>
+							</div>
+		      			</form>
+					</div>
+					<!-- End login modal -->
+					
+					<!-- Sign up student modal -->
+					<div id="signup-student-modal" class="tab">
+						<div class="w3-center"><br>
+							<a href="#" class="w3-button w3-xlarge w3-display-topright">&times;</a>
+							<h2 class="w3-margin-bottom">Effettua la registrazione</h2>
+						</div>
+						<form class="w3-container" action="studente" method="post">
+					        <div class="w3-section">
+					          <h3 class="univaq-color profile">Informazioni personali</h3>
+					          <label for="nomeStudente"><b>Nome</b></label>
+					          <input id="nomeStudente" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" placeholder="Inserisci il tuo nome" name="nome" autocomplete="off" required />
+					          <label for="cognomeStudente"><b>Cognome</b></label>
+					          <input id="codiceFiscaleStudente" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" placeholder="Inserisci il tuo nome" name="cognome" autocomplete="off" required />
+					          <label for="codiceFiscaleStudente"><b>Codice fiscale</b></label>
+					          <input id="cognomeStudente" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="16" type="text" placeholder="Inserisci il tuo codice fiscale" name="codice_fiscale" autocomplete="off" required />
+					          <label for="dataNascita"><b>Data di nascita</b></label>
+					          <input id="dataNascita" class="w3-input w3-border-bottom w3-margin-bottom" type="date" placeholder="Inserisci la tua data di nascita" name="data_nascita" autocomplete="off" required />
+					          <label for="luogoNascita"><b>Luogo di Nascita</b></label>
+							  <input id="luogoNascita" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" placeholder="Inserisci il tuo luogo di nascita" name="luogo_nascita" autocomplete="off" required />
+							  <label for="provinciaNascita"><b>Provincia di Nascita</b></label>
+							  <input id="provinciaNascita" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" placeholder="Inserisci la tua provincia di nascita" name="provincia_nascita" autocomplete="off" required />
+							  <label for="residenza"><b>Residenza</b></label>
+							  <input id="residenza" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" placeholder="Inserisci la tua residenza" name="residenza" autocomplete="off" required />
+							  <label for="provinciaResidenza"><b>Provincia residenza</b></label>
+							  <input id="provinciaResidenza" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" placeholder="Inserisci la provincia della tua residenza" name="provincia_residenza" autocomplete="off" required />
+							  <label for="tipoLaurea"><b>Tipo di laurea</b></label>
+							  <input id="tipoLaurea" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" placeholder="Inserisci il tipo della tua laurea(Triennale/Magistrale)" name="tipo_laurea" autocomplete="off" required />
+							  <label for="corsoLaurea"><b>Corso di laurea</b></label>
+							  <input id="corsoLaurea" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" placeholder="Inserisci il tuo corso di laurea" name="corso_laurea" autocomplete="off" required />
+					          <h3 class="univaq-color profile">Account</h3>
+					          <label for="usernameStudente"><b>Username</b></label>
+				         	  <input id="usernameStudente" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="15" type="text" placeholder="Inserisci il tuo username" name="username" autocomplete="off" required />
+					          <label for="emailStudente"><b>Email</b></label>
+				         	  <input id="emailStudente" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" placeholder="Inserisci la tua email" name="email" autocomplete="off" required />
+					          <label for="telefonoStudente"><b>Telefono</b></label>
+				          	  <input id="telefonoStudente" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="20" type="number" placeholder="Inserisci il tuo telefono" name="telefono" autocomplete="off" required />
+					          <label for="passwordStudente"><b>Password</b></label>
+				          	  <input id="passwordStudente" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="password" placeholder="Inserisci la password" name="password" autocomplete="off" required />
+				          	  <button class="w3-button w3-block w3-section w3-padding univaq-color-background" type="submit" name="registrazione" value="registrazione">Registrati</button>
+					        </div>
+					    </form>
+					</div>
+					<!-- End sign up student modal -->
+					
+					<!-- Sign up company modal -->
+					<div id="signup-company-modal" class="tab">
+						<div class="w3-center"><br>
+							<a href="#" class="w3-button w3-xlarge w3-display-topright">&times;</a>
+							<h2 class="w3-margin-bottom">Registra la tua azienda</h2>
+						</div>
+						<form class="w3-container" action="azienda" method="post">
+					        <div class="w3-section">
+					          <h3 class="univaq-color profile">Informazioni sull'azienda</h3>
+					          <label for="nomeAzienda"><b>Nome</b></label>
+					          <input id="nomeAzienda" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" placeholder="Inserisci il tuo nome" name="nome" autocomplete="off" required />
+					          <label for="codiceFiscale"><b>Partita IVA/Codice fiscale</b></label>
+					          <input id="codiceFiscale" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="16" type="text" placeholder="Inserisci la partita IVA della tua azienda" name="codice_fiscale" autocomplete="off" required />
+					          <label for="regioneAzienda"><b>Regione</b></label>
+					          <input id="regioneAzienda" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" placeholder="Inserisci la regione della tua azienda" name="regione" autocomplete="off" required />
+					          <label for="indirizzoSedeLegale"><b>Indirizzo sede legale</b></label>
+							  <input id="indirizzoSedeLegale" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" placeholder="Inserisci l'indirizzo della sede legale" name="indirizzo_sede_legale" autocomplete="off" required />
+							  <label for="foroCompetente"><b>Foro competente</b></label>
+							  <input id="foroCompetente" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" placeholder="Inserisci il foro competente" name="foro_competente" autocomplete="off" required />
+							  <label for="nomeRappresentante"><b>Nome rappresentante</b></label>
+							  <input id="nomeRappresentante" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" placeholder="Inserisci il nome del rappresentante" name="nome_rappresentante" autocomplete="off" required />
+							  <label for="cognomeRappresentante"><b>Cognome Rappresentante</b></label>
+							  <input id="cognomeRappresentante" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" placeholder="Inserisci il cognome del rappresentante" name="cognome_rappresentante" autocomplete="off" required />
+							  <label for="nomeResponsabile"><b>Nome responsabile</b></label>
+							  <input id="nomeResponsabile" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" placeholder="Inserisci il nome del responsabile" name="nome_responsabile" autocomplete="off" required />
+							  <label for="cognomeResponsabile"><b>Cognome Responsabile</b></label>
+							  <input id="cognomeResponsabile" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" placeholder="Inserisci il cognome del responsabile" name="cognome_responsabile" autocomplete="off" required />					  
+					          <h3 class="univaq-color profile">Account</h3>
+					          <label for="usernameAzienda"><b>Username</b></label>
+				         	  <input id="usernameAzienda" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="15" type="text" placeholder="Inserisci il tuo username" name="username" autocomplete="off" required />
+					          <label for="emailAzienda"><b>Email</b></label>
+				         	  <input id="emailAzienda" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" placeholder="Inserisci la tua email" name="email" autocomplete="off" required />
+					          <label for="telefonoAzienda"><b>Telefono</b></label>
+				          	  <input id="telefonoAzienda" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="20" type="number" placeholder="Inserisci il tuo telefono" name="telefono" autocomplete="off" required />
+					          <label for="passwordAzienda"><b>Password</b></label>
+				          	  <input id="passwordAzienda" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="password" placeholder="Inserisci la password" name="password" autocomplete="off" required />
+				          	  <button class="w3-button w3-block w3-section w3-padding univaq-color-background" type="submit" name="registrazione" value="registrazione">Registra l'azienda</button>
+				          </div>
+					    </form>
+					</div>
+					<!-- End sign up company modal -->
+				</div>
+			</div>
+		</div>
+	<!-- End modals -->
+	</#if>
 </body>
 
 </html>

@@ -17,7 +17,9 @@ import framework.data.DataLayerException;
 
 public class OffertaTirocinioDAO implements OffertaTirocinioDAOInterface {
 
-	public final int OFFERTE_PER_PAGINA = 5;
+	// The value is a double becouse in the homepage we need a double for the pagination
+	// due to Java casting rules
+	public static final double OFFERTE_PER_PAGINA = 5.0;
 	
 	@Override
 	public int insert(OffertaTirocinio offertaTirocinio) throws DataLayerException {
@@ -326,8 +328,8 @@ public class OffertaTirocinioDAO implements OffertaTirocinioDAOInterface {
             preparedStatement = connection.prepareStatement(query);
             preparedStatement.setInt(1, visibile ? 1: 0);
             // Se la pagina è la prima si parte da 5, se è la seconda da 10 etc.
-            preparedStatement.setInt(2, paginaCorrente * OFFERTE_PER_PAGINA);
-            preparedStatement.setInt(3, OFFERTE_PER_PAGINA);
+            preparedStatement.setInt(2, paginaCorrente * (int) OFFERTE_PER_PAGINA);
+            preparedStatement.setInt(3, (int) OFFERTE_PER_PAGINA);
 
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
@@ -382,8 +384,8 @@ public class OffertaTirocinioDAO implements OffertaTirocinioDAOInterface {
 					: "%" + campoRicerca.get(CampoRicercaTirocinio.modalita) + "%");
 			preparedStatement.setString(5, campoRicerca.get(CampoRicercaTirocinio.durata) == null ? "%" 
 					:       campoRicerca.get(CampoRicercaTirocinio.durata));
-			preparedStatement.setInt(6, paginaCorrente * OFFERTE_PER_PAGINA);
-			preparedStatement.setInt(7, OFFERTE_PER_PAGINA);
+			preparedStatement.setInt(6, paginaCorrente * (int) OFFERTE_PER_PAGINA);
+			preparedStatement.setInt(7, (int) OFFERTE_PER_PAGINA);
 			
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
@@ -422,8 +424,8 @@ public class OffertaTirocinioDAO implements OffertaTirocinioDAOInterface {
 		try (Connection connection = DBConnector.getDatasource().getConnection()) {
             preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, azienda.getCodiceFiscale());
-            preparedStatement.setInt(2, paginaCorrente * OFFERTE_PER_PAGINA);
-            preparedStatement.setInt(3, OFFERTE_PER_PAGINA);
+            preparedStatement.setInt(2, paginaCorrente * (int) OFFERTE_PER_PAGINA);
+            preparedStatement.setInt(3, (int) OFFERTE_PER_PAGINA);
 
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
@@ -463,8 +465,8 @@ public class OffertaTirocinioDAO implements OffertaTirocinioDAOInterface {
 			preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, azienda.getCodiceFiscale());
             preparedStatement.setInt(2, visibile ? 1 : 0);
-            preparedStatement.setInt(3, paginaCorrente * OFFERTE_PER_PAGINA);
-            preparedStatement.setInt(4, OFFERTE_PER_PAGINA);
+            preparedStatement.setInt(3, paginaCorrente * (int) OFFERTE_PER_PAGINA);
+            preparedStatement.setInt(4, (int) OFFERTE_PER_PAGINA);
 
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
