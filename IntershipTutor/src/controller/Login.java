@@ -79,11 +79,8 @@ public class Login extends IntershipTutorBaseController {
     	try {
             action_login(request, response);
 
-        } catch (IOException ex) {
-            request.setAttribute("exception", ex);
-            action_error(request, response);
-
-        } catch (TemplateManagerException ex) {
+        } 
+    	catch (TemplateManagerException | IOException ex) {
             request.setAttribute("exception", ex);
             action_error(request, response);
 

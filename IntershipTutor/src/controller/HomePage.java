@@ -12,10 +12,12 @@ import javax.servlet.http.HttpServletResponse;
 import dao.impl.AziendaDAO;
 import dao.impl.OffertaTirocinioDAO;
 import dao.impl.ParereAziendaDAO;
+import dao.impl.TirocinioStudenteDAO;
 import data.model.Amministratore;
 import data.model.Azienda;
 import data.model.OffertaTirocinio;
 import data.model.Studente;
+import data.model.TirocinioStudente;
 import data.model.enumeration.CampoRicercaTirocinio;
 import framework.data.DataLayerException;
 import framework.result.FailureResult;
@@ -46,6 +48,9 @@ public class HomePage extends IntershipTutorBaseController {
 
     private void action_student(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException {
         try {
+        	
+        	Studente studente = (Studente) request.getAttribute("utente");
+        	
         	this.setCommonAttributes(request, response);
 	    	TemplateResult res = new TemplateResult(getServletContext());
 	    	
@@ -88,7 +93,12 @@ public class HomePage extends IntershipTutorBaseController {
                 // il .0 è necessario per il cast di Java (1.1 deve essere arrotondato a 2 per esempio)
                 numeroPagine = (int) Math.ceil(new OffertaTirocinioDAO().getCountAccordingToVisibilita(true) / OFFERTE_PER_PAGINA);
             }
+            
+            TirocinioStudente tirocinioStudente = new TirocinioStudenteDAO().getTirocinioStudenteByStudente(studente);
+            OffertaTirocinio tirocinioRichiesto = new TirocinioStudenteDAO().getOffertaTirocinioByStudente(studente);
 	    	
+            request.setAttribute("tirocinioStudente", tirocinioStudente);
+            request.setAttribute("tirocinioRichiesto", tirocinioRichiesto);
 	        request.setAttribute("aziende", aziende);
 	        request.setAttribute("numeroPagine", numeroPagine);
 			request.setAttribute("offerte", offerte);
@@ -144,7 +154,7 @@ public class HomePage extends IntershipTutorBaseController {
                 // il .0 è necessario per il cast di Java (1.1 deve essere arrotondato a 2 per esempio)
              numeroPagine = (int) Math.ceil(new OffertaTirocinioDAO().getCountAccordingToAzienda(azienda) / OFFERTE_PER_PAGINA);
             //}
-    		
+            
             request.setAttribute("azienda", azienda);
             request.setAttribute("voto", voto);
  	        request.setAttribute("pareriAzienda", pareriAzienda);
@@ -257,11 +267,8 @@ public class HomePage extends IntershipTutorBaseController {
     		else
     			action_default(request, response);    			
 
-        } catch (IOException ex) {
-            request.setAttribute("exception", ex);
-            action_error(request, response);
-
-        } catch (TemplateManagerException ex) {
+        } 
+    	catch (TemplateManagerException | IOException ex) {
             request.setAttribute("exception", ex);
             action_error(request, response);
 

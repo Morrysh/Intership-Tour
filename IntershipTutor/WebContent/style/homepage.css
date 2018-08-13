@@ -57,6 +57,7 @@
 	margin: 10px 0;
 }
 
+#tirocinio-richiesto,
 #nome-utente,
 #aziende-convenzionate{
     margin: 0 !important;
@@ -112,6 +113,48 @@ button:hover i.fa-share-square{
 	border: none;
 	outline-color: #ffffff;
 }
+	
+	/* Candidates list */
+	.acc-kontainer .acc-body .fa,
+	.acc-kontainer .acc-body .fas,
+	.acc-kontainer .acc-body .far{
+		color: rgba(0, 0, 0, 0);
+	}
+	
+	.no{
+		transform: 0
+	}
+	
+	.acc-kontainer .acc-body {
+	  width: 98%;
+	  width: calc(100% - 20px);
+	  height: 0;
+	  color: rgba(0, 0, 0, 0);
+	  box-sizing: border-box;
+	  /*transition: 0.5s;*/
+	}
+	
+	.acc-kontainer label {
+	  box-sizing: border-box;
+	}
+	
+	.acc-kontainer input{
+	  display: none;
+	}
+	
+	.acc-kontainer input:checked ~ .acc-body .fa,
+	.acc-kontainer input:checked ~ .acc-body .fas,
+	.acc-kontainer input:checked ~ .acc-body .far{
+		height: auto;
+	  	color: #822627;
+	}
+	.acc-kontainer input:checked ~ .acc-body {
+	  height: auto;
+	  color: #000000;
+	  /*transition: 0.5s;*/
+	}
+	/* End candidates list */
+	
 /* End homepage AZIENDA */
 
 @media (min-device-width: 500px){

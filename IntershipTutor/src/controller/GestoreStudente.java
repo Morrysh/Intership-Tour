@@ -52,17 +52,13 @@ public class GestoreStudente extends IntershipTutorBaseController {
 			
 			response.sendRedirect(request.getContextPath());
 		}
-		catch(DataLayerException ex) {
-            request.setAttribute("message", "Data access exception: " + ex.getMessage());
-            action_error(request, response);
-        }
-		catch(IOException ex) {
+		catch(DataLayerException | IOException ex) {
             request.setAttribute("message", "Data access exception: " + ex.getMessage());
             action_error(request, response);
         }
 	}
 	
-	private void action_registra(HttpServletRequest request, HttpServletResponse response) {
+	private void action_registra(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException{
 		try {
 			Studente studente = new Studente(
 				request.getParameter(Utente.CODICE_FISCALE),
@@ -87,11 +83,7 @@ public class GestoreStudente extends IntershipTutorBaseController {
 			
 			response.sendRedirect(request.getContextPath());
 		}
-		catch(DataLayerException ex) {
-            request.setAttribute("message", "Data access exception: " + ex.getMessage());
-            action_error(request, response);
-        }
-		catch(IOException ex) {
+		catch(DataLayerException | IOException ex) {
             request.setAttribute("message", "Data access exception: " + ex.getMessage());
             action_error(request, response);
         }
@@ -116,6 +108,8 @@ public class GestoreStudente extends IntershipTutorBaseController {
         			StatoRichiestaTirocinio.attesa);
         	
         	new TirocinioStudenteDAO().insert(tirocinioStudente);
+        	
+        	// INVIARE MAIL( SIMULAZIONE SALVATAGGIO SU UN FILE )
         	
         	response.sendRedirect(request.getContextPath());
         }
@@ -153,11 +147,7 @@ public class GestoreStudente extends IntershipTutorBaseController {
 				action_default(request, response);
 			}
         }
-    	catch (IOException ex) {
-            request.setAttribute("exception", ex);
-            action_error(request, response);
-
-        } catch (TemplateManagerException ex) {
+    	catch (TemplateManagerException | IOException ex) {
             request.setAttribute("exception", ex);
             action_error(request, response);
 

@@ -275,6 +275,11 @@ a{
 
 /* Tablet and smartphone */
 @media  (max-width: 701px){
+	
+	*{
+		-webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+	}
+	
 	#container{
 		min-height: 100%;
 		margin: 30px 0;

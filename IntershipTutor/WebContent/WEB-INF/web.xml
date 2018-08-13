@@ -49,6 +49,10 @@
 		<servlet-class>controller.GestoreOffertaTirocinio</servlet-class>
 	</servlet>
 	<servlet>
+		<servlet-name>GestoreTirocinioStudente</servlet-name>
+		<servlet-class>controller.GestoreTirocinioStudente</servlet-class>
+	</servlet>
+	<servlet>
 		<servlet-name>GestoreStudente</servlet-name>
 		<servlet-class>controller.GestoreStudente</servlet-class>
 	</servlet>
@@ -71,6 +75,10 @@
 	<servlet-mapping>
 		<servlet-name>GestoreOffertaTirocinio</servlet-name>
 		<url-pattern>/offertaTirocinio</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>GestoreTirocinioStudente</servlet-name>
+		<url-pattern>/tirocinioStudente</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>GestoreStudente</servlet-name>

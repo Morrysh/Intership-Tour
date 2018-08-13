@@ -13,6 +13,7 @@ import data.model.OffertaTirocinio;
 import data.model.Studente;
 import data.model.TirocinioStudente;
 import data.model.Utente;
+import data.model.enumeration.StatoRichiestaTirocinio;
 import data.model.enumeration.TipoUtente;
 import framework.data.DataLayerException;
 
@@ -56,17 +57,125 @@ public class TirocinioStudenteDAO implements TirocinioStudenteDAOInterface {
 	}
 
 	@Override
-	public int delete(TirocinioStudente tirocinioStudente) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int delete(Studente studente) throws DataLayerException {
+		String deleteQuery = "DELETE FROM tirociniostudente WHERE studente = ?;";
+		PreparedStatement preparedStatement;
+		int status = 0;
+		
+		try (Connection connection = DBConnector.getDatasource().getConnection()) {
+		preparedStatement = connection.prepareStatement(deleteQuery);
+		
+		preparedStatement.setString(1, studente.getCodiceFiscale());
+		
+		status = preparedStatement.executeUpdate();
+		
+		connection.close();
+		} catch (SQLException e) {
+			throw new DataLayerException("Unable to delete student intership", e);
+		}
+		
+		return status;
+	}
+	
+	@Override
+	public int updateStato(String codiceFiscale, StatoRichiestaTirocinio statoRichiestaTirocinio) throws DataLayerException {
+		String updateQuery = "UPDATE tirociniostudente SET stato = ? WHERE studente = ?;";
+		PreparedStatement preparedStatement;
+        int status = 0;
+        
+        try (Connection connection = DBConnector.getDatasource().getConnection()) {
+            preparedStatement = connection.prepareStatement(updateQuery);
+
+            preparedStatement.setString(1, statoRichiestaTirocinio.name());
+            preparedStatement.setString(2, codiceFiscale);
+
+            status = preparedStatement.executeUpdate();
+
+            connection.close();
+        } catch (SQLException e) {
+        	throw new DataLayerException("Unable to set state of student intership", e);
+        }
+		
+		return status;
+	}
+	
+	@Override
+	public TirocinioStudente getTirocinioStudenteByStudente(Studente studente) throws DataLayerException {
+		TirocinioStudente tirocinioStudente = null;
+		PreparedStatement preparedStatement;
+		String query = "SELECT * FROM tirociniostudente WHERE studente = ?;";
+		
+		try (Connection connection = DBConnector.getDatasource().getConnection()) {
+			preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, studente.getCodiceFiscale());
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+            	tirocinioStudente = new TirocinioStudente(
+                		resultSet.getString(TirocinioStudente.STUDENTE),
+                		resultSet.getInt(TirocinioStudente.ID_TIROCINIO),
+                		resultSet.getInt(TirocinioStudente.CFU),
+		 				resultSet.getString(TirocinioStudente.TUTORE_UNIVERSITARIO),
+                        resultSet.getString(TirocinioStudente.TELEFONO_TUTORE),
+                        resultSet.getString(TirocinioStudente.EMAIL_TUTORE),
+                        resultSet.getString(TirocinioStudente.DESCRIZIONE_DETTAGLIATA),
+                        resultSet.getInt(TirocinioStudente.ORE_SVOLTE),
+                        resultSet.getString(TirocinioStudente.GIUDIZIO_FINALE),
+                        resultSet.getString(TirocinioStudente.PARERE),
+                        StatoRichiestaTirocinio.valueOf(resultSet.getString(TirocinioStudente.STATO)));
+            }
+
+            connection.close();
+        } catch (SQLException e) {
+        	throw new DataLayerException("Unable to get student intership by student", e);
+        }
+		
+		return tirocinioStudente;
+	}
+	
+	@Override
+	public OffertaTirocinio getOffertaTirocinioByStudente(Studente studente) throws DataLayerException {
+		OffertaTirocinio offertaTirocinio = null;
+		PreparedStatement preparedStatement;
+		String query = "SELECT * FROM tirociniostudente JOIN offertatirocinio ON " +
+				 	  " tirociniostudente.id_tirocinio = offertatirocinio.id_tirocinio WHERE studente = ?;";
+		
+		try (Connection connection = DBConnector.getDatasource().getConnection()) {
+			preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, studente.getCodiceFiscale());
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+            	offertaTirocinio = new OffertaTirocinio(
+                		resultSet.getInt(OffertaTirocinio.ID_TIROCINIO),
+                		resultSet.getString(OffertaTirocinio.AZIENDA),
+                		resultSet.getString(OffertaTirocinio.TITOLO),
+		 				resultSet.getString(OffertaTirocinio.LUOGO),
+                        resultSet.getString(OffertaTirocinio.OBIETTIVI),
+                        resultSet.getString(OffertaTirocinio.MODALITA),
+                        resultSet.getString(OffertaTirocinio.RIMBORSO),
+                        resultSet.getDate(OffertaTirocinio.DATA_INIZIO),
+                        resultSet.getDate(OffertaTirocinio.DATA_FINE),
+                        resultSet.getTime(OffertaTirocinio.ORA_INIZIO),
+                        resultSet.getTime(OffertaTirocinio.ORA_FINE),
+                        resultSet.getInt(OffertaTirocinio.NUMERO_ORE),
+                        resultSet.getBoolean(OffertaTirocinio.VISIBILE));
+            }
+
+            connection.close();
+        } catch (SQLException e) {
+        	throw new DataLayerException("Unable to get intership by student", e);
+        }
+		
+		return offertaTirocinio;
 	}
 
 	@Override
-	public List<Studente> getStudentiPerTirocinio(OffertaTirocinio offertaTirocinio) throws DataLayerException {
+	public List<Studente> getStudentiByOffertaTirocinio(OffertaTirocinio offertaTirocinio) throws DataLayerException {
 		List<Studente> studenti = new ArrayList<>();
 		PreparedStatement preparedStatement;
 		String query = "SELECT * FROM (tirociniostudente JOIN studente ON utente = studente)" + 
-					   "JOIN utente ON utente.codice_fiscale=studente.utente WHERE tirocinio = ?;";
+					   "JOIN utente ON utente.codice_fiscale=studente.utente WHERE id_tirocinio = ?;";
 		
 		try (Connection connection = DBConnector.getDatasource().getConnection()) {
             preparedStatement = connection.prepareStatement(query);
@@ -98,7 +207,7 @@ public class TirocinioStudenteDAO implements TirocinioStudenteDAOInterface {
 
             connection.close();
         } catch (SQLException e) {
-        	throw new DataLayerException("Unable to get students opinions", e);
+        	throw new DataLayerException("Unable to get students", e);
         }
 		
 		return studenti;

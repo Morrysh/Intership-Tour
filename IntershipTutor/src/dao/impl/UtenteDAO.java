@@ -67,8 +67,23 @@ public class UtenteDAO implements UtenteDAOInterface {
 
 	@Override
 	public int delete(Utente utente) throws DataLayerException {
-		// TODO Auto-generated method stub
-		return 0;
+		String deleteQuery = "DELETE FROM utente WHERE codice_fiscale = ?;";
+		PreparedStatement preparedStatement;
+		int status = 0;
+		
+		try (Connection connection = DBConnector.getDatasource().getConnection()) {
+		preparedStatement = connection.prepareStatement(deleteQuery);
+		
+		preparedStatement.setString(1, utente.getCodiceFiscale());
+		
+		status = preparedStatement.executeUpdate();
+		
+		connection.close();
+		} catch (SQLException e) {
+			throw new DataLayerException("Unable to delete user", e);
+		}
+		
+		return status;
 	}
 	
 	@Override

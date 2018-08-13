@@ -12,7 +12,7 @@ public interface AziendaDAOInterface {
 	
 	int update(Azienda azienda) throws DataLayerException;
 	
-	boolean setConvenzione(Azienda azienda, boolean convezione) throws DataLayerException;
+	int setConvenzione(Azienda azienda, boolean convezione) throws DataLayerException;
 	
 	Azienda getAziendaByCF(String codiceFiscale) throws DataLayerException;
 	

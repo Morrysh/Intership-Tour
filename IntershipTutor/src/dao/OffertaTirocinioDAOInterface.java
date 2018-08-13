@@ -28,7 +28,7 @@ public interface OffertaTirocinioDAOInterface {
 	
 	int getCountAccordingToAziendaAndVisibilita(Azienda azienda, boolean visibile) throws DataLayerException;
 	
-	OffertaTirocinio getOffertaByID(int id) throws DataLayerException;
+	OffertaTirocinio getOffertaByID(int idTirocinio) throws DataLayerException;
 	
 	List<OffertaTirocinio> allOfferte() throws DataLayerException;
 	

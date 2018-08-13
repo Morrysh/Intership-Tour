@@ -33,7 +33,7 @@ public class GestoreAzienda extends IntershipTutorBaseController {
         }
     }
 	
-	private void action_aggiorna(HttpServletRequest request, HttpServletResponse response) {
+	private void action_aggiorna(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException{
 		try {
 			Azienda azienda = (Azienda) request.getAttribute("utente");
 			
@@ -54,16 +54,13 @@ public class GestoreAzienda extends IntershipTutorBaseController {
 			
 			response.sendRedirect(request.getContextPath());
 			
-		} catch (DataLayerException e) {
-			request.setAttribute("message", "Data access exception: " + e.getMessage());
-            action_error(request, response);
-		} catch (IOException e) {
+		} catch (DataLayerException | IOException e) {
 			request.setAttribute("message", "Data access exception: " + e.getMessage());
             action_error(request, response);
 		}
 	}
 	
-	private void action_registra(HttpServletRequest request, HttpServletResponse response) {
+	private void action_registra(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException {
 		try {
 			Azienda azienda = new Azienda(
 					request.getParameter(Utente.CODICE_FISCALE),
@@ -87,16 +84,13 @@ public class GestoreAzienda extends IntershipTutorBaseController {
 			
 			response.sendRedirect(request.getContextPath());
 			
-		} catch (DataLayerException e) {
+		} catch (DataLayerException | IOException e) {
 			request.setAttribute("message", "Data access exception: " + e.getMessage());
             action_error(request, response);
-		} catch (IOException e) {
-			request.setAttribute("message", "Data access exception: " + e.getMessage());
-            action_error(request, response);
-		}
+		} 
 	}
 	
-	private void action_offerte_proposte(HttpServletRequest request, HttpServletResponse response) {
+	private void action_offerte_proposte(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException{
 		
 	}
 
@@ -169,13 +163,10 @@ public class GestoreAzienda extends IntershipTutorBaseController {
     			    action_error(request, response);
     			}
     		}
-		} catch (IOException ex) {
+		} catch (IOException | TemplateManagerException ex) {
             request.setAttribute("exception", ex);
             action_error(request, response);
-        } catch (TemplateManagerException ex) {
-            request.setAttribute("exception", ex);
-            action_error(request, response);
-        }
+        } 
     }
 
     @Override

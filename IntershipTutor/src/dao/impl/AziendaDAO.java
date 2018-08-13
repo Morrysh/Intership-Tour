@@ -50,6 +50,7 @@ public class AziendaDAO implements AziendaDAOInterface {
 
             connectionection.close();
         } catch (SQLException e) {
+        	new UtenteDAO().delete(utente);
         	throw new DataLayerException("Unable to insert company", e);
         }
 		
@@ -98,9 +99,25 @@ public class AziendaDAO implements AziendaDAOInterface {
 	}
 
 	@Override
-	public boolean setConvenzione(Azienda azienda, boolean convezione) throws DataLayerException  {
-		// TODO Auto-generated method stub
-		return false;
+	public int setConvenzione(Azienda azienda, boolean convenzione) throws DataLayerException  {
+		String updateQuery = "UPDATE azienda SET convenzionata = ? WHERE utente = ?;";
+		PreparedStatement preparedStatement;
+        int status = 0;
+        
+        try (Connection connection = DBConnector.getDatasource().getConnection()) {
+            preparedStatement = connection.prepareStatement(updateQuery);
+
+            preparedStatement.setInt(1, convenzione ? 1 : 0);
+            preparedStatement.setString(2, azienda.getCodiceFiscale());
+
+            status = preparedStatement.executeUpdate();
+
+            connection.close();
+        } catch (SQLException e) {
+        	throw new DataLayerException("Unable to set convention of company", e);
+        }
+		
+		return status;
 	}
 
 	@Override

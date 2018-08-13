@@ -49,6 +49,7 @@ public class StudenteDAO implements StudenteDAOInterface {
 
             connection.close();
         } catch (SQLException e) {
+        	new UtenteDAO().delete(utente);
         	throw new DataLayerException("Unable to insert student", e);
         }
 		

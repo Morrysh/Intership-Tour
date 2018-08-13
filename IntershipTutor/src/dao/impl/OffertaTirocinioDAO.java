@@ -90,12 +90,12 @@ public class OffertaTirocinioDAO implements OffertaTirocinioDAOInterface {
 
 	@Override
 	public int delete(int idTirocinio) throws DataLayerException {
-		String updateQuery = "DELETE FROM offertatirocinio WHERE id_tirocinio = ?;";
+		String deleteQuery = "DELETE FROM offertatirocinio WHERE id_tirocinio = ?;";
 		PreparedStatement preparedStatement;
 		int status = 0;
 		
 		try (Connection connection = DBConnector.getDatasource().getConnection()) {
-		preparedStatement = connection.prepareStatement(updateQuery);
+		preparedStatement = connection.prepareStatement(deleteQuery);
 		
 		preparedStatement.setInt(1, idTirocinio);
 		
@@ -111,12 +111,12 @@ public class OffertaTirocinioDAO implements OffertaTirocinioDAOInterface {
 
 	@Override
 	public int setVisibilita(int idOffertaTirocinio, boolean visibilita) throws DataLayerException {
-		String insertQuery = "UPDATE offertatirocinio SET visibile = ? WHERE id_tirocinio = ?;";
+		String updateQuery = "UPDATE offertatirocinio SET visibile = ? WHERE id_tirocinio = ?;";
 		PreparedStatement preparedStatement;
         int status = 0;
         
         try (Connection connection = DBConnector.getDatasource().getConnection()) {
-            preparedStatement = connection.prepareStatement(insertQuery);
+            preparedStatement = connection.prepareStatement(updateQuery);
 
             preparedStatement.setInt(1, visibilita ? 1 : 0);
             preparedStatement.setInt(2, idOffertaTirocinio);
@@ -245,14 +245,14 @@ public class OffertaTirocinioDAO implements OffertaTirocinioDAOInterface {
 	}
 
 	@Override
-	public OffertaTirocinio getOffertaByID(int id) throws DataLayerException {
+	public OffertaTirocinio getOffertaByID(int idTirocinio) throws DataLayerException {
 		OffertaTirocinio offertaTirocinio = null;
 		PreparedStatement preparedStatement;
 		String query = "SELECT * FROM offertatirocinio WHERE id_tirocinio = ?;";
 		
 		try (Connection connection = DBConnector.getDatasource().getConnection()) {
 			preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setInt(1, id);
+            preparedStatement.setInt(1, idTirocinio);
 
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {

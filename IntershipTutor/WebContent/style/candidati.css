@@ -1,0 +1,26 @@
+h3{
+	font-size: 20px;
+	font-style: italic
+}
+
+span{
+	/*font-weight: 700*/
+}
+
+button{
+	background-color: #ffffff;
+	border: none;
+	outline-color: #ffffff;
+	transition: .2s all ease
+}
+
+button:hover,
+button:hover i{
+	background-color: #822627;
+	color: #ffffff
+}
+
+.dettagli{
+	line-height: 2;
+	font-size: 14px;
+}
