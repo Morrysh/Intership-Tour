@@ -168,6 +168,15 @@ i{
 }
 /* End w3 css override */
 
+input[type="submit"] {
+    font-family: FontAwesome;
+    background-color: #ffffff;
+    color: #822627;
+    border: none;
+    padding: 2px;
+    outline-color: transparent;
+}
+
 /* Collapsible */
 input#menu-1,
 input#menu {

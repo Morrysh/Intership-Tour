@@ -24,3 +24,12 @@ button:hover i{
 	line-height: 2;
 	font-size: 14px;
 }
+
+input[type="file"]{
+	width: 90%;
+	padding: 6px 0
+}
+
+input[type="submit"]{
+	padding: 6px !important
+}

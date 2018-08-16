@@ -53,7 +53,12 @@
 			               			</#if>
 			               			${tirocinioStudente.stato?capitalize}
 			               		</p>
+			               		<p class="info"><i>Progetto formativo:</i></p>
 			               		<#if tirocinioStudente.stato.name() == "accettato">
+			               			<form action="upload?utente=${utente.utente}" method="post" enctype='multipart/form-data'>
+									    <input type="file" name="file" />
+									    <input class="pointer" type="submit" value="&#xf093" />
+									</form>
 			               			<p class="info pointer">
 				               			<a href="download?codice_fiscale=${utente.utente}">
 					               			<i class="fas fa-download fa-fw w3-margin-right w3-margin-bottom w3-text-theme"></i>
@@ -73,6 +78,7 @@
 			               			<i class="far fa-check-circle fa-fw w3-margin-right w3-margin-bottom w3-text-theme"></i>
 			               			${tirocinioStudente.stato?capitalize}
 			               		</p>
+			               		<p class="info"><i>Stato richiesta:</i></p>
 			               		<p class="info pointer">
 			               			<a href="download?codice_fiscale=${utente.utente}">
 				               			<i class="fas fa-download fa-fw w3-margin-right w3-margin-bottom w3-text-theme"></i>

@@ -68,6 +68,14 @@
 		<servlet-name>Downloader</servlet-name>
 		<servlet-class>controller.Downloader</servlet-class>
 	</servlet>
+	<servlet>
+        <servlet-name>Uploader</servlet-name>
+        <servlet-class>controller.Uploader</servlet-class>
+        <multipart-config>
+            <max-file-size>20848820</max-file-size>
+            <max-request-size>418018841</max-request-size>
+        </multipart-config>
+    </servlet>
 	<servlet-mapping>
 		<servlet-name>HomePage</servlet-name>
 		<url-pattern></url-pattern>
@@ -99,6 +107,10 @@
 	<servlet-mapping>
 		<servlet-name>Downloader</servlet-name>
 		<url-pattern>/download</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>Uploader</servlet-name>
+		<url-pattern>/upload</url-pattern>
 	</servlet-mapping>
     <!-- End servlets -->
  

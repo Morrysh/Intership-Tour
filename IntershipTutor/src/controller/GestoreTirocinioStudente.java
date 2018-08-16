@@ -130,7 +130,7 @@ public class GestoreTirocinioStudente extends IntershipTutorBaseController {
 			    				 request.getParameter(TirocinioStudente.TUTORE_UNIVERSITARIO);
         	// Destinatari email
         	String recipientsEmails[] = {
-        			// studente.getNome(),
+        			// azienda.getEmail(),
         			// request.getParameter(TirocinioStudente.EMAIL_TUTORE)
         			"stefano.martella96@gmail.com",
         			"stefano.martella9614@gmail.com"
@@ -205,7 +205,7 @@ public class GestoreTirocinioStudente extends IntershipTutorBaseController {
 			
 			// AFTER DB UPDATE
 			// Updating training project according to inserted values
-			this.update_training_project(request, response);
+			//this.update_training_project(request, response);
 			
 			if(request.getParameter("referrer") != null) {
 				response.sendRedirect(request.getParameter("referrer"));

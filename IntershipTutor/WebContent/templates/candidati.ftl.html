@@ -83,7 +83,6 @@
 				</div>
 				<br /><br />
 				<#if tirocinio.stato.name() == "attesa">
-					<hr />
 					<#if !offertaTirocinio.dataInizio?? || !offertaTirocinio.dataFine??>
 						<a class="w3-left" href="#accept-modal">
 					<#else>
@@ -113,8 +112,12 @@
 							Progetto formativo
 						</button>
 					</a>
+					<form action="upload?utente=${candidato.utente}&referrer=tirocinioStudente?id_tirocinio=${offertaTirocinio.idTirocinio}" method="post" enctype='multipart/form-data'>
+					    <input type="file" name="file" />
+					    <input class="pointer w3-left w3-margin-right w3-large" type="submit" value="&#xf093" />
+					</form>
 				<#elseif tirocinio.stato.name() == "terminato">
-					<p class="w3-right univaq-color w3-padding no-margin">
+					<p class="w3-right univaq-color no-margin">
 						Il tirocinio è concluso
 					</p>
 					<a class="w3-left" href="download?codice_fiscale=${candidato.utente}">

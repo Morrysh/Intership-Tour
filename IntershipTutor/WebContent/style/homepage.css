@@ -69,6 +69,11 @@
     border-bottom: 1px solid #eeeeee;
 }
 
+input[type="file"]{
+	font-size: 75%;
+	width: 80%
+}
+
 .info{
     font-size: 14px;
     margin: 8px 0
