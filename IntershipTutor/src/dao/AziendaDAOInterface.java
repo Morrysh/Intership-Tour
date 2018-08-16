@@ -1,5 +1,6 @@
 package dao;
 
+import java.io.InputStream;
 import java.util.List;
 
 import data.model.Azienda;
@@ -23,5 +24,7 @@ public interface AziendaDAOInterface {
 	List<Azienda> allAziende() throws DataLayerException;
 	
 	Azienda getAziendaByUtente(Utente utente) throws DataLayerException;
+	
+	InputStream getConvenzioneDoc(Azienda azienda) throws DataLayerException;
 	
 }

@@ -42,23 +42,51 @@
 	               				</a>
 	               			</p>
 		               		<p class="info"><i>Stato richiesta:</i></p>
-		               		<p class="info">
-		               			<#if tirocinioStudente.stato.name() == "accettato">
-		               				<i class="fas fa-check fa-fw w3-margin-right w3-margin-bottom w3-text-theme"></i>
-		               			<#elseif tirocinioStudente.stato.name() == "attesa">
-		               				<i class="fas fa-spinner fa-fw w3-margin-right w3-margin-bottom w3-text-theme"></i>
-		               			<#else>
-		               				<i class="fas fa-times fa-fw w3-margin-right w3-margin-bottom w3-text-theme"></i>
-		               			</#if>
-		               			${tirocinioStudente.stato?capitalize}
-		               		</p>
-		               		<p class="info"><i>Opzioni:</i></p>
-		               		<p class="info pointer">
-		               			<a href="tirocinioStudente?rimuovi=true">
-			               			<i class="far fa-trash-alt fa-fw w3-margin-right w3-margin-bottom w3-text-theme"></i>
-			               			Annulla richiesta
-		               			</a>	
-		               		</p>
+		               		<#if tirocinioStudente.stato.name() != "terminato">
+			               		<p class="info">
+			               			<#if tirocinioStudente.stato.name() == "accettato">
+			               				<i class="fas fa-check fa-fw w3-margin-right w3-margin-bottom w3-text-theme"></i>
+			               			<#elseif tirocinioStudente.stato.name() == "attesa">
+			               				<i class="fas fa-spinner fa-fw w3-margin-right w3-margin-bottom w3-text-theme"></i>
+			               			<#else>
+			               				<i class="fas fa-times fa-fw w3-margin-right w3-margin-bottom w3-text-theme"></i>		               				
+			               			</#if>
+			               			${tirocinioStudente.stato?capitalize}
+			               		</p>
+			               		<#if tirocinioStudente.stato.name() == "accettato">
+			               			<p class="info pointer">
+				               			<a href="download?codice_fiscale=${utente.utente}">
+					               			<i class="fas fa-download fa-fw w3-margin-right w3-margin-bottom w3-text-theme"></i>
+					               			Progetto formativo
+				               			</a>	
+			               			</p>	
+			               		</#if>
+			               		<p class="info"><i>Opzioni:</i></p>
+			               		<p class="info pointer">
+			               			<a href="tirocinioStudente?rimuovi=true">
+				               			<i class="far fa-trash-alt fa-fw w3-margin-right w3-margin-bottom w3-text-theme"></i>
+				               			Annulla richiesta
+			               			</a>	
+			               		</p>
+			               	<#else>
+			               		<p class="info">
+			               			<i class="far fa-check-circle fa-fw w3-margin-right w3-margin-bottom w3-text-theme"></i>
+			               			${tirocinioStudente.stato?capitalize}
+			               		</p>
+			               		<p class="info pointer">
+			               			<a href="download?codice_fiscale=${utente.utente}">
+				               			<i class="fas fa-download fa-fw w3-margin-right w3-margin-bottom w3-text-theme"></i>
+				               			Progetto formativo
+			               			</a>	
+		               			</p>
+			               		<hr class="no-margin" />
+			               		<p class="info">
+			               			<a href="#summary-modal">
+				               			<i class="fas fa-clipboard-check fa-fw w3-margin-right w3-margin-bottom w3-margin-top w3-text-theme"></i>
+				               			Riepilogo
+			               			</a>
+			               		</p>
+			               	</#if>
 		               	</#if>
 		           </div>
 		       </div>
@@ -94,26 +122,8 @@
 	   <!-- Middle Column -->
 	   <div class="w3-threequarter" id="right-column">
 	
-	         <div id="search-bar">
-	             <div class="w3-card w3-round padding-edge">
-	                 <div class="w3-container intership">
-	                     <div class="search-form collapsible-menu">
-	                      <input type="checkbox" id="menu" />
-	                      <label id="label-search" for="menu">Filtra le proposte di tirocinio</label>
-	                      <div class="menu-content">
-	                          <br /><br />
-	                          <form action="." method="get">
-		                          <#list campiRicerca as campoRicerca>
-		                              <label class="field-filter">${campoRicerca?capitalize}</label>
-		                              <input name="${campoRicerca}" class="w3-input" autocomplete="off" />
-		                          </#list>
-		                          <button type="submit" class="w3-button w3-right w3-border w3-round">Cerca</button>
-	                          </form>
-	                      </div>
-	                 	</div>
-	             	</div>
-	         	</div>
-	     	</div>
+	        <!-- Including searchbar -->
+			<#include "components/searchbar.ftl.html">
 	       
 	       <div id="offerte-container" class="w3-margin-top w3-margin-bottom w3-card w3-round w3-padding">
 				<h2 id="tirocini-disponibili" class=" w3-padding w3-text-grey">
@@ -229,7 +239,7 @@
 		      	<a href="#close" class="w3-button w3-xlarge w3-display-topright">&times;</a>
 		        <h2>Inserisci le informazioni</h2>
 		      </div>
-			      <form class="w3-container" action="studente" method="post">
+			      <form class="w3-container" action="tirocinioStudente" method="post">
 			        <div class="w3-section">
 			        	<input type="hidden" name="id_tirocinio" value="${offerta.idTirocinio}" />
 			        	<h3 class="univaq-color profile">Informazioni sul tutore scelto</h3>
@@ -249,4 +259,22 @@
 	      </div>
       </#list>
 
+	  <#if tirocinioStudente?? && tirocinioStudente.stato.name() == "terminato">
+		  <div id="summary-modal" class="overlay">
+			    <div class="w3-card w3-white w3-round popup w3-padding">
+			      <div class="w3-center"><br>
+			      	<a href="#close" class="w3-button w3-xlarge w3-display-topright">&times;</a>
+			        <h2>Riepilogo attività svolta</h2>
+			      </div>
+			        <div class="w3-section w3-padding">
+			        	<p><b>Descrizione dettagliata</b></p>
+			        	<p>${tirocinioStudente.descrizioneDettagliata}
+			        	<p><b>Ore svolte</b></p>
+			        	<p>${tirocinioStudente.oreSvolte}
+			        	<p><b>Giudizio finale</b></p>
+			        	<p>${tirocinioStudente.giudizioFinale}
+			        </div>
+			      </div>
+		      </div>
+	      </#if>
 

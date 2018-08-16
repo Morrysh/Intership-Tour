@@ -15,6 +15,7 @@ public class Azienda extends Utente {
 	public static final String NOME_RESPONSABILE = "nome_responsabile";
 	public static final String COGNOME_RESPONSABILE = "cognome_responsabile";
 	public static final String CONVENZIONATA = "convenzionata";
+	public static final String CONVENZIONE_DOC = "convenzione_doc";
 	
 	private String utente;
 	private String nome;

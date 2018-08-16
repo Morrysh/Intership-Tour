@@ -1,5 +1,7 @@
 package dao.impl;
 
+import java.io.InputStream;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,10 +20,14 @@ import data.model.enumeration.TipoUtente;
 import framework.data.DataLayerException;
 
 public class TirocinioStudenteDAO implements TirocinioStudenteDAOInterface {
+	
+	// The value is a double becouse in the candidates list we need a double for the pagination
+	// due to Java casting rules
+	public static final double CANDIDATI_PER_PAGINA = 3.0;
 
 	@Override
 	public int insert(TirocinioStudente tirocinioStudente) throws DataLayerException {
-		String insertQuery = "INSERT INTO tirociniostudente VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+		String insertQuery = "INSERT INTO tirociniostudente VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NULL);";
 		PreparedStatement preparedStatement;
         int status = 0;
         
@@ -52,8 +58,28 @@ public class TirocinioStudenteDAO implements TirocinioStudenteDAOInterface {
 
 	@Override
 	public int update(TirocinioStudente tirocinioStudente) throws DataLayerException {
-		// TODO Auto-generated method stub
-		return 0;
+		String updateQuery = "UPDATE tirociniostudente SET descrizione_dettagliata = ?, ore_svolte = ?, " + 
+							 "giudizio_finale = ?, stato = ? WHERE studente = ?";
+		PreparedStatement preparedStatement;
+		int status = 0;
+		
+		try (Connection connection = DBConnector.getDatasource().getConnection()) {
+		preparedStatement = connection.prepareStatement(updateQuery);
+		
+		preparedStatement.setString(1, tirocinioStudente.getDescrizioneDettagliata());
+		preparedStatement.setInt(2, tirocinioStudente.getOreSvolte());
+		preparedStatement.setString(3, tirocinioStudente.getGiudizioFinale());
+		preparedStatement.setString(4, tirocinioStudente.getStato().name());
+		preparedStatement.setString(5, tirocinioStudente.getStudente());
+		
+		status = preparedStatement.executeUpdate();
+		
+		connection.close();
+		} catch (SQLException e) {
+			throw new DataLayerException("Unable to update student intership", e);
+		}
+		
+		return status;
 	}
 
 	@Override
@@ -75,6 +101,30 @@ public class TirocinioStudenteDAO implements TirocinioStudenteDAOInterface {
 		}
 		
 		return status;
+	}
+	
+	@Override
+	public int getCountAccordingToOffertaTirocinio(OffertaTirocinio offertaTirocinio) throws DataLayerException {
+		String insertQuery = "SELECT COUNT(*) AS count FROM tirociniostudente WHERE id_tirocinio = ?";
+		PreparedStatement preparedStatement;
+        int count = 0;
+        
+        try (Connection connection = DBConnector.getDatasource().getConnection()) {
+            preparedStatement = connection.prepareStatement(insertQuery);
+            preparedStatement.setInt(1, offertaTirocinio.getIdTirocinio());
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            
+            if(resultSet.next()) {
+            	count = resultSet.getInt("count");
+            }
+
+            connection.close();
+        } catch (SQLException e) {
+        	throw new DataLayerException("Unable to get count of student intership according to intership", e);
+        }
+		
+		return count;
 	}
 	
 	@Override
@@ -108,7 +158,7 @@ public class TirocinioStudenteDAO implements TirocinioStudenteDAOInterface {
 		try (Connection connection = DBConnector.getDatasource().getConnection()) {
 			preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, studente.getCodiceFiscale());
-
+            
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
             	tirocinioStudente = new TirocinioStudente(
@@ -171,16 +221,18 @@ public class TirocinioStudenteDAO implements TirocinioStudenteDAOInterface {
 	}
 
 	@Override
-	public List<Studente> getStudentiByOffertaTirocinio(OffertaTirocinio offertaTirocinio) throws DataLayerException {
+	public List<Studente> getStudentiByOffertaTirocinio(OffertaTirocinio offertaTirocinio, int paginaCorrente) throws DataLayerException {
 		List<Studente> studenti = new ArrayList<>();
 		PreparedStatement preparedStatement;
 		String query = "SELECT * FROM (tirociniostudente JOIN studente ON utente = studente)" + 
-					   "JOIN utente ON utente.codice_fiscale=studente.utente WHERE id_tirocinio = ?;";
+					   "JOIN utente ON utente.codice_fiscale=studente.utente WHERE id_tirocinio = ? LIMIT ?, ?;";
 		
 		try (Connection connection = DBConnector.getDatasource().getConnection()) {
             preparedStatement = connection.prepareStatement(query);
 
             preparedStatement.setInt(1, offertaTirocinio.getIdTirocinio());
+            preparedStatement.setInt(2, paginaCorrente * (int) CANDIDATI_PER_PAGINA);
+            preparedStatement.setInt(3, (int) CANDIDATI_PER_PAGINA);
 
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
@@ -211,6 +263,54 @@ public class TirocinioStudenteDAO implements TirocinioStudenteDAOInterface {
         }
 		
 		return studenti;
+	}
+
+	@Override
+	public int setProgettoFormativo(InputStream progettoFormativo, Studente studente) throws DataLayerException {
+		String updateQuery = "UPDATE tirociniostudente SET progetto_formativo = ?  WHERE studente = ?";
+		PreparedStatement preparedStatement;
+		int status = 0;
+		
+		try (Connection connection = DBConnector.getDatasource().getConnection()) {
+		preparedStatement = connection.prepareStatement(updateQuery);
+		
+		preparedStatement.setBlob(1, progettoFormativo);
+		preparedStatement.setString(2, studente.getCodiceFiscale());
+		
+		status = preparedStatement.executeUpdate();
+		
+		connection.close();
+		} catch (SQLException e) {
+			throw new DataLayerException("Unable to set student training project pdf", e);
+		}
+		
+		return status;
+	}
+
+	@Override
+	public InputStream getProgettoFormativo(Studente studente) throws DataLayerException {
+		String query = "SELECT progetto_formativo FROM tirociniostudente WHERE studente = ?";
+		PreparedStatement preparedStatement;
+        InputStream docStream = null;
+        
+        try (Connection connection = DBConnector.getDatasource().getConnection()) {
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, studente.getCodiceFiscale());
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            
+            if(resultSet.next()) {
+            	Blob convenzioneDoc = resultSet.getBlob("progetto_formativo");
+            	docStream = convenzioneDoc.getBinaryStream();
+            }
+
+            connection.close();
+
+        } catch (SQLException e) {
+        	throw new DataLayerException("Unable to get training project pdf", e);
+        }
+        
+        return docStream;
 	}
 
 }

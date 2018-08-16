@@ -42,7 +42,7 @@ public class OffertaTirocinioDAO implements OffertaTirocinioDAOInterface {
             preparedStatement.setTime(10, offertaTirocinio.getOraInizio());
             preparedStatement.setTime(11, offertaTirocinio.getOraFine());
             preparedStatement.setInt(12, offertaTirocinio.getNumeroOre());
-            preparedStatement.setBoolean(13, offertaTirocinio.isVisibile());
+            preparedStatement.setBoolean(13, true);
             
 
             status = preparedStatement.executeUpdate();
@@ -149,7 +149,7 @@ public class OffertaTirocinioDAO implements OffertaTirocinioDAOInterface {
 
             connection.close();
         } catch (SQLException e) {
-        	throw new DataLayerException("Unable to set convention of intership", e);
+        	throw new DataLayerException("Unable to get count of interships according to visibility", e);
         }
 		
 		return count;
@@ -163,7 +163,7 @@ public class OffertaTirocinioDAO implements OffertaTirocinioDAOInterface {
 				       "UPPER(luogo) LIKE UPPER(?) AND " +
 				       "UPPER(obiettivi) LIKE UPPER(?) AND " +
 				       "UPPER(modalita) LIKE UPPER(?) AND " +
-				       "ROUND((data_fine - data_inizio)/60) LIKE ?;";
+					   "(ROUND((data_fine - data_inizio)/60) LIKE ? or data_fine IS NULL OR data_inizio IS NULL);";
 		PreparedStatement preparedStatement;
         int count = 0;
         
@@ -367,7 +367,8 @@ public class OffertaTirocinioDAO implements OffertaTirocinioDAOInterface {
 					   "UPPER(luogo) LIKE UPPER(?) AND " +
 					   "UPPER(obiettivi) LIKE UPPER(?) AND " +
 					   "UPPER(modalita) LIKE UPPER(?) AND " +
-					   "ROUND((data_fine - data_inizio)/60) LIKE ? LIMIT ?, ?;";
+					   "(ROUND((data_fine - data_inizio)/60) LIKE ? or data_fine IS NULL OR data_inizio IS NULL) " +
+					   "LIMIT ?, ?;";
 		
 		try (Connection connection = DBConnector.getDatasource().getConnection()) {
 			

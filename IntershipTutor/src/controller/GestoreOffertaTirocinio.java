@@ -98,7 +98,7 @@ public class GestoreOffertaTirocinio extends IntershipTutorBaseController{
 				oraFine = Time.valueOf(request.getParameter(OffertaTirocinio.ORA_FINE) + ":00");
 			
 			OffertaTirocinio nuovaOfferta = new OffertaTirocinio(
-					SecurityLayer.checkNumeric(request.getParameter(OffertaTirocinio.ID_TIROCINIO)),
+					Integer.valueOf(request.getParameter(OffertaTirocinio.ID_TIROCINIO)),
 					azienda.getCodiceFiscale(),
 					request.getParameter(OffertaTirocinio.TITOLO),
 					request.getParameter(OffertaTirocinio.LUOGO),
@@ -186,7 +186,6 @@ public class GestoreOffertaTirocinio extends IntershipTutorBaseController{
             throws ServletException {
 
     	try {
-    		
 			request.setAttribute("page_css", "gestore-offerta-tirocinio");
 			
 			if(request.getParameter("aggiungi") != null) {

@@ -214,11 +214,11 @@ public class HomePage extends IntershipTutorBaseController {
             else {
             	// Tutte le offerte senza filtraggio
                 offerte = new OffertaTirocinioDAO().allOfferteInRangeAccordingToVisibilita(true, (int) request.getAttribute("paginaCorrente"));
-             // Massimo 5 offerte per pagina
+                // Massimo 5 offerte per pagina
                 // il .0 è necessario per il cast di Java (1.1 deve essere arrotondato a 2 per esempio)
                 numeroPagine = (int) Math.ceil(new OffertaTirocinioDAO().getCountAccordingToVisibilita(true) / OFFERTE_PER_PAGINA);
             }
-    		
+            
 			request.setAttribute("aziende", aziende);
 			request.setAttribute("queryString", queryString);
 			request.setAttribute("numeroPagine", numeroPagine);
@@ -240,9 +240,9 @@ public class HomePage extends IntershipTutorBaseController {
         	paginaCorrente = (SecurityLayer.checkNumeric(request.getParameter("pagina")));
         }
         
-       
-        
-		request.setAttribute("paginaCorrente", paginaCorrente);
+        request.setAttribute("servlet", request.getContextPath());
+        request.setAttribute("searchbartitle", "Filtra le proposte di tirocinio");
+        request.setAttribute("paginaCorrente", paginaCorrente);
 		request.setAttribute("campiRicerca", CampoRicercaTirocinio.values());
     	
     	

@@ -1,5 +1,7 @@
 package dao.impl;
 
+import java.io.InputStream;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,7 +20,7 @@ public class AziendaDAO implements AziendaDAOInterface {
 
 	@Override
 	public int insert(Azienda azienda) throws DataLayerException {
-		String insertQuery = "INSERT INTO azienda VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+		String insertQuery = "INSERT INTO azienda VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NULL);";
 		PreparedStatement preparedStatement;
         int status = 0;
         
@@ -247,9 +249,35 @@ public class AziendaDAO implements AziendaDAOInterface {
 	}
 
 	@Override
-	public Azienda getAziendaByUtente(Utente utente) {
+	public Azienda getAziendaByUtente(Utente utente) throws DataLayerException {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public InputStream getConvenzioneDoc(Azienda azienda) throws DataLayerException {
+		String query = "SELECT convenzione_doc FROM azienda WHERE utente = ?";
+		PreparedStatement preparedStatement;
+        InputStream docStream = null;
+        
+        try (Connection connection = DBConnector.getDatasource().getConnection()) {
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, azienda.getCodiceFiscale());
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            
+            if(resultSet.next()) {
+            	Blob convenzioneDoc = resultSet.getBlob("convenzione_doc");
+            	docStream = convenzioneDoc.getBinaryStream();
+            }
+
+            connection.close();
+
+        } catch (SQLException e) {
+        	throw new DataLayerException("Unable to get pdf convention", e);
+        }
+        
+        return docStream;
 	}	
 	
 }

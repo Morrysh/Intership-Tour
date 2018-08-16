@@ -59,6 +59,16 @@ i{
 	color: #822627;
 }
 
+#nome-utente{
+    margin: 0 !important;
+    padding: 16px;
+    font-size: 110% !important; 
+    font-weight: 500 !important;
+    text-align: center;
+    color: #822627;
+    border-bottom: 1px solid #eeeeee;
+}
+
 /* Error page */
 #back-home{
 	text-decoration: underline;
@@ -83,8 +93,17 @@ i{
 	padding-right: 16px;
 }
 
+.padding-top{
+	padding-top: 8px;
+}
+
+.padding-bottom{
+	padding-bottom: 8px;
+}
+
 .padding-edge{
-	padding: 0 16px;
+	padding-left: 16px;
+	padding-right: 16px;
 }
 
 .padding-top-bot{
@@ -188,6 +207,23 @@ input:checked ~ #label-search:after {
     color: #822627;
 }
 /* End collapsible */
+
+/* Collapsible research */
+
+.collapsible-menu{
+    padding: 10px 0;
+}
+
+#label-search{
+    font-size: 17px;
+    font-weight: 500;
+    user-select: none;
+}
+
+.collapsible-menu .field-filter{
+    font-size: 14px
+}
+/* End collapsible research */
 
 /* Modals without js */
 .overlay {

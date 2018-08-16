@@ -8,11 +8,8 @@
     <div class="w3-quarter">
     
       <div class="w3-card w3-round">
-        <div class="w3-padding">
-          <h2 id="nome-azienda">
-          	<a>${azienda.nome}</a>
-          </h2>
-          <hr />
+        <div class="padding-edge padding-bottom">
+          <h2 id="nome-utente" class="w3-center univaq-color">${azienda.nome} </h2>
           <p class="info">
 			<i class="fas fa-user fa-fw w3-margin-right"></i>
 			${azienda.nomeResponsabile} ${azienda.cognomeResponsabile}
@@ -38,7 +35,7 @@
           	${azienda.telefono}
           </p>
           <hr />
-          <p class="w3-large"><b><i class="fa fa-chart-bar fa-fw w3-margin-right"></i>Valutazione</b></p>
+          <h4><i class="fa fa-chart-bar fa-fw w3-margin-right"></i>Valutazione</h4>
           <p class ="w3-text-grey">Voto</p>
           <div class=" w3-round-xlarge w3-small w3-light-grey">
             <div class="w3-container w3-center w3-round-xlarge univaq-color-background" style="width:${voto}%">${voto/20}</div>
@@ -74,11 +71,13 @@
 	          <h5 class="bold">
 		          <a href="offertaTirocinio?id_tirocinio=${tirocinio.idTirocinio}">Tirocinio ${tirocinio.titolo}</a>
 	          </h5>
-	          <p class="info">
-	          	<i class="far fa-calendar-alt fa-fw w3-margin-right"></i>
-	          	da ${tirocinio.dataInizio?iso_local} al ${tirocinio.dataFine?iso_local}
-	          	<!-- <span class="w3-tag univaq-color-background w3-round">Current</span>  -->
-	          </p>
+	          <#if tirocinio.dataInizio?? && tirocinio.dataFine??>
+		          <p class="info">
+		          	<i class="far fa-calendar-alt fa-fw w3-margin-right"></i>
+		          	da ${tirocinio.dataInizio?iso_local} al ${tirocinio.dataFine?iso_local}
+		          	<!-- <span class="w3-tag univaq-color-background w3-round">Current</span>  -->
+		          </p>
+	          </#if>
 	          <p class="descrizione-tirocinio">${tirocinio.modalita}</p>
 	        </div>
         </#list>

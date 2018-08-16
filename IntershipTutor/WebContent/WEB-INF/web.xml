@@ -64,6 +64,10 @@
 		<servlet-name>Logout</servlet-name>
 		<servlet-class>controller.Logout</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>Downloader</servlet-name>
+		<servlet-class>controller.Downloader</servlet-class>
+	</servlet>
 	<servlet-mapping>
 		<servlet-name>HomePage</servlet-name>
 		<url-pattern></url-pattern>
@@ -91,6 +95,10 @@
 	<servlet-mapping>
 		<servlet-name>Logout</servlet-name>
 		<url-pattern>/logout</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>Downloader</servlet-name>
+		<url-pattern>/download</url-pattern>
 	</servlet-mapping>
     <!-- End servlets -->
  

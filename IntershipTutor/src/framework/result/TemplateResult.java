@@ -12,6 +12,7 @@ import freemarker.template.TemplateExceptionHandler;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.util.Enumeration;
@@ -244,5 +245,21 @@ public class TemplateResult {
         } catch (UnsupportedEncodingException ex) {
             throw new TemplateManagerException("Template error: " + ex.getMessage(), ex);
         }
+    }
+    
+    // Used to get filled template to generated pdf.
+    public String getFilledTemplate(String tplname, HttpServletRequest request) throws TemplateManagerException {
+    	Template t;
+    	String templateString = null;
+        Map<String, Object> localdatamodel = getRequestDataModel(request);
+        
+        try {
+            t = cfg.getTemplate(tplname);
+            StringWriter stringWriter = new StringWriter();
+            t.process(localdatamodel, stringWriter);
+            return stringWriter.toString();
+        } catch (IOException | TemplateException e) {
+            throw new TemplateManagerException("Template error: " + e.getMessage(), e);
+        } 
     }
 }

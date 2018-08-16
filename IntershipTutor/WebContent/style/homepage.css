@@ -84,23 +84,6 @@
     line-height: 2
 }
 
-/* Collapsible research */
-
-.collapsible-menu{
-    padding: 10px 0;
-}
-
-#label-search{
-    font-size: 17px;
-    font-weight: 500;
-    user-select: none;
-}
-
-.collapsible-menu .field-filter{
-    font-size: 14px
-}
-/* End collapsible research */
-
 /* Homepage STUDENTE */
 button:hover i.fa-share-square{
 	color: #ffffff

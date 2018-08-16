@@ -22,6 +22,12 @@
 		                <hr class="no-margin" />
 		                <!-- Solo aziende convenzionate possono pubblicare offerte di tirocinio -->
 		                <#if utente.isConvenzionata()>
+		                	<p class="info padding-top-bot pointer">
+			                	<a href="download?azienda=${utente.codiceFiscale}">
+				                   <i class="fas fa-download fa-fw w3-margin-right w3-text-theme"></i>
+				                   Convenzione
+				                </a>
+				            </p>
 			                <p class="info padding-top-bot pointer">
 			                   <a href="#add-intership-modal">
 				                   <i class="fas fa-plus fa-fw w3-margin-right w3-text-theme"></i>
@@ -36,7 +42,7 @@
 			                </a>
 		                </p>
 		                <hr />
-		               	<p class="w3-large"><b><i class="fa fa-chart-bar fa-fw w3-margin-right"></i>Valutazione</b></p>
+		               	<h4><i class="fa fa-chart-bar fa-fw w3-margin-right"></i>Valutazione</h4>
 			            <p class ="w3-text-grey">Voto</p>
 			            <div class=" w3-round-xlarge w3-small w3-light-grey">
 			              <div class="w3-container w3-center w3-round-xlarge univaq-color-background" style="width:${voto}%">${voto/20}</div>
@@ -60,26 +66,9 @@
 	   <!-- Middle Column -->
 	   <div class="w3-threequarter" id="right-column">
 	
-	         <!-- <div id="search-bar">
-	             <div class="w3-card w3-round padding-edge">
-	                 <div class="w3-container intership">
-	                     <div class="search-form collapsible-menu">
-	                      <input type="checkbox" id="menu" />
-	                      <label id="label-search" for="menu">Filtra le proposte di tirocinio</label>
-	                      <div class="menu-content">
-	                          <br /><br />
-	                          <form action="." method="get">
-		                          <#list campiRicerca as campoRicerca>
-		                              <label class="field-filter">${campoRicerca?capitalize}</label>
-		                              <input name="${campoRicerca}" class="w3-input" autocomplete="off" />
-		                          </#list>
-		                          <button type="submit" class="w3-button w3-right w3-border w3-round">Cerca</button>
-	                          </form>
-	                      </div>
-	                 	</div>
-	             	</div>
-	         	</div>
-	     	</div> -->
+	        <!-- Including searchbar 
+				<#include "components/searchbar.ftl.html">
+			-->
 	       
 	       <div id="offerte-container" class="w3-margin-bottom w3-card w3-round w3-padding">
 				<h2 id="tirocini-disponibili" class=" w3-padding w3-text-grey">

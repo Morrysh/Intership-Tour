@@ -9,13 +9,12 @@
     <div class="w3-quarter">
     
       <div class="w3-card w3-round">
-        <div class="w3-padding">
-          <h2 id="nome-azienda">
-       		<a href="./azienda?azienda=${azienda.utente}">
-       			${azienda.nome}
-       		</a>
-          </h2>
-          <hr />
+        <div class="padding-edge padding-bottom">
+        	<a href="./azienda?azienda=${azienda.utente}">
+	          	<h2 id="nome-utente" class="w3-center univaq-color">
+	       			${azienda.nome}
+	          	</h2>
+          	</a>
           <p class="info">
           	<i class="fa fa-user fa-fw w3-margin-right"></i>
           	${azienda.nomeResponsabile} ${azienda.cognomeResponsabile}
