@@ -1,0 +1,136 @@
+
+<!-- Page Container -->
+<div id="candidati-container" class="w3-content w3-margin-top">
+
+  <!-- The Grid -->
+  <div class="w3-row-padding">
+  
+    <!-- Left Column -->
+	   <div class="w3-quarter" id="left-column">
+	       <!-- Profile -->
+		       <div class="w3-card w3-round">
+		           <div class="w3-container profile-container w3-margin-bottom">
+
+	           	   		<h2 id="nome-utente" class="w3-center univaq-color">${azienda.nome} </h2>
+	           	   		<p class="info padding-top-bot">
+			               <i class="fa fa-home fa-fw w3-margin-right w3-text-theme"></i>
+	                       ${azienda.regione}
+		                </p>
+		                <p class="info padding-top-bot">
+		                   <i class="fas fa-phone fa-fw w3-margin-right w3-text-theme"></i>
+		                   ${azienda.telefono}
+		                </p>
+		           </div>
+		       </div>
+	   </div>	
+	   <!-- End Left Column -->
+
+    <!-- Right Column -->
+    <div class="w3-threequarter">
+    
+		<!-- Including searchbar: add # before include
+			<include "components/searchbar.ftl.html">
+		-->
+    
+      	<div class="w3-padding w3-card w3-round w3-margin-bottom">
+	        <h2 id="titolo-tirocinio" class="w3-text-grey w3-padding">
+	        	<i class="far fa-calendar-times fa-fw w3-margin-right w3-xlarge"></i>
+	        	Tirocini conclusi
+	        </h2>
+        <#list candidatoTirocinioOfferta as candidato, tirocinioOfferta>
+        	<#list tirocinioOfferta as tirocinio, offertaTirocinio>
+				<hr />
+				<h2 class="w3-center">Candidatura</h2>
+				<div class="w3-padding w3-container offerta-container">
+					<h3 class="univaq-color">Informazioni sul candidato</h3>
+					<div class="dettagli">
+						<span>${candidato.nome} ${candidato.cognome}</span> nato a
+						<span>${candidato.luogoNascita}(${candidato.provinciaNascita})</span> il
+						<span>${candidato.dataNascita?iso_local}</span> e residente a			
+						<span>${candidato.residenza}(${candidato.provinciaResidenza})</span>
+						${candidato.tipoLaurea} in ${candidato.corsoLaurea}
+						ha inviato la sua candidatura.
+						<#if candidato.handicap>
+							Portatore di handicap: Si
+						<#else>
+							Portatore di handicap: No
+						</#if>
+					</div>
+					<h3 class="univaq-color">Dettagli sulla candidatura</h3>
+					<div class="dettagli">
+						<p>
+							&Egrave; stato scelto come tutore <span>${tirocinio.tutoreUniversitario}</span>
+							contattabile al numero <span>${tirocinio.telefonoTutoreUniversitario}</span> o 
+							all'indirizzo email <span>${tirocinio.emailTutoreUniversitario}</span>.<br />
+							Il tirocinante chiede il raggiungimento di <span>${tirocinio.cfu}</span> CFU 
+							con lo svolgimento dell'attività.					
+						</p>
+					</div>
+					<h3 class="univaq-color">Contatti del candidato</h3>
+					<div class="dettagli">
+						<p>
+							<i class="fa fa-envelope fa-fw w3-margin-right"></i>${candidato.email}<br />
+							<i class="fa fa-phone fa-fw w3-margin-right"></i>${candidato.telefono}
+						</p>
+					</div>
+					<br /><br />
+						<div class="w3-block">
+						<a class="w3-right" href="#conclude-modal-${candidato.codiceFiscale}">
+							<button class="pointer w3-round fas fa-check-double w3-padding">
+								Termina
+							</button>
+						</a>
+						<a class="w3-left" href="download?codice_fiscale=${candidato.utente}">
+							<button class="pointer w3-round fas fa-download w3-padding">
+								Progetto formativo
+							</button>
+						</a>
+						</div>
+						<form action="upload?utente=${candidato.utente}&referrer=tirocinioStudente?id_tirocinio=${offertaTirocinio.idTirocinio}" method="post" enctype='multipart/form-data'>
+						    <input class="w3-padding w3-margin-top" type="file" name="file" />
+						    <button id="send" class="w3-button pointer fas fa-upload w3-round " type="submit" > Carica documento</button>
+						    
+						</form>
+				</div>
+			</#list>
+		</#list>
+		
+	</div>
+	
+	<!-- Pagination -->
+	<#include "components/pagination.ftl.html">
+	
+    <!-- End Right Column -->
+    </div>
+    
+  <!-- End Grid -->
+  </div>
+  
+  <!-- End Page Container -->
+</div>
+	
+<!-- Conclude intership modals -->
+<#list candidatoTirocinioOfferta as candidato, tirocinioOfferta>    	
+    <#list tirocinioOfferta as tirocinio, offerta>
+		<div id="conclude-modal-${candidato.codiceFiscale}" class="overlay">
+			    <div class="w3-card w3-white w3-round popup w3-padding">
+			      <div class="w3-center"><br>
+			      	<a href="#close" class="w3-button w3-xlarge w3-display-topright">&times;</a>
+			        <h2>Concludi il tirocinio</h2>
+			      </div>
+			      <form class="w3-container" action="tirocinioStudente?referrer=tirocinioStudente?conclusi=true" method="post">
+			        <div class="w3-section">
+			        	<input type="hidden" name="codice_fiscale" value="${candidato.codiceFiscale}" />
+						<label for="descrizioneDettagliata"><b>Descrizione dettagliata</b></label>
+		          		<textarea id="descrizioneDettagliata" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="2000" type="text" placeholder="Inserisci una descrizione dettagliata sull'attività svolta" name="descrizione_dettagliata" autocomplete="off" required></textarea>
+				        <label for="oreSvolte"><b>Ore svolte</b></label>
+				        <input id="oreSvolte" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="11" type="number" placeholder="Inserisci le ore svolte" name="ore_svolte" autocomplete="off" required />
+				        <label for="giudizioFinale"><b>Giudizio finale</b></label>
+				        <input id="giudizioFinale" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="2000" type="text" placeholder="Inserisci un giudizio finale" name="giudizio_finale" autocomplete="off" required />
+						<button class="w3-button w3-block w3-section w3-padding univaq-color-background" type="submit" name="concludi" value="concludi">Concludi</button>
+			        </div>
+			      </form>
+		      </div>
+		</div>
+	</#list>
+</#list>

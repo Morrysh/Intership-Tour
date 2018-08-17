@@ -74,6 +74,15 @@
 				<h2 id="tirocini-disponibili" class=" w3-padding w3-text-grey">
 					<i class="fas fa-list-ul fa-fw w3-margin-right w3-xlarge"></i>
 					Offerte pubblicate
+					<!-- tirocinioStudente?id_tirocinio= -->
+					<a href="tirocinioStudente?conclusi=true">
+						<span class="w3-right">
+							Conclusi  	
+							<span class="w3-badge <#if tirociniTerminati gt 0>univaq-color-background<#else>univaq-color</#if>"> 
+								${tirociniTerminati}
+							</span>
+						</span>
+					</a>
 				</h2>
 				<#list offerte as offerta>
 					<hr />
@@ -108,27 +117,20 @@
 						</p>
 						<div class="w3-left options">
 							<a href="tirocinioStudente?id_tirocinio=${offerta.idTirocinio}">
-								<button class="pointer">
-									<i class="fas fa-users w3-margin-right"></i>
+								<button class="pointer fas fa-users">
 									Candidati
 								</button>
 						  	</a>
 						</div>
 						<div class="w3-right options">
 		                      <a href="#update-intership-modal-${offerta.idTirocinio}">
-								<button class="pointer"><i class="far fa-edit"></i></button>
+								<button class="pointer far fa-edit"></button>
 							  </a>
 							  <a href="offertaTirocinio?id_tirocinio=${offerta.idTirocinio}&rimuovi=true">
-								<button class="pointer"><i class="far fa-trash-alt"></i></button>
+								<button class="pointer far fa-trash-alt"></button>
 							  </a>
 							  <a href="offertaTirocinio?id_tirocinio=${offerta.idTirocinio}&visibilita=${offerta.visibile?string('false','true')}">
-		                      	<button class="pointer">
-		                      		<#if offerta.visibile>
-		                      			<i class="far fa-eye"></i>
-		                      		<#else>
-		                      			<i class="far fa-eye-slash"></i>
-		                      		</#if>
-		                      	</button>
+		                      	<button class="pointer <#if offerta.visibile> far fa-eye <#else> far fa-eye-slash </#if>"></button>
 	                      	</a>
                       	</div>
 				 </div>

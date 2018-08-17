@@ -169,8 +169,7 @@
 						</p>
 						<#if !tirocinioStudente??>
 							<a href="#intership-subscription-modal-${offerta.idTirocinio}">
-								<button class="w3-button w3-right w3-round">
-									<i class="far fa-share-square fa-fw w3-margin-right w3-hover-univaq-color-background"></i>
+								<button class="w3-button w3-right w3-round far fa-share-square">
 									Invia proposta
 								</button>
 							</a>
@@ -213,15 +212,24 @@
 		          <label for="luogoNascita"><b>Luogo di Nascita</b></label>
 				  <input id="luogoNascita" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" value="${utente.luogoNascita}" placeholder="Inserisci il tuo luogo di nascita" name="luogo_nascita" autocomplete="off" required />
 				  <label for="provinciaNascita"><b>Provincia di Nascita</b></label>
-				  <input id="provinciaNascita" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" value="${utente.provinciaNascita}" placeholder="Inserisci la tua provincia di nascita" name="provincia_nascita" autocomplete="off" required />
+				  <input id="provinciaNascita" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="2" type="text" value="${utente.provinciaNascita}" placeholder="Inserisci la tua provincia di nascita" name="provincia_nascita" autocomplete="off" required />
 				  <label for="residenza"><b>Residenza</b></label>
 				  <input id="residenza" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" value="${utente.residenza}" placeholder="Inserisci la tua residenza" name="residenza" autocomplete="off" required />
 				  <label for="provinciaResidenza"><b>Provincia residenza</b></label>
-				  <input id="provinciaResidenza" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" value="${utente.provinciaResidenza}" placeholder="Inserisci la provincia della tua residenza" name="provincia_residenza" autocomplete="off" required />
+				  <input id="provinciaResidenza" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="2" type="text" value="${utente.provinciaResidenza}" placeholder="Inserisci la provincia della tua residenza" name="provincia_residenza" autocomplete="off" required />
 				  <label for="tipoLaurea"><b>Tipo di laurea</b></label>
 				  <input id="tipoLaurea" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" value="${utente.tipoLaurea}" placeholder="Inserisci il tipo della tua laurea(Triennale/Magistrale)" name="tipo_laurea" autocomplete="off" required />
 				  <label for="corsoLaurea"><b>Corso di laurea</b></label>
 				  <input id="corsoLaurea" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" value="${utente.corsoLaurea}" placeholder="Inserisci il tuo corso di laurea" name="corso_laurea" autocomplete="off" required />
+	         	  <h3 class="univaq-color profile">Indicare se si &eacute; portatori di handicap</h3>
+		          <label class="radio-container">
+			          <input type="radio" name="handicap" value="true" required <#if utente.handicap>checked</#if>>
+			          <span class="checkmark"></span>Si
+			      </label><br />
+			      <label class="radio-container">
+						  	<input type="radio" name="handicap" value="false" <#if !utente.handicap>checked</#if>>
+		          	<span class="checkmark"></span>No
+			      </label>
 	         	  <h3 class="univaq-color profile">Account</h3>
 	         	  <label for="usernameStudente"><b>Username</b></label>
 	         	  <input id="usernameStudente" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="15" type="text" value="${utente.username}" placeholder="Inserisci il tuo username" name="username" autocomplete="off" required />

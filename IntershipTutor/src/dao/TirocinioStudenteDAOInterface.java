@@ -3,6 +3,7 @@ package dao;
 import java.io.InputStream;
 import java.util.List;
 
+import data.model.Azienda;
 import data.model.OffertaTirocinio;
 import data.model.Studente;
 import data.model.TirocinioStudente;
@@ -22,6 +23,10 @@ public interface TirocinioStudenteDAOInterface {
 	int updateStato(String codiceFiscale, StatoRichiestaTirocinio statoRichiestaTirocinio) throws DataLayerException;
 	
 	TirocinioStudente getTirocinioStudenteByStudente(Studente studente) throws DataLayerException;
+	
+	List<Studente> getStudentiInRangeByTirocinioConclusoAccordingToAzienda(Azienda azienda, int paginaCorrente) throws DataLayerException;
+	
+	int getCountTirociniStudenteTerminatiAccordingToAzienda(Azienda azienda) throws DataLayerException;
 	
 	// Per gli studenti
 	OffertaTirocinio getOffertaTirocinioByStudente(Studente studente) throws DataLayerException;

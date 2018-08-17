@@ -137,49 +137,47 @@
     
     </div>
 	
-	<#if tirocinioStudente.stato.name() == "terminato">
-	    <div class="page">
-	        <h2 class="center">UNIVERSITA&apos; DEGLI STUDI DELL&apos;AQUILA</h2>
-	        <h4 class="center">DIPARTIMENTO DI INGEGNERIA E SCIENZE DELL&apos;INFORMAZIONE E MATEMATICA</h4>
-	        <br />
-	        <h4>Da campilare a cura dell&apos;azienda</h4><br /><br />
-	        <h4>Ente/Azienda ${azienda.nome}</h4>
-	        <h4 class="thin">Codice Fiscale Ente/Azienda ${azienda.utente}</h4><br />
-	        <h4>Tirocinante</h4>
-	        <h4>Cognome ${studente.cognome}  Nome ${studente.nome}</h4><br />
-	        <h4>Periodo del tirocinio</h4>
-	        <h4>dal ${tirocinio.dataInizio?iso_local} al ${tirocinio.dataFine?iso_local}</h4>
-	        <h4 class="thin">per un totale di ${tirocinio.numeroOre}  ore</h4><br />
-	        <h4>Sede svolgimento del tirocinio ${tirocinio.luogo}</h4><br />
-	        <h4>Descrizione attivit&agrave; svolta</h4>
-	        <h4>${tirocinioStudente.descrizioneDettagliata}</h4>
-	        <h4 class="thin"></h4><br />
-	        <h4>Si attesta che il/la Sig. ${studente.nome} ${studente.cognome} ha effettuato i compiti affidatigli conseguendo il seguente risultato :</h4>
-	        <h4 class="thin">Positivo</h4><br />
-	        <h4>Data ${data?iso_local[0..9]}</h4>    
-	        <h4>Firma tutore aziendale</h4>
-	        <h4 class="thin">${azienda.nomeRappresentante} ${azienda.cognomeRappresentante}</h4>
-	
+    <div class="page">
+        <h2 class="center">UNIVERSITA&apos; DEGLI STUDI DELL&apos;AQUILA</h2>
+        <h4 class="center">DIPARTIMENTO DI INGEGNERIA E SCIENZE DELL&apos;INFORMAZIONE E MATEMATICA</h4>
+        <br />
+        <h4>Da campilare a cura dell&apos;azienda</h4><br /><br />
+        <h4>Ente/Azienda ${azienda.nome}</h4>
+        <h4 class="thin">Codice Fiscale Ente/Azienda ${azienda.utente}</h4><br />
+        <h4>Tirocinante</h4>
+        <h4>Cognome ${studente.cognome}  Nome ${studente.nome}</h4><br />
+        <h4>Periodo del tirocinio</h4>
+        <h4>dal <#if tirocinioStudente.dataInizio?? && tirocinioStudente.dataFine??>${tirocinio.dataInizio?iso_local} al ${tirocinio.dataFine?iso_local}</#if></h4>
+        <h4 class="thin">per un totale di  ${tirocinio.numeroOre} ore</h4><br />
+        <h4>Sede svolgimento del tirocinio ${tirocinio.luogo}</h4><br />
+        <h4>Descrizione attivit&agrave; svolta</h4>
+        <h4><#if tirocinioStudente.descrizioneDettagliata??>${tirocinioStudente.descrizioneDettagliata}</#if></h4>
+        <h4 class="thin"></h4><br />
+        <h4>Si attesta che il/la Sig. ${studente.nome} ${studente.cognome} ha effettuato i compiti affidatigli conseguendo il seguente risultato :</h4>
+        <h4 class="thin"><#if tirocinioStudente.giudizioFinale??> ${tirocinioStudente.giudizioFinale} </#if></h4><br />
+        <h4>Data ${data?iso_local[0..9]}</h4>    
+        <h4>Firma tutore aziendale</h4>
+        <h4 class="thin">${azienda.nomeRappresentante} ${azienda.cognomeRappresentante}</h4>
+
+    </div>
+
+    <div class="page">
+        <h2 class="center">UNIVERSITA&apos; DEGLI STUDI DELL&apos;AQUILA</h2>
+        <h4 class="center">DIPARTIMENTO DI INGEGNERIA E SCIENZE DELL&apos;INFORMAZIONE E MATEMATICA</h4>
+        <br />
+        <h4>Da campilare a cura dell&apos;Universit&agrave;</h4><br /><br />
+        <h4 class="thin">Si attesta che</h4><br />
+        <h4>Tirocinante</h4><br />
+        <h4>Nome ${studente.nome} Cognome ${studente.cognome}</h4><br />
+        <h4 class="thin">Ha svolto il tirocinio con esito</h4><br />
+        <h4 class="thin">Positivo</h4><br />
+        <h4>Firma del tutore universitario</h4>
+        <h4 class="thin">${tirocinioStudente.tutoreUniversitario}</h4>
+        <h4>Firma del responsabile della struttura didattica competente</h4><br />
+        <h4 class="thin">Guido Proietti</h4>
+        <h4 class="thin">L&apos;Aquila li ${data?iso_local[0..9]}</h4>
+
 	    </div>
-	
-	    <div class="page">
-	        <h2 class="center">UNIVERSITA&apos; DEGLI STUDI DELL&apos;AQUILA</h2>
-	        <h4 class="center">DIPARTIMENTO DI INGEGNERIA E SCIENZE DELL&apos;INFORMAZIONE E MATEMATICA</h4>
-	        <br />
-	        <h4>Da campilare a cura dell&apos;Universit&agrave;</h4><br /><br />
-	        <h4 class="thin">Si attesta che</h4><br />
-	        <h4>Tirocinante</h4><br />
-	        <h4>Nome ${studente.nome} Cognome ${studente.cognome}</h4><br />
-	        <h4 class="thin">Ha svolto il tirocinion con esito</h4><br />
-	        <h4 class="thin">Positivo</h4><br />
-	        <h4>Firma del tutore universitario</h4>
-	        <h4 class="thin">${tirocinioStudente.tutoreUniversitario}</h4>
-	        <h4>Firma del responsabile della struttura didattica competente</h4><br />
-	        <h4 class="thin">Guido Proietti</h4>
-	        <h4 class="thin">L&apos;Aquila li ${data?iso_local[0..9]}</h4>
-	
-	    </div>
-	</#if>
 </body>
 
 </html>

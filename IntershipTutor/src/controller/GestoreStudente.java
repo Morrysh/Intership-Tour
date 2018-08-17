@@ -30,6 +30,8 @@ public class GestoreStudente extends IntershipTutorBaseController {
 		try {
 			Studente studente = (Studente) request.getAttribute("utente");
 			
+			System.out.println(request.getParameter(Studente.HANDICAP));
+			
 			studente.setNome(request.getParameter(Studente.NOME));
 			studente.setCognome(request.getParameter(Studente.COGNOME));
 			studente.setEmail(request.getParameter(Utente.EMAIL));
@@ -43,6 +45,7 @@ public class GestoreStudente extends IntershipTutorBaseController {
 			studente.setProvinciaResidenza(request.getParameter(Studente.PROVINCIA_RESIDENZA));
 			studente.setTipoLaurea(request.getParameter(Studente.TIPO_LAUREA));
 			studente.setCorsoLaurea(request.getParameter(Studente.CORSO_LAUREA));
+			studente.setHandicap(Boolean.valueOf(request.getParameter(Studente.HANDICAP)));
 			
 			new StudenteDAO().update(studente);
 			

@@ -35,8 +35,8 @@
     <!-- Right Column -->
     <div class="w3-threequarter">
     
-		<!-- Including searchbar 
-			<#include "components/searchbar.ftl.html">
+		<!-- Including searchbar: add # before include
+			<include "components/searchbar.ftl.html">
 		-->
     
       	<div class="w3-padding w3-card w3-round w3-margin-bottom">
@@ -88,46 +88,44 @@
 					<#else>
 						<a href="tirocinioStudente?codice_fiscale=${candidato.codiceFiscale}&stato=accettato&referrer=tirocinioStudente?id_tirocinio=${tirocinio.tirocinio}">
 					</#if>
-						<button class="pointer w3-round">	
-							<i class="fas fa-check w3-margin-right"></i>
+						<button class="pointer w3-round fas fa-check w3-padding">
 							Accetta
 						</button>
 					</a>
 					<a class="w3-right" href="tirocinioStudente?codice_fiscale=${candidato.codiceFiscale}&stato=rifiutato&referrer=tirocinioStudente?id_tirocinio=${tirocinio.tirocinio}">
-						<button class="pointer w3-round">
-							<i class="fas fa-times w3-margin-right"></i>
+						<button class="pointer w3-round fas fa-times w3-padding">
 							Rifiuta
 						</button>
 					</a>
 				<#elseif tirocinio.stato.name() == "accettato">
-					<a class="w3-right" href="#conclude-modal-${candidato.codiceFiscale}">
-						<button class="pointer w3-round">
-							<i class="fas fa-times w3-margin-right"></i>
-							Termina
-						</button>
-					</a>
-					<a class="w3-left" href="download?codice_fiscale=${candidato.utente}">
-						<button class="pointer w3-round">
-							<i class="fas fa-download w3-margin-right"></i>
-							Progetto formativo
-						</button>
-					</a>
-					<form action="upload?utente=${candidato.utente}&referrer=tirocinioStudente?id_tirocinio=${offertaTirocinio.idTirocinio}" method="post" enctype='multipart/form-data'>
-					    <input type="file" name="file" />
-					    <input class="pointer w3-left w3-margin-right w3-large" type="submit" value="&#xf093" />
-					</form>
+					<div class="w3-block">
+						<a class="w3-right" href="#conclude-modal-${candidato.codiceFiscale}">
+							<button class="pointer w3-round fas fa-check-double w3-padding">
+								Termina
+							</button>
+						</a>
+						<a class="w3-left" href="download?codice_fiscale=${candidato.utente}">
+							<button class="pointer w3-round fas fa-download w3-padding">
+								Progetto formativo
+							</button>
+						</a>
+						<form action="upload?utente=${candidato.utente}&referrer=tirocinioStudente?id_tirocinio=${offertaTirocinio.idTirocinio}" method="post" enctype='multipart/form-data'>
+						    <input class="w3-padding w3-margin-top" type="file" name="file" />
+						    <button id="send" class="w3-button pointer fas fa-upload w3-round " type="submit" > Carica documento</button>
+						    
+						</form>
+					</div>
 				<#elseif tirocinio.stato.name() == "terminato">
-					<p class="w3-right univaq-color no-margin">
+					<p class="w3-right univaq-color no-margin w3-padding">
 						Il tirocinio è concluso
 					</p>
 					<a class="w3-left" href="download?codice_fiscale=${candidato.utente}">
-						<button class="pointer w3-round">
-							<i class="fas fa-download w3-margin-right"></i>
+						<button class="pointer w3-round fas fa-download w3-padding">
 							Progetto formativo
 						</button>
 					</a>
 				<#else>
-					<p class="w3-right w3-text-gray">Il candidato è stato respinto</p>
+					<p class="w3-right w3-text-gray w3-padding">Il candidato è stato respinto</p>
 				</#if>
 			</div>
 		</#list>

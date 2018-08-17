@@ -34,7 +34,7 @@ public class Uploader extends IntershipTutorBaseController{
 			String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
 			
 			// Verifichiamo che sia stato inserito un pdf
-			if(fileName.split("\\.")[1].equals("pdf")) {
+			if(filePart.getSize() > 0 && fileName.split("\\.")[1].equals("pdf")) {
 				Studente studente = new StudenteDAO().getStudenteByCF(request.getParameter(Studente.UTENTE));
 				new TirocinioStudenteDAO().setProgettoFormativo(filePart.getInputStream(), studente);
 				
@@ -47,7 +47,7 @@ public class Uploader extends IntershipTutorBaseController{
 				
 			}
 			else {
-				request.setAttribute("message", "Il formato non è valido, deve essere caricato un pdf");
+				request.setAttribute("message", "File vuoto o formato non supportato, si prega di caricare un pdf");
 			    action_error(request, response);
 			}
 			

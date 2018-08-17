@@ -43,7 +43,7 @@ public class StudenteDAO implements StudenteDAOInterface {
             preparedStatement.setString(8, studente.getProvinciaResidenza());
             preparedStatement.setString(9, studente.getTipoLaurea());
             preparedStatement.setString(10, studente.getCorsoLaurea());
-            preparedStatement.setBoolean(11, studente.isHandicap());
+            preparedStatement.setInt(11, studente.isHandicap() ? 1 : 0);
 
             status = preparedStatement.executeUpdate();
 
@@ -60,7 +60,7 @@ public class StudenteDAO implements StudenteDAOInterface {
 	public int update(Studente studente) throws DataLayerException {
 		String updateQuery = "UPDATE studente SET nome = ?, cognome = ?, data_nascita = ?, luogo_nascita = ?, " +
 				 			 "provincia_nascita = ?, residenza = ?, provincia_residenza = ?, " + 
-				             "tipo_laurea = ?, corso_laurea = ? WHERE utente = ?";
+				             "tipo_laurea = ?, corso_laurea = ?, handicap = ? WHERE utente = ?";
 		PreparedStatement preparedStatement;
 		int status = 0;
 		
@@ -86,7 +86,8 @@ public class StudenteDAO implements StudenteDAOInterface {
 			preparedStatement.setString(7, studente.getProvinciaResidenza());
 			preparedStatement.setString(8, studente.getTipoLaurea());
 			preparedStatement.setString(9, studente.getCorsoLaurea());
-			preparedStatement.setString(10, studente.getCodiceFiscale());
+			preparedStatement.setInt(10, studente.isHandicap() ? 1 : 0);
+			preparedStatement.setString(11, studente.getCodiceFiscale());
 			
 			status = preparedStatement.executeUpdate();
 			

@@ -11,6 +11,7 @@ import java.util.List;
 
 import dao.TirocinioStudenteDAOInterface;
 import data.database.DBConnector;
+import data.model.Azienda;
 import data.model.OffertaTirocinio;
 import data.model.Studente;
 import data.model.TirocinioStudente;
@@ -147,6 +148,81 @@ public class TirocinioStudenteDAO implements TirocinioStudenteDAOInterface {
         }
 		
 		return status;
+	}
+	
+	@Override
+	public List<Studente> getStudentiInRangeByTirocinioConclusoAccordingToAzienda(Azienda azienda, int paginaCorrente) throws DataLayerException {
+		List<Studente> studenti = new ArrayList<>();
+		PreparedStatement preparedStatement;
+		String query = "SELECT * FROM (((tirociniostudente JOIN offertatirocinio ON " +
+					   "tirociniostudente.id_tirocinio = offertatirocinio.id_tirocinio) " + 
+					   "JOIN studente ON studente.utente = tirociniostudente.studente) " + 
+					   "JOIN utente ON utente.codice_fiscale = studente.utente) WHERE " + 
+					   "data_fine <= cast(now() as date) AND stato != ? AND azienda = ? LIMIT ?, ?";
+		
+		try (Connection connection = DBConnector.getDatasource().getConnection()) {
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, StatoRichiestaTirocinio.terminato.name());
+            preparedStatement.setString(2, azienda.getCodiceFiscale());
+            preparedStatement.setInt(3, paginaCorrente * (int) CANDIDATI_PER_PAGINA);
+            preparedStatement.setInt(4, (int) CANDIDATI_PER_PAGINA);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+            	Studente studente = new Studente(
+                		resultSet.getString(Utente.CODICE_FISCALE),
+                		resultSet.getString(Utente.EMAIL),
+                		resultSet.getString(Utente.USERNAME),
+                		resultSet.getString(Utente.PASSWORD),
+                		resultSet.getString(Utente.TELEFONO),
+                		TipoUtente.valueOf(resultSet.getString(Utente.TIPO_UTENTE)),
+                		resultSet.getString(Studente.UTENTE),
+						resultSet.getString(Studente.NOME),
+                        resultSet.getString(Studente.COGNOME),
+                        resultSet.getDate(Studente.DATA_NASCITA),
+                        resultSet.getString(Studente.LUOGO_NASCITA),
+                        resultSet.getString(Studente.PROVINCIA_NASCITA),
+                        resultSet.getString(Studente.RESIDENZA),
+                        resultSet.getString(Studente.PROVINCIA_RESIDENZA),
+                        resultSet.getString(Studente.TIPO_LAUREA),
+                        resultSet.getString(Studente.CORSO_LAUREA),
+                        resultSet.getBoolean(Studente.HANDICAP));
+                studenti.add(studente);
+            }
+
+            connection.close();
+        } catch (SQLException e) {
+        	throw new DataLayerException("Unable to get all ended interships", e);
+        }
+		
+		return studenti;
+	}
+	
+	@Override
+	public int getCountTirociniStudenteTerminatiAccordingToAzienda(Azienda azienda) throws DataLayerException{
+		String insertQuery = "SELECT COUNT(*) as count FROM tirociniostudente JOIN offertatirocinio ON "  + 
+							 "tirociniostudente.id_tirocinio = offertatirocinio.id_tirocinio " + 
+							 "WHERE data_fine <= cast(now() as date) AND stato != ? AND azienda = ?";
+		PreparedStatement preparedStatement;
+        int count = 0;
+        
+        try (Connection connection = DBConnector.getDatasource().getConnection()) {
+            preparedStatement = connection.prepareStatement(insertQuery);
+            preparedStatement.setString(1, StatoRichiestaTirocinio.terminato.name());
+            preparedStatement.setString(2, azienda.getCodiceFiscale());
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            
+            if(resultSet.next()) {
+            	count = resultSet.getInt("count");
+            }
+
+            connection.close();
+        } catch (SQLException e) {
+        	throw new DataLayerException("Unable to get count ended interships", e);
+        }
+		
+		return count;
 	}
 	
 	@Override

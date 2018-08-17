@@ -154,7 +154,10 @@ public class HomePage extends IntershipTutorBaseController {
                 // il .0 è necessario per il cast di Java (1.1 deve essere arrotondato a 2 per esempio)
              numeroPagine = (int) Math.ceil(new OffertaTirocinioDAO().getCountAccordingToAzienda(azienda) / OFFERTE_PER_PAGINA);
             //}
+             
+            int tirociniTerminati = new TirocinioStudenteDAO().getCountTirociniStudenteTerminatiAccordingToAzienda(azienda);
             
+            request.setAttribute("tirociniTerminati", tirociniTerminati);
             request.setAttribute("azienda", azienda);
             request.setAttribute("voto", voto);
  	        request.setAttribute("pareriAzienda", pareriAzienda);

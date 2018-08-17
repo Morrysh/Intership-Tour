@@ -15,7 +15,7 @@ h1{
 
 h2{
 	margin-bottom: 0;
-	font-size: 140% !important
+	font-size: 130% !important
 }
 
 h3.profile{
@@ -267,7 +267,7 @@ input:checked ~ #label-search:after {
 /* End modals without js */
 
 /* Modal login, signup */
-div.tab-frame input[type="radio"]{ display:none;}
+div.tab-frame input[type="radio"].login-tab{ display:none;}
 div.tab-frame label.tab-label{ display:block; float:left;padding:5px 10px; cursor:pointer;}
 div.tab-frame input[type="radio"]:checked + label.tab-label{ background:#822627; color:white; cursor:default;}
 div.tab-frame div.tab{ display:none; padding:5px 10px;clear:left}
@@ -277,6 +277,46 @@ div.tab-frame input[type="radio"]:nth-of-type(2):checked ~ .tab:nth-of-type(2),
 div.tab-frame input[type="radio"]:nth-of-type(3):checked ~ .tab:nth-of-type(3)
 { display:block;}
 /* End modal login signup*/
+
+/* Radio button style */
+.radio-container {
+  position: relative;
+  padding-left: 25px;
+  cursor: pointer;
+  font-size: 15px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Hide the browser's default radio button */
+.radio-container input {
+  position: absolute;
+  opacity: 0;
+}
+
+/* Create a custom radio button */
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 15px;
+  width: 15px;
+  background-color: #eee;
+  border-radius: 50%;
+}
+
+/* On mouse-over, add a grey background color */
+.radio-container:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+/* When the radio button is checked, add a blue background */
+.radio-container input:checked ~ .checkmark {
+  background-color: #822627;
+}
+/* End radio button style */
 
 /* My classes */
 .info{

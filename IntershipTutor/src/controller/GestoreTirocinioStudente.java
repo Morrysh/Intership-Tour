@@ -27,7 +27,6 @@ import data.model.Azienda;
 import data.model.OffertaTirocinio;
 import data.model.Studente;
 import data.model.TirocinioStudente;
-import data.model.enumeration.CampoRicercaCandidato;
 import data.model.enumeration.StatoRichiestaTirocinio;
 import framework.data.DataLayerException;
 import framework.result.FailureResult;
@@ -76,9 +75,9 @@ public class GestoreTirocinioStudente extends IntershipTutorBaseController {
 			
 			String queryString = "&id_tirocinio=" + offertaTirocinio.getIdTirocinio();
 			
-			request.setAttribute("servlet", "tirocinioStudente");
-	        request.setAttribute("searchbartitle", "Filtra le candidature");
-			request.setAttribute("campiRicerca", CampoRicercaCandidato.values());
+			//request.setAttribute("servlet", "tirocinioStudente");
+	        //request.setAttribute("searchbartitle", "Filtra le candidature");
+			//request.setAttribute("campiRicerca", CampoRicercaCandidato.values());
 			request.setAttribute("page_css", "candidati");
 			request.setAttribute("queryString", queryString);
 	        request.setAttribute("numeroPagine", numeroPagine);
@@ -89,6 +88,45 @@ public class GestoreTirocinioStudente extends IntershipTutorBaseController {
 			
 			res.activate("candidati.ftl.html", request, response);
 			
+		}
+		catch (DataLayerException e) {
+			request.setAttribute("message", "Data access exception: " + e.getMessage());
+            action_error(request, response);
+		}
+	}
+	
+	private void action_show_concluded_interships(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException{
+		try {
+			TemplateResult res = new TemplateResult(getServletContext());
+			
+			Azienda azienda = (Azienda) request.getAttribute("utente");
+			
+			int paginaCorrente = 0;
+	        if(request.getParameter("pagina") != null) {
+	        	paginaCorrente = (SecurityLayer.checkNumeric(request.getParameter("pagina")));
+	        }
+	        int numeroPagine = (int) Math.ceil(new TirocinioStudenteDAO().getCountTirociniStudenteTerminatiAccordingToAzienda(azienda) / CANDIDATI_PER_PAGINA);
+			
+			List<Studente> studenti = new TirocinioStudenteDAO().getStudentiInRangeByTirocinioConclusoAccordingToAzienda(azienda, paginaCorrente);
+			
+			Map<Studente, Map<TirocinioStudente, OffertaTirocinio>> candidatoTirocinioOfferta =
+					new LinkedHashMap<>();
+			
+			for(Studente studente : studenti) {
+				Map<TirocinioStudente, OffertaTirocinio> tirocinioOfferta = new LinkedHashMap<>();
+				TirocinioStudente tirocinioStudente = new TirocinioStudenteDAO().getTirocinioStudenteByStudente(studente);
+				OffertaTirocinio offertaTirocinio = new OffertaTirocinioDAO().getOffertaByID(tirocinioStudente.getTirocinio());
+				tirocinioOfferta.put(tirocinioStudente, offertaTirocinio);
+				candidatoTirocinioOfferta.put(studente, tirocinioOfferta);
+			}
+			
+			request.setAttribute("azienda", azienda);
+			request.setAttribute("candidatoTirocinioOfferta", candidatoTirocinioOfferta);
+			request.setAttribute("page_css", "tirocini-conclusi");
+	        request.setAttribute("numeroPagine", numeroPagine);
+			request.setAttribute("paginaCorrente", paginaCorrente);
+			
+			res.activate("tirocini-conclusi.ftl.html", request, response);
 		}
 		catch (DataLayerException e) {
 			request.setAttribute("message", "Data access exception: " + e.getMessage());
@@ -263,13 +301,12 @@ public class GestoreTirocinioStudente extends IntershipTutorBaseController {
 			if(request.getParameter("rimuovi") != null) {
 				action_rimuovi(request, response);
 			}
+			else if(request.getParameter("conclusi") != null) {
+				action_show_concluded_interships(request, response);
+			}
 			else if(request.getParameter("iscriviti") != null) {
 				if(request.getParameter(TirocinioStudente.ID_TIROCINIO) != null) {
 					action_iscriviti(request, response);
-				}
-				else {
-					request.setAttribute("message", "Non è stato specificato il tirocinio");
-    			    action_error(request, response);
 				}
 			}
 			else if(request.getParameter(OffertaTirocinio.ID_TIROCINIO) != null) {
