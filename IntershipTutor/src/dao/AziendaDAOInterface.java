@@ -27,4 +27,8 @@ public interface AziendaDAOInterface {
 	
 	InputStream getConvenzioneDoc(Azienda azienda) throws DataLayerException;
 	
+	Azienda getBestAzienda() throws DataLayerException;
+	
+	Azienda getWorstAzienda() throws DataLayerException;
+	
 }

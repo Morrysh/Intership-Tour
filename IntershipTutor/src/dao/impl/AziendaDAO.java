@@ -280,4 +280,63 @@ public class AziendaDAO implements AziendaDAOInterface {
         return docStream;
 	}	
 	
+	@Override
+	public Azienda getBestAzienda() throws DataLayerException{
+		String query = "SELECT S.nome as nome, S.utente as utente "
+				+ "FROM (SELECT SUM(parereazienda.voto)/COUNT(parereazienda.voto) as votoTotale, azienda.nome, azienda.utente "
+				+ "FROM azienda JOIN parereazienda on parereazienda.azienda=azienda.utente "
+				+ "GROUP BY azienda.utente "
+				+ "ORDER BY votoTotale DESC "
+				+ "LIMIT 1 "
+				+ ") S ;";
+		PreparedStatement preparedStatement;
+		Azienda azienda = null;
+		
+        try (Connection connection = DBConnector.getDatasource().getConnection()) {
+            preparedStatement = connection.prepareStatement(query);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            
+            if(resultSet.next()) {
+            	azienda = getAziendaByCF(resultSet.getString(Azienda.UTENTE));
+            }
+
+            connection.close();
+
+        } catch (SQLException e) {
+        	throw new DataLayerException("Unable to get pdf convention", e);
+        }
+		
+		return azienda;
+	}
+	
+	@Override
+	public Azienda getWorstAzienda() throws DataLayerException{
+		String query = "SELECT S.nome as nome, S.utente as utente "
+				+ "FROM (SELECT SUM(parereazienda.voto)/COUNT(parereazienda.voto) as votoTotale, azienda.nome, azienda.utente "
+				+ "FROM azienda JOIN parereazienda on parereazienda.azienda=azienda.utente "
+				+ "GROUP BY azienda.utente "
+				+ "ORDER BY votoTotale "
+				+ "LIMIT 1 "
+				+ ") S ;";
+		PreparedStatement preparedStatement;
+		Azienda azienda = null;
+		
+        try (Connection connection = DBConnector.getDatasource().getConnection()) {
+            preparedStatement = connection.prepareStatement(query);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            
+            if(resultSet.next()) {
+            	azienda = getAziendaByCF(resultSet.getString(Azienda.UTENTE));
+            }
+
+            connection.close();
+
+        } catch (SQLException e) {
+        	throw new DataLayerException("Unable to get pdf convention", e);
+        }
+		
+		return azienda;
+	}
 }

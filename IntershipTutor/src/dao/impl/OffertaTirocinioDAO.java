@@ -281,6 +281,46 @@ public class OffertaTirocinioDAO implements OffertaTirocinioDAOInterface {
 	}
 	
 	@Override
+	public OffertaTirocinio getBestOfferta() throws DataLayerException{
+		OffertaTirocinio offertaTirocinio = null;
+		PreparedStatement preparedStatement;
+		String query = "SELECT offertatirocinio.*, COUNT(tirociniostudente.id_tirocinio) as conto "
+				+ "FROM offertatirocinio JOIN tirociniostudente "
+				+ "ON tirociniostudente.id_tirocinio = offertatirocinio.id_tirocinio "
+				+ "GROUP BY offertatirocinio.id_tirocinio "
+				+ "ORDER BY conto DESC "
+				+ "LIMIT 1;";
+		
+		try (Connection connection = DBConnector.getDatasource().getConnection()) {
+			preparedStatement = connection.prepareStatement(query);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+            	offertaTirocinio = new OffertaTirocinio(
+                		resultSet.getInt(OffertaTirocinio.ID_TIROCINIO),
+                		resultSet.getString(OffertaTirocinio.AZIENDA),
+                		resultSet.getString(OffertaTirocinio.TITOLO),
+		 				resultSet.getString(OffertaTirocinio.LUOGO),
+                        resultSet.getString(OffertaTirocinio.OBIETTIVI),
+                        resultSet.getString(OffertaTirocinio.MODALITA),
+                        resultSet.getString(OffertaTirocinio.RIMBORSO),
+                        resultSet.getDate(OffertaTirocinio.DATA_INIZIO),
+                        resultSet.getDate(OffertaTirocinio.DATA_FINE),
+                        resultSet.getTime(OffertaTirocinio.ORA_INIZIO),
+                        resultSet.getTime(OffertaTirocinio.ORA_FINE),
+                        resultSet.getInt(OffertaTirocinio.NUMERO_ORE),
+                        resultSet.getBoolean(OffertaTirocinio.VISIBILE));
+            }
+
+            connection.close();
+        } catch (SQLException e) {
+        	throw new DataLayerException("Unable to get intership by id", e);
+        }
+		
+		return offertaTirocinio;
+	}
+	
+	@Override
 	public List<OffertaTirocinio> allOfferte() throws DataLayerException {
 		List<OffertaTirocinio> offerteTirocinio = new ArrayList<>();
 		PreparedStatement preparedStatement;

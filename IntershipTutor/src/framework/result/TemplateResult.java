@@ -141,7 +141,7 @@ public class TemplateResult {
     //this main method calls Freemarker and compiles the template
     //if an outline template has been specified, the requested template is
     //embedded in the outline
-    protected void process(String tplname, Map datamodel, Writer out) throws TemplateManagerException {
+    protected void process(String tplname, Map datamodel, Writer out, boolean b) throws TemplateManagerException {
         Template t;
         //assicuriamoci di avere sempre un data model da passare al template, che contenga anche tutti i default
         //ensure we have a data model, initialized with some default data
@@ -155,7 +155,7 @@ public class TemplateResult {
         }
         String outline_name = (String) localdatamodel.get("outline_tpl");
         try {
-            if (outline_name == null || outline_name.isEmpty()) {
+            if (outline_name == null || outline_name.isEmpty() || b) {
                 //se non c'è un outline, carichiamo semplicemente il template specificato
                 //if an outline has not been set, load the specified template
                 t = cfg.getTemplate(tplname);
@@ -216,7 +216,7 @@ public class TemplateResult {
         response.setCharacterEncoding(encoding);
 
         try {
-            process(tplname, datamodel, response.getWriter());
+            process(tplname, datamodel, response.getWriter(),false);
         } catch (IOException ex) {
             throw new TemplateManagerException("Template error: " + ex.getMessage(), ex);
         }
@@ -228,6 +228,51 @@ public class TemplateResult {
         Map datamodel = getRequestDataModel(request);
         activate(tplname, datamodel, response);
     }
+    
+  //questa versione di activate accetta un modello dati esplicito per l'admin
+    //this activate method gets an explicit data model for admin
+    public void activateAdmin(String tplname, HttpServletRequest request, HttpServletResponse response) throws TemplateManagerException {
+        //impostiamo il content type, se specificato dall'utente, o usiamo il default
+        //set the output content type, if user-specified, or use the default
+    	Map datamodel = getRequestDataModel(request);
+        String contentType = (String) datamodel.get("contentType");
+        if (contentType == null) {
+            contentType = "text/html";
+        }
+        response.setContentType(contentType);
+
+        //impostiamo il tipo di output: in questo modo freemarker abiliter� il necessario escaping
+        //set the output format, so that freemarker will enable the correspondoing escaping
+        switch (contentType) {
+            case "text/html":
+                cfg.setOutputFormat(HTMLOutputFormat.INSTANCE);
+                break;
+            case "text/xml":
+            case "application/xml":
+                cfg.setOutputFormat(XMLOutputFormat.INSTANCE);
+                break;
+            case "application/json":
+                cfg.setOutputFormat(JSONOutputFormat.INSTANCE);
+                break;
+            default:
+                break;
+        }
+
+        //impostiamo l'encoding, se specificato dall'utente, o usiamo il default
+        //set the output encoding, if user-specified, or use the default
+        String encoding = (String) datamodel.get("encoding");
+        if (encoding == null) {
+            encoding = cfg.getOutputEncoding();
+        }
+        response.setCharacterEncoding(encoding);
+
+        try {
+            process(tplname, datamodel, response.getWriter(), true);
+        } catch (IOException ex) {
+            throw new TemplateManagerException("Template error: " + ex.getMessage(), ex);
+        }
+    }
+
 
     //questa versione di activate può essere usata per generare output non diretto verso il browser, ad esempio
     //su un file
@@ -241,7 +286,7 @@ public class TemplateResult {
         try {
             //notare la gestione dell'encoding, che viene invece eseguita implicitamente tramite il setContentType nel contesto servlet
             //note how we set the output encoding, which is usually handled via setContentType when the output is sent to a browser
-            process(tplname, datamodel, new OutputStreamWriter(out, encoding));
+            process(tplname, datamodel, new OutputStreamWriter(out, encoding), false);
         } catch (UnsupportedEncodingException ex) {
             throw new TemplateManagerException("Template error: " + ex.getMessage(), ex);
         }

@@ -120,6 +120,7 @@ public class GestoreTirocinioStudente extends IntershipTutorBaseController {
 				candidatoTirocinioOfferta.put(studente, tirocinioOfferta);
 			}
 			
+			request.setAttribute("queryString", "&conclusi=true");
 			request.setAttribute("azienda", azienda);
 			request.setAttribute("candidatoTirocinioOfferta", candidatoTirocinioOfferta);
 			request.setAttribute("page_css", "tirocini-conclusi");

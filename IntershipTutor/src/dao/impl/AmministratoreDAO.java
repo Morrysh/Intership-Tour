@@ -51,5 +51,8 @@ public class AmministratoreDAO implements AmministratoreDAOInterface {
         }
         return amministratore;
 	}
+	
+	
+
 
 }

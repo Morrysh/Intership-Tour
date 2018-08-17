@@ -30,6 +30,8 @@ public interface OffertaTirocinioDAOInterface {
 	
 	OffertaTirocinio getOffertaByID(int idTirocinio) throws DataLayerException;
 	
+	OffertaTirocinio getBestOfferta() throws DataLayerException;
+	
 	List<OffertaTirocinio> allOfferte() throws DataLayerException;
 	
 	List<OffertaTirocinio> allOfferteInRangeAccordingToVisibilita(boolean visibile, int pagina) throws DataLayerException;
