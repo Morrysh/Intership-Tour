@@ -1,6 +1,7 @@
 package dao;
 
 import data.model.Utente;
+import data.model.enumeration.TipoUtente;
 import framework.data.DataLayerException;
 
 public interface UtenteDAOInterface {
@@ -10,6 +11,8 @@ public interface UtenteDAOInterface {
 	int update(Utente utente) throws DataLayerException;
 	
 	int delete(Utente utente) throws DataLayerException;
+	
+	int getCountAccordingToUserType(TipoUtente tipoUtente) throws DataLayerException;
 	
 	boolean checkEmailDisponibile(String email) throws DataLayerException;
 	

@@ -340,29 +340,7 @@ public class TirocinioStudenteDAO implements TirocinioStudenteDAOInterface {
 		
 		return studenti;
 	}
-
-	@Override
-	public int setProgettoFormativo(InputStream progettoFormativo, Studente studente) throws DataLayerException {
-		String updateQuery = "UPDATE tirociniostudente SET progetto_formativo = ?  WHERE studente = ?";
-		PreparedStatement preparedStatement;
-		int status = 0;
-		
-		try (Connection connection = DBConnector.getDatasource().getConnection()) {
-		preparedStatement = connection.prepareStatement(updateQuery);
-		
-		preparedStatement.setBlob(1, progettoFormativo);
-		preparedStatement.setString(2, studente.getCodiceFiscale());
-		
-		status = preparedStatement.executeUpdate();
-		
-		connection.close();
-		} catch (SQLException e) {
-			throw new DataLayerException("Unable to set student training project pdf", e);
-		}
-		
-		return status;
-	}
-
+	
 	@Override
 	public InputStream getProgettoFormativo(Studente studente) throws DataLayerException {
 		String query = "SELECT progetto_formativo FROM tirociniostudente WHERE studente = ?";
@@ -387,6 +365,28 @@ public class TirocinioStudenteDAO implements TirocinioStudenteDAOInterface {
         }
         
         return docStream;
+	}
+
+	@Override
+	public int setProgettoFormativo(InputStream progettoFormativo, Studente studente) throws DataLayerException {
+		String updateQuery = "UPDATE tirociniostudente SET progetto_formativo = ?  WHERE studente = ?";
+		PreparedStatement preparedStatement;
+		int status = 0;
+		
+		try (Connection connection = DBConnector.getDatasource().getConnection()) {
+		preparedStatement = connection.prepareStatement(updateQuery);
+		
+		preparedStatement.setBlob(1, progettoFormativo);
+		preparedStatement.setString(2, studente.getCodiceFiscale());
+		
+		status = preparedStatement.executeUpdate();
+		
+		connection.close();
+		} catch (SQLException e) {
+			throw new DataLayerException("Unable to set student training project pdf", e);
+		}
+		
+		return status;
 	}
 
 }

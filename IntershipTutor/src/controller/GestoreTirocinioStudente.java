@@ -274,7 +274,7 @@ public class GestoreTirocinioStudente extends IntershipTutorBaseController {
 			request.setAttribute("azienda", azienda);
 			request.setAttribute("data", new Date(System.currentTimeMillis()));
 			
-			String progettoFormativo = res.getFilledTemplate("doc/progetto-formativo.ftl.html", request).replace("à", "&agrave;").replace("è", "&egrave;");
+			String progettoFormativo = res.getFilledTemplate("doc/progetto-formativo.ftl.html", request);
 			
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 

@@ -13,12 +13,14 @@ import dao.impl.AziendaDAO;
 import dao.impl.OffertaTirocinioDAO;
 import dao.impl.ParereAziendaDAO;
 import dao.impl.TirocinioStudenteDAO;
+import dao.impl.UtenteDAO;
 import data.model.Amministratore;
 import data.model.Azienda;
 import data.model.OffertaTirocinio;
 import data.model.Studente;
 import data.model.TirocinioStudente;
 import data.model.enumeration.CampoRicercaTirocinio;
+import data.model.enumeration.TipoUtente;
 import framework.data.DataLayerException;
 import framework.result.FailureResult;
 import framework.result.TemplateManagerException;
@@ -184,6 +186,15 @@ public class HomePage extends IntershipTutorBaseController {
     	List<Azienda> aziendeNonConv = new AziendaDAO().allAziendeAccordingToConvention(false);
     	OffertaTirocinio bestOfferta = new OffertaTirocinioDAO().getBestOfferta();
     	
+    	int numAmministratoriTotali = new UtenteDAO().getCountAccordingToUserType(TipoUtente.amministratore);
+    	int numAziendeTotali = new UtenteDAO().getCountAccordingToUserType(TipoUtente.azienda);
+    	int numStudentiTotali = new UtenteDAO().getCountAccordingToUserType(TipoUtente.studente);
+    	int numOfferteTotali = new OffertaTirocinioDAO().getCount();
+    	
+    	request.setAttribute("numAmministratoriTotali", numAmministratoriTotali);
+    	request.setAttribute("numAziendeTotali", numAziendeTotali);
+    	request.setAttribute("numStudentiTotali", numStudentiTotali);
+    	request.setAttribute("numOfferteTotali", numOfferteTotali);
     	request.setAttribute("bestAzienda", bestAzienda);
         request.setAttribute("worstAzienda", worstAzienda);
         request.setAttribute("aziendeNonConv", aziendeNonConv);

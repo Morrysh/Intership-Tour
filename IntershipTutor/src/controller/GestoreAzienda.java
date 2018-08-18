@@ -1,12 +1,20 @@
 package controller;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.tool.xml.XMLWorkerHelper;
 
 import dao.impl.AziendaDAO;
 import dao.impl.OffertaTirocinioDAO;
@@ -32,6 +40,33 @@ public class GestoreAzienda extends IntershipTutorBaseController {
             (new FailureResult(getServletContext())).activate((String) request.getAttribute("message"), request, response);
         }
     }
+	
+	private void setConvezioneAzienda(HttpServletRequest request, HttpServletResponse response, Azienda azienda) {
+		try {
+			TemplateResult res = new TemplateResult(getServletContext());
+			
+			request.setAttribute("azienda", azienda);
+			
+			String schemaConvenzione = res.getFilledTemplate("doc/schema-convenzione.ftl.html", request);
+			
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			
+			// Generating pdf
+			Document document = new Document();
+			PdfWriter writer = PdfWriter.getInstance(document, baos);
+			document.open();
+			XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(schemaConvenzione.getBytes(StandardCharsets.UTF_8)));
+			document.close();
+
+			ByteArrayInputStream pdfInputStream = new ByteArrayInputStream(baos.toByteArray());
+			
+			new AziendaDAO().setConvenzioneDoc(pdfInputStream, azienda);
+		} catch (DataLayerException | IOException | TemplateManagerException | DocumentException e) {
+			request.setAttribute("message", "Data access exception: " + e.getMessage());
+	        action_error(request, response);
+		} 
+		
+	}
 	
 	private void action_aggiorna(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException{
 		try {
@@ -81,6 +116,9 @@ public class GestoreAzienda extends IntershipTutorBaseController {
 					false);
 			
 			new AziendaDAO().insert(azienda);
+			
+			// Generiamo il pdf schema convenzione
+			setConvezioneAzienda(request, response, azienda);
 			
 			response.sendRedirect(request.getContextPath());
 			

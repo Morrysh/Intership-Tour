@@ -281,6 +281,28 @@ public class AziendaDAO implements AziendaDAOInterface {
 	}	
 	
 	@Override
+	public int setConvenzioneDoc(InputStream schemaConvenzione, Azienda azienda) throws DataLayerException {
+		String updateQuery = "UPDATE azienda SET convenzione_doc = ?  WHERE utente = ?";
+		PreparedStatement preparedStatement;
+		int status = 0;
+		
+		try (Connection connection = DBConnector.getDatasource().getConnection()) {
+		preparedStatement = connection.prepareStatement(updateQuery);
+		
+		preparedStatement.setBlob(1, schemaConvenzione);
+		preparedStatement.setString(2, azienda.getCodiceFiscale());
+		
+		status = preparedStatement.executeUpdate();
+		
+		connection.close();
+		} catch (SQLException e) {
+			throw new DataLayerException("Unable to set company convention pdf", e);
+		}
+		
+		return status;
+	}
+	
+	@Override
 	public Azienda getBestAzienda() throws DataLayerException{
 		String query = "SELECT S.nome as nome, S.utente as utente "
 				+ "FROM (SELECT SUM(parereazienda.voto)/COUNT(parereazienda.voto) as votoTotale, azienda.nome, azienda.utente "
@@ -304,7 +326,7 @@ public class AziendaDAO implements AziendaDAOInterface {
             connection.close();
 
         } catch (SQLException e) {
-        	throw new DataLayerException("Unable to get pdf convention", e);
+        	throw new DataLayerException("Unable to get best company", e);
         }
 		
 		return azienda;
@@ -334,9 +356,10 @@ public class AziendaDAO implements AziendaDAOInterface {
             connection.close();
 
         } catch (SQLException e) {
-        	throw new DataLayerException("Unable to get pdf convention", e);
+        	throw new DataLayerException("Unable to get worst company", e);
         }
 		
 		return azienda;
 	}
+	
 }

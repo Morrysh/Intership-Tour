@@ -20,6 +20,8 @@ public interface OffertaTirocinioDAOInterface {
 	//int setVisibilita(OffertaTirocinio offertaTirocinio, boolean visibilita) throws DataLayerException;
 	int setVisibilita(int idOffertaTirocinio, boolean visibilita) throws DataLayerException;
 	
+	int getCount() throws DataLayerException;
+	
 	int getCountAccordingToVisibilita(boolean visbile) throws DataLayerException;
 	
 	int getCountAccordingToRicerca(Map<CampoRicercaTirocinio, String> campoRicerca) throws DataLayerException;

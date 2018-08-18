@@ -87,6 +87,30 @@ public class UtenteDAO implements UtenteDAOInterface {
 	}
 	
 	@Override
+	public int getCountAccordingToUserType(TipoUtente tipoUtente) throws DataLayerException {
+		String query = "SELECT COUNT(*) AS count FROM utente WHERE tipo = ?";
+		PreparedStatement preparedStatement;
+        int count = 0;
+        
+        try (Connection connection = DBConnector.getDatasource().getConnection()) {
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, tipoUtente.name());
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            
+            if(resultSet.next()) {
+            	count = resultSet.getInt("count");
+            }
+
+            connection.close();
+        } catch (SQLException e) {
+        	throw new DataLayerException("Unable to get users according to type", e);
+        }
+		
+		return count;
+	}
+	
+	@Override
 	public boolean checkEmailDisponibile(String email) throws DataLayerException {
 		return this.checkCampoDisponibile(Utente.EMAIL, email);
 	}

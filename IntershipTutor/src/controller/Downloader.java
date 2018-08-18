@@ -50,10 +50,10 @@ public class Downloader extends IntershipTutorBaseController{
 	
 	private void action_download_company_convention(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException{
 		try {
-			Azienda azienda = (Azienda) request.getAttribute("utente");
+			Azienda azienda = new AziendaDAO().getAziendaByCF(request.getParameter("azienda"));
 	
 			response.setContentType("application/pdf");
-			response.addHeader("Content-Disposition", "attachment; filename=convenzione" + azienda.getNome() + "pdf");
+			response.addHeader("Content-Disposition", "attachment; filename=convenzione" + azienda.getNome() + ".pdf");
 			InputStream fileInputStream = new AziendaDAO().getConvenzioneDoc(azienda);
 			OutputStream responseOutputStream = response.getOutputStream();
 			int bytes;
@@ -76,6 +76,10 @@ public class Downloader extends IntershipTutorBaseController{
 			}
 			else if(request.getParameter("azienda") != null) {
 				action_download_company_convention(request, response);
+			}
+			else {
+				request.setAttribute("message", "Errore nella richiesta");
+	            action_error(request, response);
 			}
         }
     	catch (TemplateManagerException | IOException ex) {

@@ -34,8 +34,8 @@ public interface TirocinioStudenteDAOInterface {
 	// Per le aziende
 	List<Studente> getStudentiByOffertaTirocinio(OffertaTirocinio offertaTirocinio, int paginaCorrente) throws DataLayerException;
 
-	int setProgettoFormativo(InputStream progettoFormativo, Studente studente) throws DataLayerException;
-	
 	InputStream getProgettoFormativo(Studente studente) throws DataLayerException;
+	
+	int setProgettoFormativo(InputStream progettoFormativo, Studente studente) throws DataLayerException;
 	
 }

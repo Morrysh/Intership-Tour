@@ -9,8 +9,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
+import dao.impl.AziendaDAO;
 import dao.impl.StudenteDAO;
 import dao.impl.TirocinioStudenteDAO;
+import data.model.Amministratore;
+import data.model.Azienda;
 import data.model.Studente;
 import framework.data.DataLayerException;
 import framework.result.FailureResult;
@@ -56,6 +59,39 @@ public class Uploader extends IntershipTutorBaseController{
             action_error(request, response);
 		}
 	}
+	
+	private void action_set_convention(HttpServletRequest request, HttpServletResponse response){
+		try {
+			
+			Part filePart = request.getPart("file");
+			String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+			
+			// Verifichiamo che sia stato inserito un pdf
+			if(filePart.getSize() > 0 && fileName.split("\\.")[1].equals("pdf")) {
+				Azienda azienda = new AziendaDAO().getAziendaByCF(request.getParameter("azienda"));
+				new AziendaDAO().setConvenzioneDoc(filePart.getInputStream(), azienda);
+				
+				// Convenziona azienda
+				new AziendaDAO().setConvenzione(azienda, true);
+				
+				if(request.getParameter("referrer") != null) {
+					response.sendRedirect(request.getParameter("referrer"));
+				}
+				else {
+					response.sendRedirect(request.getContextPath());
+				}
+				
+			}
+			else {
+				request.setAttribute("message", "File vuoto o formato non supportato, si prega di caricare un pdf");
+			    action_error(request, response);
+			}
+			
+		} catch (IOException | ServletException | DataLayerException e) {
+			request.setAttribute("message", "Data access exception: " + e.getMessage());
+            action_error(request, response);
+		}
+	}
 
 	@Override
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException {
@@ -64,7 +100,13 @@ public class Uploader extends IntershipTutorBaseController{
 				action_update_training_project(request, response);
 			}
 			else {
-				// Aggiorna convenzione azienda(SOLO ADMIN)
+				if(request.getAttribute("utente") instanceof Amministratore) {
+					action_set_convention(request, response);
+				}
+				else {
+					request.setAttribute("message", "Accesso negato");
+		            action_error(request, response);
+				}
 			}
 		//}
 		

@@ -1,0 +1,138 @@
+a{
+	text-decoration: none
+}
+
+h5{
+	margin: 8px 0 !important;
+}
+
+.w3-xxlarge{
+	padding-top: 10px
+}
+
+.info{
+	font-size: 12px
+}
+
+.label{
+	margin-bottom: 0 !important
+}
+
+.content{
+	margin-top: 2px !important
+}
+
+#navbar-pc{
+	border-bottom: 1px solid #eeeeee;
+	position: fixed; 
+	z-index: 30;
+	height: 60px;
+}
+
+#navbar,
+#page-content{
+	margin-top: 60px;
+}
+
+/* Collapsible */
+input#menu-1,
+input#menu {
+    display: none;
+}
+
+.menu-content-1,
+.menu-content {
+    max-height: 0;
+    overflow: hidden;
+}
+
+.menu-content-1{
+    display: block;
+}
+
+input:checked ~ .menu-content-1,
+input:checked ~ .menu-content {
+    max-height: 100%;
+}
+
+#label-search{
+    cursor: pointer;
+}
+
+#label-search:after {
+    font-family: FontAwesome;
+    content: '\f067'; /* Unicode character for "plus" sign (+) */
+    font-size: 16px;
+    float: right;
+    color: #822627;
+}
+
+input:checked ~ #label-search:after {
+    font-family: FontAwesome;
+    content: "\f068"; /* Unicode character for "minus" sign (-) */
+    color: #822627;
+}
+
+/* Modals without js */
+.overlay {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background: rgba(0,0,0,0.5);
+	transition: opacity 200ms;
+	visibility: hidden;
+	opacity: 0;
+	position: fixed;
+	/* Doesn't work on edge and firefox, find a workaround or keep the ugly effect */
+	overflow-y: scroll;
+	z-index: 200;
+}
+
+.overlay:target{
+   visibility: visible;
+   opacity: 1; 
+}
+
+.overlay::-webkit-scrollbar { 
+    display: none; 
+}
+
+.popup {
+	margin: 40px auto;
+	max-width: 600px;
+	position: relative;
+}
+/* End modals without js */
+
+/* Tablet and smartphone */
+@media  (max-width: 701px){
+	
+	*{
+		-webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+	}
+	
+	
+	#page-content{
+		margin-top: 0
+	}
+	
+	.menu-content-1 ul {
+        list-style-type: none;
+        display: grid;
+    }
+
+    .menu-content-1 ul li{
+        font-size: 16px;
+        padding: 8px 0
+    }
+
+    .menu-content-1 ul li a{
+        padding: 0 !important
+    }
+    
+    .overlay{
+    	padding: 0 8px
+    }
+}

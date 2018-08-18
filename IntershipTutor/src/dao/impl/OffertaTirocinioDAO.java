@@ -132,13 +132,36 @@ public class OffertaTirocinioDAO implements OffertaTirocinioDAOInterface {
 	}
 	
 	@Override
-	public int getCountAccordingToVisibilita(boolean visibile) throws DataLayerException {
-		String insertQuery = "SELECT COUNT(*) AS count FROM offertatirocinio WHERE visibile = ?";
+	public int getCount() throws DataLayerException {
+		String query = "SELECT COUNT(*) AS count FROM offertatirocinio";
 		PreparedStatement preparedStatement;
         int count = 0;
         
         try (Connection connection = DBConnector.getDatasource().getConnection()) {
-            preparedStatement = connection.prepareStatement(insertQuery);
+            preparedStatement = connection.prepareStatement(query);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            
+            if(resultSet.next()) {
+            	count = resultSet.getInt("count");
+            }
+
+            connection.close();
+        } catch (SQLException e) {
+        	throw new DataLayerException("Unable to get count of interships", e);
+        }
+		
+		return count;
+	}
+	
+	@Override
+	public int getCountAccordingToVisibilita(boolean visibile) throws DataLayerException {
+		String query = "SELECT COUNT(*) AS count FROM offertatirocinio WHERE visibile = ?";
+		PreparedStatement preparedStatement;
+        int count = 0;
+        
+        try (Connection connection = DBConnector.getDatasource().getConnection()) {
+            preparedStatement = connection.prepareStatement(query);
             preparedStatement.setInt(1, visibile ? 1 : 0);
 
             ResultSet resultSet = preparedStatement.executeQuery();
