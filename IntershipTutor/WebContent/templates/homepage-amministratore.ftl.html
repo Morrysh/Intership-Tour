@@ -138,7 +138,7 @@
 		        			${azienda.nome}<span class="info">     (dettagli...)</span>
 		        		</a>
 		        	</h5>
-		        	<form action="upload?azienda=${azienda.utente}" method="post" enctype='multipart/form-data'>
+		        	<form action="upload?azienda=${azienda.utente}&utente=${amministratore.utente}" method="post" enctype='multipart/form-data'>
 					    <input type="file" name="file" />
 					    <button id="send" class="w3-button pointer fas fa-upload w3-round " type="submit" > Carica documento</button>
 					</form>
@@ -253,7 +253,7 @@
 			        	<p class="content">${azienda.email}</p>
 			        	<p class="label"><b>telefono</b></p>
 			        	<p class="content">${azienda.telefono}</p>
-			        	<a href="download?azienda=${azienda.utente}"><button class="w3-button w3-block w3-red w3-hover-deep-orange">Scarica schema convenzione</button></a>
+			        	<a href="download?azienda=${azienda.utente}&utente=${amministratore.utente}"><button class="w3-button w3-block w3-red w3-hover-deep-orange">Scarica schema convenzione</button></a>
 			        </div>
 		      </div>
 			</div>			

@@ -22,6 +22,8 @@ import framework.result.FailureResult;
 @SuppressWarnings("serial")
 public class Uploader extends IntershipTutorBaseController{
 	
+	public static final String SERVLET_URI = "/IntershipTutor/upload";
+	
 	private void action_error(HttpServletRequest request, HttpServletResponse response) {
         if (request.getAttribute("exception") != null) {
             (new FailureResult(getServletContext())).activate((Exception) request.getAttribute("exception"), request, response);
@@ -38,11 +40,11 @@ public class Uploader extends IntershipTutorBaseController{
 			
 			// Verifichiamo che sia stato inserito un pdf
 			if(filePart.getSize() > 0 && fileName.split("\\.")[1].equals("pdf")) {
-				Studente studente = new StudenteDAO().getStudenteByCF(request.getParameter(Studente.UTENTE));
+				Studente studente = new StudenteDAO().getStudenteByCF(request.getParameter("candidato"));
 				new TirocinioStudenteDAO().setProgettoFormativo(filePart.getInputStream(), studente);
 				
 				if(request.getParameter("referrer") != null) {
-					response.sendRedirect(request.getParameter("referrer"));
+					response.sendRedirect(request.getParameter("referrer") + "&utente=" + request.getParameter("utente"));
 				}
 				else {
 					response.sendRedirect(request.getContextPath());
@@ -75,7 +77,7 @@ public class Uploader extends IntershipTutorBaseController{
 				new AziendaDAO().setConvenzione(azienda, true);
 				
 				if(request.getParameter("referrer") != null) {
-					response.sendRedirect(request.getParameter("referrer"));
+					response.sendRedirect(request.getParameter("referrer") + "&utente=" + request.getParameter("utente"));
 				}
 				else {
 					response.sendRedirect(request.getContextPath());
@@ -96,17 +98,11 @@ public class Uploader extends IntershipTutorBaseController{
 	@Override
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException {
 		//try {
-			if(request.getParameter(Studente.UTENTE) != null) {
+			if(request.getParameter("candidato") != null) {
 				action_update_training_project(request, response);
 			}
-			else {
-				if(request.getAttribute("utente") instanceof Amministratore) {
-					action_set_convention(request, response);
-				}
-				else {
-					request.setAttribute("message", "Accesso negato");
-		            action_error(request, response);
-				}
+			else if(request.getAttribute("utente") instanceof Amministratore) {
+				action_set_convention(request, response);
 			}
 		//}
 		

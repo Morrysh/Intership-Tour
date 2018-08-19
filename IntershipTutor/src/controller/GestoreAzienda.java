@@ -33,6 +33,8 @@ import framework.security.SecurityLayer;
 @SuppressWarnings("serial")
 public class GestoreAzienda extends IntershipTutorBaseController {
 	
+	public static final String SERVLET_URI = "/IntershipTutor/azienda";
+	
 	private void action_error(HttpServletRequest request, HttpServletResponse response) {
         if (request.getAttribute("exception") != null) {
             (new FailureResult(getServletContext())).activate((Exception) request.getAttribute("exception"), request, response);

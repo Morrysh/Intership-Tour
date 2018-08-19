@@ -12,6 +12,8 @@ import framework.security.SecurityLayer;
 @SuppressWarnings("serial")
 public class Logout extends IntershipTutorBaseController{
 
+	public static final String SERVLET_URI = "/IntershipTutor/logout";
+	
 	private void action_error(HttpServletRequest request, HttpServletResponse response) {
 		if (request.getAttribute("exception") != null) {
             (new FailureResult(getServletContext())).activate((Exception) request.getAttribute("exception"), request, response);

@@ -82,13 +82,13 @@
 								Termina
 							</button>
 						</a>
-						<a class="w3-left" href="download?codice_fiscale=${candidato.utente}">
+						<a class="w3-left" href="download?candidato=${candidato.utente}&utente=${azienda.utente}">
 							<button class="pointer w3-round fas fa-download w3-padding">
 								Progetto formativo
 							</button>
 						</a>
 						</div>
-						<form action="upload?utente=${candidato.utente}&referrer=tirocinioStudente?id_tirocinio=${offertaTirocinio.idTirocinio}" method="post" enctype='multipart/form-data'>
+						<form action="upload?candidato=${candidato.utente}&utente=${azienda.utente}&referrer=tirocinioStudente?id_tirocinio=${offertaTirocinio.idTirocinio}" method="post" enctype='multipart/form-data'>
 						    <input class="w3-padding w3-margin-top" type="file" name="file" />
 						    <button id="send" class="w3-button pointer fas fa-upload w3-round " type="submit" > Carica documento</button>
 						    
@@ -120,9 +120,10 @@
 			      	<a href="#close" class="w3-button w3-xlarge w3-display-topright">&times;</a>
 			        <h2>Concludi il tirocinio</h2>
 			      </div>
-			      <form class="w3-container" action="tirocinioStudente?referrer=tirocinioStudente?conclusi=true" method="post">
+			      <form class="w3-container" action="tirocinioStudente?stato=terminato&referrer=tirocinioStudente?conclusi=true" method="post">
 			        <div class="w3-section">
-			        	<input type="hidden" name="codice_fiscale" value="${candidato.codiceFiscale}" />
+			        	<input type="hidden" name="utente" value="${azienda.utente}" />
+			        	<input type="hidden" name="candidato" value="${candidato.codiceFiscale}" />
 						<label for="descrizioneDettagliata"><b>Descrizione dettagliata</b></label>
 		          		<textarea id="descrizioneDettagliata" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="2000" type="text" placeholder="Inserisci una descrizione dettagliata sull'attività svolta" name="descrizione_dettagliata" autocomplete="off" required></textarea>
 				        <label for="oreSvolte"><b>Ore svolte</b></label>

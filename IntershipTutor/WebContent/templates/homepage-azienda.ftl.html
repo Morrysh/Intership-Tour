@@ -77,7 +77,7 @@
 					<i class="fas fa-list-ul fa-fw w3-margin-right w3-xlarge"></i>
 					Offerte pubblicate
 					<!-- tirocinioStudente?id_tirocinio= -->
-					<a href="tirocinioStudente?conclusi=true">
+					<a href="tirocinioStudente?conclusi=true&utente=${utente.utente}">
 						<span class="w3-right">
 							Conclusi  	
 							<span class="w3-badge <#if tirociniTerminati gt 0>univaq-color-background<#else>univaq-color</#if>"> 
@@ -118,7 +118,7 @@
 						    </#if>
 						</p>
 						<div class="w3-left options">
-							<a href="tirocinioStudente?id_tirocinio=${offerta.idTirocinio}">
+							<a href="tirocinioStudente?id_tirocinio=${offerta.idTirocinio}&utente=${utente.utente}">
 								<button class="pointer fas fa-users">
 									Candidati
 								</button>
@@ -128,10 +128,10 @@
 		                      <a href="#update-intership-modal-${offerta.idTirocinio}">
 								<button class="pointer far fa-edit"></button>
 							  </a>
-							  <a href="offertaTirocinio?id_tirocinio=${offerta.idTirocinio}&rimuovi=true">
+							  <a href="offertaTirocinio?id_tirocinio=${offerta.idTirocinio}&rimuovi=true&utente=${utente.utente}">
 								<button class="pointer far fa-trash-alt"></button>
 							  </a>
-							  <a href="offertaTirocinio?id_tirocinio=${offerta.idTirocinio}&visibilita=${offerta.visibile?string('false','true')}">
+							  <a href="offertaTirocinio?id_tirocinio=${offerta.idTirocinio}&utente=${utente.utente}&visibilita=${offerta.visibile?string('false','true')}">
 		                      	<button class="pointer <#if offerta.visibile> far fa-eye <#else> far fa-eye-slash </#if>"></button>
 	                      	</a>
                       	</div>
@@ -162,7 +162,7 @@
 	      <form class="w3-container" action="./azienda" method="post">
 	          <div class="w3-section">
 		          <!-- The user CF is hidden, it is used to retrieve the current user from database -->
-		          <!-- <input type="hidden" name="utente" value="${utente.utente}" />  -->
+		          <input type="hidden" name="utente" value="{utente.utente}" />
 		          <h3 class="univaq-color profile">Informazioni sull'azienda</h3>
 		          <label for="nomeAzienda"><b>Nome</b></label>
 		          <input id="nomeAzienda" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" value="${utente.nome}" placeholder="Inserisci il tuo nome" name="nome" autocomplete="off" required />
@@ -207,7 +207,7 @@
 		      <form class="w3-container" action="./offertaTirocinio" method="post">
 		        <div class="w3-section">
 		          <!-- The user CF is hidden, it is used to retrieve the current user from database -->
-		          <!-- <input type="hidden" name="utente" value="${utente.utente}" />  -->
+		          <input type="hidden" name="utente" value="${utente.utente}" />
 		          <label for="titoloOffertaTirocinio"><b>Titolo</b></label>
 		          <input id="titoloOffertaTirocinio" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="255" type="text" placeholder="Inserisci una breve descrizione" name="titolo" autocomplete="off" required />
 		          <label for="luogoOffertaTirocinio"><b>Luogo</b></label>
@@ -247,6 +247,7 @@
 		      <form class="w3-container" action="./offertaTirocinio" method="post">
 		        <div class="w3-section">
 		          <!-- The idTirocinio is hidden, it is used on the server -->
+		          <input type="hidden" name="utente" value="${utente.utente}" />
 		          <input type="hidden" name="id_tirocinio" value="${offerta.idTirocinio}" />
 		          <label for="titoloOffertaTirocinio-${offerta.idTirocinio}"><b>Titolo</b></label>
 		          <input id="titoloOffertaTirocinio-${offerta.idTirocinio}" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="255" type="text" placeholder="Inserisci una breve descrizione" name="titolo" value="${offerta.titolo}" autocomplete="off" required />

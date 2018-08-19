@@ -17,6 +17,8 @@ import framework.result.TemplateManagerException;
 
 @SuppressWarnings("serial")
 public class GestoreStudente extends IntershipTutorBaseController {
+	
+	public static final String SERVLET_URI = "/IntershipTutor/studente";
 
 	private void action_error(HttpServletRequest request, HttpServletResponse response) {
         if (request.getAttribute("exception") != null) {
@@ -29,8 +31,6 @@ public class GestoreStudente extends IntershipTutorBaseController {
 	private void action_aggiorna(HttpServletRequest request, HttpServletResponse response) {
 		try {
 			Studente studente = (Studente) request.getAttribute("utente");
-			
-			System.out.println(request.getParameter(Studente.HANDICAP));
 			
 			studente.setNome(request.getParameter(Studente.NOME));
 			studente.setCognome(request.getParameter(Studente.COGNOME));

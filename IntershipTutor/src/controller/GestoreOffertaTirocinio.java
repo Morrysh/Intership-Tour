@@ -21,6 +21,8 @@ import framework.security.SecurityLayer;
 @SuppressWarnings("serial")
 public class GestoreOffertaTirocinio extends IntershipTutorBaseController{
 	
+	public static final String SERVLET_URI = "/IntershipTutor/offertaTirocinio";
+	
 	private void action_error(HttpServletRequest request, HttpServletResponse response) {
         if (request.getAttribute("exception") != null) {
             (new FailureResult(getServletContext())).activate((Exception) request.getAttribute("exception"), request, response);

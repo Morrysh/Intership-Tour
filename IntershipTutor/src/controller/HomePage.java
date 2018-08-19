@@ -36,6 +36,7 @@ import framework.security.SecurityLayer;
 @SuppressWarnings("serial")
 public class HomePage extends IntershipTutorBaseController {
 	
+	public static final String SERVLET_URI = "/IntershipTutor/homepage";
 	// Numero massimo di offerte per pagina per la paginazione,
 	// questo numero deve corrispondere a quello in offertaTirocinioDAO
 	final static double OFFERTE_PER_PAGINA = OffertaTirocinioDAO.OFFERTE_PER_PAGINA;

@@ -20,6 +20,8 @@ import framework.result.TemplateManagerException;
 @SuppressWarnings("serial")
 public class Downloader extends IntershipTutorBaseController{
 	
+	public static final String SERVLET_URI = "/IntershipTutor/download";
+	
 	private void action_error(HttpServletRequest request, HttpServletResponse response) {
         if (request.getAttribute("exception") != null) {
             (new FailureResult(getServletContext())).activate((Exception) request.getAttribute("exception"), request, response);
@@ -30,7 +32,7 @@ public class Downloader extends IntershipTutorBaseController{
 	
 	private void action_download_training_project(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException{
 		try {			
-			Studente studente = new StudenteDAO().getStudenteByCF(request.getParameter(Studente.CODICE_FISCALE));
+			Studente studente = new StudenteDAO().getStudenteByCF(request.getParameter("candidato"));
 			
 			response.setContentType("application/pdf");
 			response.addHeader("Content-Disposition", "attachment; filename=progettoFormativo" + studente.getNome() + studente.getCognome() + ".pdf");
@@ -71,7 +73,7 @@ public class Downloader extends IntershipTutorBaseController{
 	@Override
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException {
 		try {
-			if(request.getParameter(Studente.CODICE_FISCALE) != null) {
+			if(request.getParameter("candidato") != null) {
 				action_download_training_project(request, response);
 			}
 			else if(request.getParameter("azienda") != null) {
