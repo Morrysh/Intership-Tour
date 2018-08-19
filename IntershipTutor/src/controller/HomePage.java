@@ -191,6 +191,8 @@ public class HomePage extends IntershipTutorBaseController {
     	int numStudentiTotali = new UtenteDAO().getCountAccordingToUserType(TipoUtente.studente);
     	int numOfferteTotali = new OffertaTirocinioDAO().getCount();
     	
+    	// Removing outline template for the admin
+    	request.setAttribute("outline_tpl", "");
     	request.setAttribute("numAmministratoriTotali", numAmministratoriTotali);
     	request.setAttribute("numAziendeTotali", numAziendeTotali);
     	request.setAttribute("numStudentiTotali", numStudentiTotali);
@@ -202,7 +204,7 @@ public class HomePage extends IntershipTutorBaseController {
         request.setAttribute("bestOfferta", bestOfferta);
         request.setAttribute("amministratore", amministratore);
     	//Attiviamo il template dell'amministatore
-    	res.activateAdmin("homepage-amministratore.ftl.html", request, response);
+    	res.activate("homepage-amministratore.ftl.html", request, response);
     	}
     	catch(DataLayerException ex) {
             request.setAttribute("message", "Data access exception: " + ex.getMessage());
