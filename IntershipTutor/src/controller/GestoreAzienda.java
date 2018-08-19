@@ -127,10 +127,6 @@ public class GestoreAzienda extends IntershipTutorBaseController {
             action_error(request, response);
 		} 
 	}
-	
-	private void action_offerte_proposte(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException{
-		
-	}
 
     private void action_default(HttpServletRequest request, HttpServletResponse response, String codiceFiscale) throws IOException, ServletException, TemplateManagerException {
         try {
@@ -179,9 +175,6 @@ public class GestoreAzienda extends IntershipTutorBaseController {
     		request.setAttribute("page_css", "gestore-azienda");
     		if(request.getParameter("aggiorna") != null) {
     			action_aggiorna(request, response);
-    		}
-    		else if(request.getParameter("offerte") != null) {
-    			action_offerte_proposte(request, response);
     		}
     		else if(request.getParameter("registrazione") != null) {
     			action_registra(request, response);

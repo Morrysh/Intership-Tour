@@ -226,14 +226,14 @@ public class TirocinioStudenteDAO implements TirocinioStudenteDAOInterface {
 	}
 	
 	@Override
-	public TirocinioStudente getTirocinioStudenteByStudente(Studente studente) throws DataLayerException {
+	public TirocinioStudente getTirocinioStudenteByStudenteCF(String codiceFiscale) throws DataLayerException {
 		TirocinioStudente tirocinioStudente = null;
 		PreparedStatement preparedStatement;
 		String query = "SELECT * FROM tirociniostudente WHERE studente = ?;";
 		
 		try (Connection connection = DBConnector.getDatasource().getConnection()) {
 			preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setString(1, studente.getCodiceFiscale());
+            preparedStatement.setString(1, codiceFiscale);
             
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {

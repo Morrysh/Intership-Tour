@@ -141,7 +141,7 @@ public class TemplateResult {
     //this main method calls Freemarker and compiles the template
     //if an outline template has been specified, the requested template is
     //embedded in the outline
-    protected void process(String tplname, Map datamodel, Writer out, boolean b) throws TemplateManagerException {
+    protected void process(String tplname, Map datamodel, Writer out, boolean use_outline) throws TemplateManagerException {
         Template t;
         //assicuriamoci di avere sempre un data model da passare al template, che contenga anche tutti i default
         //ensure we have a data model, initialized with some default data
@@ -155,7 +155,7 @@ public class TemplateResult {
         }
         String outline_name = (String) localdatamodel.get("outline_tpl");
         try {
-            if (outline_name == null || outline_name.isEmpty() || b) {
+            if (outline_name == null || outline_name.isEmpty() || use_outline) {
                 //se non c'è un outline, carichiamo semplicemente il template specificato
                 //if an outline has not been set, load the specified template
                 t = cfg.getTemplate(tplname);

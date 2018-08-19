@@ -96,7 +96,7 @@ public class HomePage extends IntershipTutorBaseController {
                 numeroPagine = (int) Math.ceil(new OffertaTirocinioDAO().getCountAccordingToVisibilita(true) / OFFERTE_PER_PAGINA);
             }
             
-            TirocinioStudente tirocinioStudente = new TirocinioStudenteDAO().getTirocinioStudenteByStudente(studente);
+            TirocinioStudente tirocinioStudente = new TirocinioStudenteDAO().getTirocinioStudenteByStudenteCF(studente.getCodiceFiscale());
             OffertaTirocinio tirocinioRichiesto = new TirocinioStudenteDAO().getOffertaTirocinioByStudente(studente);
 	    	
             request.setAttribute("tirocinioStudente", tirocinioStudente);

@@ -22,7 +22,7 @@ public interface TirocinioStudenteDAOInterface {
 	
 	int updateStato(String codiceFiscale, StatoRichiestaTirocinio statoRichiestaTirocinio) throws DataLayerException;
 	
-	TirocinioStudente getTirocinioStudenteByStudente(Studente studente) throws DataLayerException;
+	TirocinioStudente getTirocinioStudenteByStudenteCF(String codiceFiscale) throws DataLayerException;
 	
 	List<Studente> getStudentiInRangeByTirocinioConclusoAccordingToAzienda(Azienda azienda, int paginaCorrente) throws DataLayerException;
 	

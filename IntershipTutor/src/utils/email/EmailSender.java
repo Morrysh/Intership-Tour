@@ -10,13 +10,6 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-/*
- * 
- * @author Stefano Martella
- * 
- * This class is used to send emails.
- * 
- */
 public class EmailSender {
 	
 	private final static String USERNAME = System.getenv("email");

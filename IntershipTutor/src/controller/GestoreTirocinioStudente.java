@@ -70,7 +70,7 @@ public class GestoreTirocinioStudente extends IntershipTutorBaseController {
 			List<Studente> candidati = new TirocinioStudenteDAO().getStudentiByOffertaTirocinio(offertaTirocinio, paginaCorrente);
 			
 			for(Studente studente : candidati) {
-				candidatoTirocinio.put(studente, new TirocinioStudenteDAO().getTirocinioStudenteByStudente(studente));
+				candidatoTirocinio.put(studente, new TirocinioStudenteDAO().getTirocinioStudenteByStudenteCF(studente.getCodiceFiscale()));
 			}	     
 			
 			String queryString = "&id_tirocinio=" + offertaTirocinio.getIdTirocinio();
@@ -114,7 +114,7 @@ public class GestoreTirocinioStudente extends IntershipTutorBaseController {
 			
 			for(Studente studente : studenti) {
 				Map<TirocinioStudente, OffertaTirocinio> tirocinioOfferta = new LinkedHashMap<>();
-				TirocinioStudente tirocinioStudente = new TirocinioStudenteDAO().getTirocinioStudenteByStudente(studente);
+				TirocinioStudente tirocinioStudente = new TirocinioStudenteDAO().getTirocinioStudenteByStudenteCF(studente.getCodiceFiscale());
 				OffertaTirocinio offertaTirocinio = new OffertaTirocinioDAO().getOffertaByID(tirocinioStudente.getTirocinio());
 				tirocinioOfferta.put(tirocinioStudente, offertaTirocinio);
 				candidatoTirocinioOfferta.put(studente, tirocinioOfferta);
@@ -207,44 +207,32 @@ public class GestoreTirocinioStudente extends IntershipTutorBaseController {
 	private void action_update_state(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException{
 		try {	    
 			String codiceFiscale = request.getParameter(Studente.CODICE_FISCALE);
-			StatoRichiestaTirocinio statoRichiestaTirocinio = StatoRichiestaTirocinio.valueOf(request.getParameter(TirocinioStudente.STATO));
-			new TirocinioStudenteDAO().updateStato(codiceFiscale, statoRichiestaTirocinio);		
+			StatoRichiestaTirocinio statoRichiestaTirocinio = StatoRichiestaTirocinio.valueOf(request.getParameter(TirocinioStudente.STATO));		
 			
 			// Aggiorniamo il progetto formativo se il tirocinio è stato accettato
-			if(StatoRichiestaTirocinio.valueOf(request.getParameter(TirocinioStudente.STATO)) == StatoRichiestaTirocinio.accettato){
-				this.update_training_project(request, response);
-			}
 			
-			if(request.getParameter("referrer") != null) {
-				response.sendRedirect(request.getParameter("referrer"));
-			}
-			else {
-				response.sendRedirect(request.getContextPath());
-			}
-		}
-		catch (DataLayerException | IOException e) {
-			request.setAttribute("message", "Data access exception: " + e.getMessage());
-            action_error(request, response);
-		}
-	}
-	
-	private void action_conclude(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException{
-		try {	    
 			
-			Studente studente = new StudenteDAO().getStudenteByCF(request.getParameter(Studente.CODICE_FISCALE));
-			TirocinioStudente tirocinioStudente = new TirocinioStudenteDAO().getTirocinioStudenteByStudente(studente);
+			switch(statoRichiestaTirocinio) {
+				case accettato: 
+					new TirocinioStudenteDAO().updateStato(codiceFiscale, statoRichiestaTirocinio);
+					update_training_project(request, response);
+					break;
+				
+				case terminato:
+					TirocinioStudente tirocinioStudente = new TirocinioStudenteDAO().getTirocinioStudenteByStudenteCF(codiceFiscale);
 
-			tirocinioStudente.setDescrizioneDettagliata(request.getParameter(TirocinioStudente.DESCRIZIONE_DETTAGLIATA));
-			tirocinioStudente.setOreSvolte(SecurityLayer.checkNumeric(request.getParameter(TirocinioStudente.ORE_SVOLTE)));
-			tirocinioStudente.setGiudizioFinale(request.getParameter(TirocinioStudente.GIUDIZIO_FINALE));
-			tirocinioStudente.setStato(StatoRichiestaTirocinio.terminato);
+					tirocinioStudente.setDescrizioneDettagliata(request.getParameter(TirocinioStudente.DESCRIZIONE_DETTAGLIATA));
+					tirocinioStudente.setOreSvolte(SecurityLayer.checkNumeric(request.getParameter(TirocinioStudente.ORE_SVOLTE)));
+					tirocinioStudente.setGiudizioFinale(request.getParameter(TirocinioStudente.GIUDIZIO_FINALE));
+					tirocinioStudente.setStato(StatoRichiestaTirocinio.terminato);
+					
+					new TirocinioStudenteDAO().update(tirocinioStudente);
+					break;
+					
+				default:
+					new TirocinioStudenteDAO().updateStato(codiceFiscale, statoRichiestaTirocinio);
+			}
 			
-			// UPDATING DATABASE
-			new TirocinioStudenteDAO().update(tirocinioStudente);
-			
-			// AFTER DB UPDATE
-			// Updating training project according to inserted values
-			//this.update_training_project(request, response);
 			
 			if(request.getParameter("referrer") != null) {
 				response.sendRedirect(request.getParameter("referrer"));
@@ -264,7 +252,7 @@ public class GestoreTirocinioStudente extends IntershipTutorBaseController {
 			TemplateResult res = new TemplateResult(getServletContext());
 			
 			Studente studente = new StudenteDAO().getStudenteByCF(request.getParameter(Studente.CODICE_FISCALE));
-			TirocinioStudente tirocinioStudente = new TirocinioStudenteDAO().getTirocinioStudenteByStudente(studente);
+			TirocinioStudente tirocinioStudente = new TirocinioStudenteDAO().getTirocinioStudenteByStudenteCF(studente.getCodiceFiscale());
 			OffertaTirocinio offertaTirocinio = new OffertaTirocinioDAO().getOffertaByID(tirocinioStudente.getTirocinio());
 			Azienda azienda = new AziendaDAO().getAziendaByIDTirocinio(offertaTirocinio.getIdTirocinio());
 			
@@ -317,9 +305,6 @@ public class GestoreTirocinioStudente extends IntershipTutorBaseController {
 			else if(request.getParameter(Studente.CODICE_FISCALE) != null &&
 			   request.getParameter(TirocinioStudente.STATO) != null) {
 				action_update_state(request, response);
-			}
-			else if(request.getParameter("concludi") != null) {
-				action_conclude(request, response);
 			}
 			else {
 				request.setAttribute("message", "Non è stata specificato uno studente, un tirocinio o un nuovo stato per la candidatura");
