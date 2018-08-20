@@ -218,6 +218,7 @@ input:checked ~ .menu-content {
     font-family: FontAwesome;
     content: '\f107'; /* Unicode character for arrow down */
     font-size: 18px;
+    padding-top: 3px;
     font-weight: 700;
     float: right;
     color: #822627;
@@ -231,7 +232,7 @@ input:checked ~ .menu-content {
     color: #822627;
 }
 
-input:checked ~ #label-aziende:after {
+input:checked ~ h2 #label-aziende:after {
     font-family: FontAwesome;
     content: "\f106"; /* Unicode character for arrow up */
     color: #822627;
@@ -250,9 +251,9 @@ input:checked ~ #label-search:after {
     padding: 10px 0;
 }
 
-#label-aziende{
-	padding-top: 10px !important;
-	padding-bottom: 9px !important;
+#label-container{
+	padding-top: 5px !important;
+	padding-bottom: 7px !important;
 }
 
 #label-aziende,
