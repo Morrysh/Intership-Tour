@@ -8,9 +8,12 @@
 	   <div class="w3-quarter" id="left-column">
 	
 		   <!-- w3-animate-left -->
-	       <div id="aziende-convenzionate-container" class="w3-card w3-round">
-	           <h2 id="aziende-convenzionate">Aziende convenzionate</h2>
-	           <div class="w3-container" id="aziende-container">
+	       <div class="search-form collapsible-menu-2 w3-white w3-card w3-round w3-margin-bottom">
+	            <input type="checkbox" id="menu-2" checked />
+	            <h2 id="label-aziende" class="padding-edge no-margin">
+	                <label class="pointer" for="menu-2">Aziende convenzionate</label>
+                </h2>
+                <div class="menu-content-2 w3-container" id="aziende-container">
 	               <#list aziende as azienda>
 	               	   <hr>
 	                   <div class="azienda">      

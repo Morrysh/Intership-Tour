@@ -15,7 +15,7 @@ h1{
 
 h2{
 	margin-bottom: 0;
-	font-size: 130% !important
+	font-size: 130%
 }
 
 h3.profile{
@@ -178,19 +178,30 @@ input[type="submit"] {
 }
 
 /* Collapsible */
+input#menu-3,
+input#menu-2,
 input#menu-1,
 input#menu {
     display: none;
 }
 
+.menu-content-2,
 .menu-content-1,
 .menu-content {
     max-height: 0;
     overflow: hidden;
 }
 
-.menu-content-1{
+.menu-content-2,
+.menu-content-1,
+.menu-content{
     display: block;
+}
+
+input:checked ~ .menu-content-2{
+	max-height: 500px;
+	overflow-y: scroll;
+    font-size: 100%;	
 }
 
 input:checked ~ .menu-content-1,
@@ -198,15 +209,31 @@ input:checked ~ .menu-content {
     max-height: 100%;
 }
 
+#label-aziende,
 #label-search{
     cursor: pointer;
+}
+
+#label-aziende:after {
+    font-family: FontAwesome;
+    content: '\f107'; /* Unicode character for arrow down */
+    font-size: 18px;
+    font-weight: 700;
+    float: right;
+    color: #822627;
 }
 
 #label-search:after {
     font-family: FontAwesome;
     content: '\f067'; /* Unicode character for "plus" sign (+) */
-    font-size: 16px;
+    font-size: 14px;
     float: right;
+    color: #822627;
+}
+
+input:checked ~ #label-aziende:after {
+    font-family: FontAwesome;
+    content: "\f106"; /* Unicode character for arrow up */
     color: #822627;
 }
 
@@ -217,14 +244,20 @@ input:checked ~ #label-search:after {
 }
 /* End collapsible */
 
-/* Collapsible research */
+/* Collapsible research and companies*/
 
 .collapsible-menu{
     padding: 10px 0;
 }
 
+#label-aziende{
+	padding-top: 10px !important;
+	padding-bottom: 9px !important;
+}
+
+#label-aziende,
 #label-search{
-    font-size: 17px;
+    font-size: 15px;
     font-weight: 500;
     user-select: none;
 }

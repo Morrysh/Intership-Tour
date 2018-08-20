@@ -69,10 +69,14 @@
         		<hr>
           	<h5 class="bold"><b>Modalità</b></h5>
           	<p class="descrizione-tirocinio">${offertaTirocinio.modalita}</p>
+          	<#if offertaTirocinio.rimborso??>
           	<hr>
           	<h5 class="bold"><b>Informazioni tecniche</b></h5>
-          	<p class="descrizione-tirocinio">Il numero di ore richieste per completare il tirocinio è pari ${offertaTirocinio.numeroOre}.
-          	È previsto un rimborso di ${offertaTirocinio.rimborso}€</p>
+          	<p class="descrizione-tirocinio">
+	          	Il numero di ore richieste per completare il tirocinio è pari ${offertaTirocinio.numeroOre}.
+	          	È previsto un rimborso di ${offertaTirocinio.rimborso}€
+          	</p>
+          	</#if>
           	<!-- 
           	<#if utente??>
 	          	<a href="#access-manager-modal">
