@@ -22,7 +22,7 @@ import framework.result.FailureResult;
 @SuppressWarnings("serial")
 public class Uploader extends IntershipTutorBaseController{
 	
-	public static final String SERVLET_URI = "/IntershipTutor/upload";
+	public static final String SERVLET_URI = "/upload";
 	
 	private void action_error(HttpServletRequest request, HttpServletResponse response) {
         if (request.getAttribute("exception") != null) {
@@ -47,7 +47,8 @@ public class Uploader extends IntershipTutorBaseController{
 					response.sendRedirect(request.getParameter("referrer") + "&utente=" + request.getParameter("utente"));
 				}
 				else {
-					response.sendRedirect(request.getContextPath());
+					// NOT USING request.getContextPath becouse it doesn't work with Heroku
+        			response.sendRedirect(".");
 				}
 				
 			}
@@ -80,7 +81,8 @@ public class Uploader extends IntershipTutorBaseController{
 					response.sendRedirect(request.getParameter("referrer") + "&utente=" + request.getParameter("utente"));
 				}
 				else {
-					response.sendRedirect(request.getContextPath());
+					// NOT USING request.getContextPath becouse it doesn't work with Heroku
+        			response.sendRedirect(".");
 				}
 				
 			}

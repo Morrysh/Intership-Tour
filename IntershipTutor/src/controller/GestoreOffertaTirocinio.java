@@ -21,7 +21,7 @@ import framework.security.SecurityLayer;
 @SuppressWarnings("serial")
 public class GestoreOffertaTirocinio extends IntershipTutorBaseController{
 	
-	public static final String SERVLET_URI = "/IntershipTutor/offertaTirocinio";
+	public static final String SERVLET_URI = "/offertaTirocinio";
 	
 	private void action_error(HttpServletRequest request, HttpServletResponse response) {
         if (request.getAttribute("exception") != null) {
@@ -66,7 +66,8 @@ public class GestoreOffertaTirocinio extends IntershipTutorBaseController{
 						SecurityLayer.checkNumeric((request.getParameter(OffertaTirocinio.NUMERO_ORE))));
 				
 				new OffertaTirocinioDAO().insert(nuovaOfferta);
-				response.sendRedirect(request.getContextPath());
+				// NOT USING request.getContextPath becouse it doesn't work with Heroku
+    			response.sendRedirect(".");
 			}
 			else {
 				request.setAttribute("message", "Azienda non convenzionata, permesso negato");
@@ -119,7 +120,8 @@ public class GestoreOffertaTirocinio extends IntershipTutorBaseController{
 				response.sendRedirect(request.getParameter("referrer"));
 			}
 			else {
-				response.sendRedirect(request.getContextPath());
+				// NOT USING request.getContextPath becouse it doesn't work with Heroku
+    			response.sendRedirect(".");
 			}
 				
 		} catch (DataLayerException | IOException ex) {
@@ -136,7 +138,8 @@ public class GestoreOffertaTirocinio extends IntershipTutorBaseController{
 			
 			new OffertaTirocinioDAO().delete(idTirocinio);
 			
-			response.sendRedirect(request.getContextPath());
+			// NOT USING request.getContextPath becouse it doesn't work with Heroku
+			response.sendRedirect(".");
 			
 		} catch (DataLayerException | IOException ex) {
 			request.setAttribute("message", "Data access exception: " + ex.getMessage());
@@ -147,7 +150,8 @@ public class GestoreOffertaTirocinio extends IntershipTutorBaseController{
 	private void action_visibilita(HttpServletRequest request, HttpServletResponse response, int codiceOffertaTirocinio) throws IOException, ServletException, TemplateManagerException{
 		try {
 			new OffertaTirocinioDAO().setVisibilita(codiceOffertaTirocinio, Boolean.valueOf(request.getParameter("visibilita")));
-			response.sendRedirect(request.getContextPath());
+			// NOT USING request.getContextPath becouse it doesn't work with Heroku
+			response.sendRedirect(".");
 		}
 		catch(DataLayerException ex) {
             request.setAttribute("message", "Data access exception: " + ex.getMessage());

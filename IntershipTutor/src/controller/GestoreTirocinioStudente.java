@@ -38,7 +38,7 @@ import utils.email.EmailSender;
 @SuppressWarnings("serial")
 public class GestoreTirocinioStudente extends IntershipTutorBaseController {
 	
-	public static final String SERVLET_URI = "/IntershipTutor/tirocinioStudente";
+	public static final String SERVLET_URI = "/tirocinioStudente";
 	// Numero massimo di offerte per pagina per la paginazione,
 	// questo numero deve corrispondere a quello in offertaTirocinioDAO
 	final static double CANDIDATI_PER_PAGINA = TirocinioStudenteDAO.CANDIDATI_PER_PAGINA;
@@ -178,7 +178,8 @@ public class GestoreTirocinioStudente extends IntershipTutorBaseController {
         	// Invio email
         	EmailSender.sendEmail(messageTitle, messageBody, recipientsEmails);
         	
-        	response.sendRedirect(request.getContextPath());
+        	// NOT USING request.getContextPath becouse it doesn't work with Heroku
+			response.sendRedirect(".");
         }
         catch(DataLayerException ex) {
             request.setAttribute("message", "Data access exception: " + ex.getMessage());
@@ -200,7 +201,8 @@ public class GestoreTirocinioStudente extends IntershipTutorBaseController {
 				response.sendRedirect(request.getParameter("referrer") + "&utente=" + request.getParameter("utente"));
 			}
 			else {
-				response.sendRedirect(request.getContextPath());
+				// NOT USING request.getContextPath becouse it doesn't work with Heroku
+    			response.sendRedirect(".");
 			}
 			
 		}
@@ -244,7 +246,8 @@ public class GestoreTirocinioStudente extends IntershipTutorBaseController {
 				response.sendRedirect(request.getParameter("referrer") + "&utente=" + request.getParameter("utente"));
 			}
 			else {
-				response.sendRedirect(request.getContextPath());
+				// NOT USING request.getContextPath becouse it doesn't work with Heroku
+    			response.sendRedirect(".");
 			}
 		}
 		catch (DataLayerException | IOException e) {

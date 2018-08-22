@@ -33,7 +33,7 @@ import framework.security.SecurityLayer;
 @SuppressWarnings("serial")
 public class GestoreAzienda extends IntershipTutorBaseController {
 	
-	public static final String SERVLET_URI = "/IntershipTutor/azienda";
+	public static final String SERVLET_URI = "/azienda";
 	
 	private void action_error(HttpServletRequest request, HttpServletResponse response) {
         if (request.getAttribute("exception") != null) {
@@ -89,7 +89,8 @@ public class GestoreAzienda extends IntershipTutorBaseController {
 			
 			new AziendaDAO().update(azienda);
 			
-			response.sendRedirect(request.getContextPath());
+			// NOT USING request.getContextPath becouse it doesn't work with Heroku
+			response.sendRedirect(".");
 			
 		} catch (DataLayerException | IOException e) {
 			request.setAttribute("message", "Data access exception: " + e.getMessage());
@@ -122,7 +123,8 @@ public class GestoreAzienda extends IntershipTutorBaseController {
 			// Generiamo il pdf schema convenzione
 			setConvezioneAzienda(request, response, azienda);
 			
-			response.sendRedirect(request.getContextPath());
+			// NOT USING request.getContextPath becouse it doesn't work with Heroku
+			response.sendRedirect(".");
 			
 		} catch (DataLayerException | IOException e) {
 			request.setAttribute("message", "Data access exception: " + e.getMessage());

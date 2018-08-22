@@ -12,7 +12,7 @@ import framework.security.SecurityLayer;
 @SuppressWarnings("serial")
 public class Logout extends IntershipTutorBaseController{
 
-	public static final String SERVLET_URI = "/IntershipTutor/logout";
+	public static final String SERVLET_URI = "/logout";
 	
 	private void action_error(HttpServletRequest request, HttpServletResponse response) {
 		if (request.getAttribute("exception") != null) {
@@ -29,7 +29,8 @@ public class Logout extends IntershipTutorBaseController{
         	// REMEMBER TO USE THIS TO REDIRECT ON THE PAGE WHERE THE USER UNLOGGED
             response.sendRedirect(request.getParameter("referrer"));
         } else {
-            response.sendRedirect(request.getContextPath());
+        	// NOT USING request.getContextPath becouse it doesn't work with Heroku
+			response.sendRedirect(".");
         }
     }
 

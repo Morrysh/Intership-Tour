@@ -44,29 +44,26 @@ public abstract class IntershipTutorBaseController extends HttpServlet {
         	request.setAttribute("utente", utente);
         }
         
-        
         // Controlli di sicurezza
         // Per ora sono qui, poi vedremo come vanno gestiti
         String URI = request.getRequestURI();
         
-        switch(URI) {
-        	case Downloader.SERVLET_URI:
-        		verify_user_download(session, request, response);
-        		break;
-        	case Uploader.SERVLET_URI:
-        		verify_user_upload(session, request, response);
-        		break;
-        	case GestoreOffertaTirocinio.SERVLET_URI: 
-        		verify_user_intership_offer(session, request, response);
-        		break;
-        	case GestoreTirocinioStudente.SERVLET_URI: 
-        		verify_user_intership_student(session, request, response);
-        		break;
-        	default:
-        		processRequest(request, response);
+        if(URI.contains(Downloader.SERVLET_URI)) {
+        	verify_user_download(session, request, response);
         }
-    	
-    	//processRequest(request, response);
+        else if(URI.contains(Uploader.SERVLET_URI)) {
+        	verify_user_upload(session, request, response);
+        }
+        else if(URI.contains(GestoreOffertaTirocinio.SERVLET_URI)) {
+        	verify_user_intership_offer(session, request, response);
+        }
+        else if(URI.contains(GestoreTirocinioStudente.SERVLET_URI)) {
+        	verify_user_intership_student(session, request, response);
+        }
+        else {
+        	processRequest(request, response);
+        }
+        
     }
     
     private void verify_user_download(HttpSession session, HttpServletRequest request, HttpServletResponse response) throws ServletException {

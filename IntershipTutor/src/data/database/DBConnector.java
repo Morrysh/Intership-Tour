@@ -1,5 +1,6 @@
 package data.database;
 
+import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
@@ -11,8 +12,9 @@ public class DBConnector {
 
     private static void init() {
         try {
-            ctx = new InitialContext();
-            dataSource = (DataSource) ctx.lookup("java:comp/env/jdbc/intershiptutor_database");
+        	ctx = new InitialContext();
+        	Context envContext  = (Context)ctx.lookup("java:comp/env");
+        	dataSource = (DataSource)envContext.lookup("jdbc/intershiptutor_database");
         } catch (NamingException e) {
             e.printStackTrace();
         }

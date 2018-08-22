@@ -18,7 +18,7 @@ import framework.result.TemplateManagerException;
 @SuppressWarnings("serial")
 public class GestoreStudente extends IntershipTutorBaseController {
 	
-	public static final String SERVLET_URI = "/IntershipTutor/studente";
+	public static final String SERVLET_URI = "/studente";
 
 	private void action_error(HttpServletRequest request, HttpServletResponse response) {
         if (request.getAttribute("exception") != null) {
@@ -49,7 +49,8 @@ public class GestoreStudente extends IntershipTutorBaseController {
 			
 			new StudenteDAO().update(studente);
 			
-			response.sendRedirect(request.getContextPath());
+			// NOT USING request.getContextPath becouse it doesn't work with Heroku
+			response.sendRedirect(".");
 		}
 		catch(DataLayerException | IOException ex) {
             request.setAttribute("message", "Data access exception: " + ex.getMessage());
@@ -80,7 +81,8 @@ public class GestoreStudente extends IntershipTutorBaseController {
 			
 			new StudenteDAO().insert(studente);
 			
-			response.sendRedirect(request.getContextPath());
+			// NOT USING request.getContextPath becouse it doesn't work with Heroku
+			response.sendRedirect(".");
 		}
 		catch(DataLayerException | IOException ex) {
             request.setAttribute("message", "Data access exception: " + ex.getMessage());

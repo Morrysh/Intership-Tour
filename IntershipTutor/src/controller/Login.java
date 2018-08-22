@@ -22,7 +22,7 @@ import framework.security.SecurityLayer;
 @SuppressWarnings("serial")
 public class Login extends IntershipTutorBaseController {
 
-	public static final String SERVLET_URI = "/IntershipTutor/login";
+	public static final String SERVLET_URI = "/login";
 	
 	private void action_error(HttpServletRequest request, HttpServletResponse response) {
 		if (request.getAttribute("exception") != null) {
@@ -59,14 +59,16 @@ public class Login extends IntershipTutorBaseController {
 	        		/*if(request.getParameter("referrer") != null)
 		                response.sendRedirect(request.getParameter("referrer"));
 	        		else*/
-	        			response.sendRedirect(request.getContextPath());
+		            
+		            	// NOT USING request.getContextPath becouse it doesn't work with Heroku
+	        			response.sendRedirect(".");
 		        }
 	            else {
-	        		response.sendRedirect(request.getContextPath() + "#access-manager-modal");
+	        		response.sendRedirect("." + "#access-manager-modal");
 	            }
 	        }
 	        else {
-	        	response.sendRedirect(request.getContextPath() + "#access-manager-modal");
+	        	response.sendRedirect("." + "#access-manager-modal");
 	        }
         }
         catch (DataLayerException ex) {

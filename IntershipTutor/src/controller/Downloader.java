@@ -20,7 +20,7 @@ import framework.result.TemplateManagerException;
 @SuppressWarnings("serial")
 public class Downloader extends IntershipTutorBaseController{
 	
-	public static final String SERVLET_URI = "/IntershipTutor/download";
+	public static final String SERVLET_URI = "/download";
 	
 	private void action_error(HttpServletRequest request, HttpServletResponse response) {
         if (request.getAttribute("exception") != null) {
