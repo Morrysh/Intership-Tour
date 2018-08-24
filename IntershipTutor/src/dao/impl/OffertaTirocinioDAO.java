@@ -185,27 +185,33 @@ public class OffertaTirocinioDAO implements OffertaTirocinioDAOInterface {
 	public int getCountAccordingToRicerca(Map<CampoRicercaTirocinio, String> campoRicerca) throws DataLayerException {
 		String query = "SELECT COUNT(*) as count FROM offertatirocinio JOIN " +
 					   "azienda ON azienda = utente WHERE visibile = 1 AND " + 
+					   "UPPER(titolo) LIKE UPPER(?) AND " +
 				       "UPPER(nome) LIKE UPPER(?) AND " +
 				       "UPPER(luogo) LIKE UPPER(?) AND " +
 				       "UPPER(obiettivi) LIKE UPPER(?) AND " +
 				       "UPPER(modalita) LIKE UPPER(?) AND " +
-					   "(ROUND((data_fine - data_inizio)/60) LIKE ? or data_fine IS NULL OR data_inizio IS NULL);";
+					   "((ROUND(DATEDIFF(data_fine, data_inizio)/30) BETWEEN ? AND ?) " + 
+				       "OR data_fine IS NULL OR data_inizio IS NULL);";
 		PreparedStatement preparedStatement;
         int count = 0;
         
         try (Connection connection = DBConnector.getDatasource().getConnection()) {
             preparedStatement = connection.prepareStatement(query);
-        	
-        	preparedStatement.setString(1, campoRicerca.get(CampoRicercaTirocinio.azienda) == null ? "%" 
+            
+            preparedStatement.setString(1, campoRicerca.get(CampoRicercaTirocinio.titolo) == null ? "%" 
+        			: "%" + campoRicerca.get(CampoRicercaTirocinio.titolo) + "%");
+        	preparedStatement.setString(2, campoRicerca.get(CampoRicercaTirocinio.azienda) == null ? "%" 
         			: "%" + campoRicerca.get(CampoRicercaTirocinio.azienda) + "%");
-        	preparedStatement.setString(2, campoRicerca.get(CampoRicercaTirocinio.luogo) == null ? "%" 
+        	preparedStatement.setString(3, campoRicerca.get(CampoRicercaTirocinio.luogo) == null ? "%" 
         			: "%" + campoRicerca.get(CampoRicercaTirocinio.luogo) + "%");
-        	preparedStatement.setString(3, campoRicerca.get(CampoRicercaTirocinio.obiettivi) == null ? "%" 
+        	preparedStatement.setString(4, campoRicerca.get(CampoRicercaTirocinio.obiettivi) == null ? "%" 
         			: "%" + campoRicerca.get(CampoRicercaTirocinio.obiettivi) + "%");
-        	preparedStatement.setString(4, campoRicerca.get(CampoRicercaTirocinio.modalita) == null ? "%" 
+        	preparedStatement.setString(5, campoRicerca.get(CampoRicercaTirocinio.modalita) == null ? "%" 
         			: "%" + campoRicerca.get(CampoRicercaTirocinio.modalita) + "%");
-        	preparedStatement.setString(5, campoRicerca.get(CampoRicercaTirocinio.durata) == null ? "%" 
-        			:       campoRicerca.get(CampoRicercaTirocinio.durata));
+        	preparedStatement.setString(6, campoRicerca.get(CampoRicercaTirocinio.durata_minima) == null ? "1" 
+        			:       campoRicerca.get(CampoRicercaTirocinio.durata_minima));
+        	preparedStatement.setString(7, campoRicerca.get(CampoRicercaTirocinio.durata_massima) == null ? "1000" 
+        			:       campoRicerca.get(CampoRicercaTirocinio.durata_massima));
 
             ResultSet resultSet = preparedStatement.executeQuery();
             
@@ -311,11 +317,11 @@ public class OffertaTirocinioDAO implements OffertaTirocinioDAOInterface {
 		OffertaTirocinio offertaTirocinio = null;
 		PreparedStatement preparedStatement;
 		String query = "SELECT offertatirocinio.*, COUNT(tirociniostudente.id_tirocinio) as conto "
-				+ "FROM offertatirocinio JOIN tirociniostudente "
-				+ "ON tirociniostudente.id_tirocinio = offertatirocinio.id_tirocinio "
-				+ "GROUP BY offertatirocinio.id_tirocinio "
-				+ "ORDER BY conto DESC "
-				+ "LIMIT 1;";
+					 + "FROM offertatirocinio JOIN tirociniostudente "
+					 + "ON tirociniostudente.id_tirocinio = offertatirocinio.id_tirocinio "
+					 + "GROUP BY offertatirocinio.id_tirocinio "
+					 + "ORDER BY conto DESC "
+					 + "LIMIT 1;";
 		
 		try (Connection connection = DBConnector.getDatasource().getConnection()) {
 			preparedStatement = connection.prepareStatement(query);
@@ -429,30 +435,35 @@ public class OffertaTirocinioDAO implements OffertaTirocinioDAOInterface {
 		List<OffertaTirocinio> offerteTirocinio = new ArrayList<>();
 		PreparedStatement preparedStatement;
 		String query = "SELECT * FROM offertatirocinio JOIN azienda ON azienda = utente WHERE visibile = 1 AND " + 
+					   "UPPER(titolo) LIKE UPPER(?) AND " +
 					   "UPPER(nome) LIKE UPPER(?) AND " +
 					   "UPPER(luogo) LIKE UPPER(?) AND " +
 					   "UPPER(obiettivi) LIKE UPPER(?) AND " +
 					   "UPPER(modalita) LIKE UPPER(?) AND " +
-					   "(ROUND((data_fine - data_inizio)/60) LIKE ? or data_fine IS NULL OR data_inizio IS NULL) " +
-					   "LIMIT ?, ?;";
+					   "((ROUND(DATEDIFF(data_fine, data_inizio)/30) BETWEEN ? AND ?) " + 
+					   "OR data_fine IS NULL OR data_inizio IS NULL) LIMIT ?, ?;";
 		
 		try (Connection connection = DBConnector.getDatasource().getConnection()) {
 			
 			
 			preparedStatement = connection.prepareStatement(query);
 			
-			preparedStatement.setString(1, campoRicerca.get(CampoRicercaTirocinio.azienda) == null ? "%" 
+			preparedStatement.setString(1, campoRicerca.get(CampoRicercaTirocinio.titolo) == null ? "%" 
+					: "%" + campoRicerca.get(CampoRicercaTirocinio.titolo) + "%");
+			preparedStatement.setString(2, campoRicerca.get(CampoRicercaTirocinio.azienda) == null ? "%" 
 					: "%" + campoRicerca.get(CampoRicercaTirocinio.azienda) + "%");
-			preparedStatement.setString(2, campoRicerca.get(CampoRicercaTirocinio.luogo) == null ? "%" 
+			preparedStatement.setString(3, campoRicerca.get(CampoRicercaTirocinio.luogo) == null ? "%" 
 					: "%" + campoRicerca.get(CampoRicercaTirocinio.luogo) + "%");
-			preparedStatement.setString(3, campoRicerca.get(CampoRicercaTirocinio.obiettivi) == null ? "%" 
+			preparedStatement.setString(4, campoRicerca.get(CampoRicercaTirocinio.obiettivi) == null ? "%" 
 					: "%" + campoRicerca.get(CampoRicercaTirocinio.obiettivi) + "%");
-			preparedStatement.setString(4, campoRicerca.get(CampoRicercaTirocinio.modalita) == null ? "%" 
+			preparedStatement.setString(5, campoRicerca.get(CampoRicercaTirocinio.modalita) == null ? "%" 
 					: "%" + campoRicerca.get(CampoRicercaTirocinio.modalita) + "%");
-			preparedStatement.setString(5, campoRicerca.get(CampoRicercaTirocinio.durata) == null ? "%" 
-					:       campoRicerca.get(CampoRicercaTirocinio.durata));
-			preparedStatement.setInt(6, paginaCorrente * (int) OFFERTE_PER_PAGINA);
-			preparedStatement.setInt(7, (int) OFFERTE_PER_PAGINA);
+			preparedStatement.setString(6, campoRicerca.get(CampoRicercaTirocinio.durata_minima) == null ? "1" 
+					:       campoRicerca.get(CampoRicercaTirocinio.durata_minima));
+			preparedStatement.setString(7, campoRicerca.get(CampoRicercaTirocinio.durata_massima) == null ? "1000" 
+					:       campoRicerca.get(CampoRicercaTirocinio.durata_massima));
+			preparedStatement.setInt(8, paginaCorrente * (int) OFFERTE_PER_PAGINA);
+			preparedStatement.setInt(9, (int) OFFERTE_PER_PAGINA);
 			
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
