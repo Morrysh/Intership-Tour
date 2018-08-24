@@ -5,6 +5,7 @@ import java.util.Map;
 
 import data.model.Azienda;
 import data.model.ParereAzienda;
+import data.model.Studente;
 import framework.data.DataLayerException;
 
 public interface ParereAziendaDAOInterface {
@@ -18,4 +19,6 @@ public interface ParereAziendaDAOInterface {
 	Map<String, String> getPareriAzienda(Azienda azienda) throws DataLayerException;
 	
 	int getMediaVoto(Azienda azienda) throws DataLayerException;
+	
+	ParereAzienda getParereStudente(Studente studente, Azienda azienda) throws DataLayerException;
 }

@@ -51,12 +51,20 @@
          	<hr />
          	<a href="#pareri-azienda-modal">
 	         	<p class="info pointer">
-		         	<i class="fas fa-clipboard-list fa-fw w3-margin-right w3-large"></i>
+		         	<i class="fas fa-clipboard-list fa-fw w3-margin-right"></i>
 		          	Pareri
 		         </p>
 	         </a>
           <#else>
          	<br />
+          </#if>
+          <#if hasIntership>
+          	 <a href="#review">
+	         	<p class="info pointer">
+		         	<i class="fas fa-marker fa-fw w3-margin-right "></i>
+		          	Recensisci
+		         </p>
+	         </a>
           </#if>
         </div>
       </div>
@@ -210,3 +218,49 @@
 	        </div>
 	      </div>
       </div>
+      
+      <!-- Review modal -->
+      <#if studente?? && hasIntership??>
+      <div id="review" class="overlay">
+	    <div class="w3-card w3-white w3-round popup w3-padding">
+	
+	      <div class="w3-center"><br>
+	      	<a href="#" class="w3-button w3-xlarge w3-display-topright">&times;</a>
+	        <h2>Pareri su ${azienda.nome}</h2>
+	      </div>
+	        <form class="w3-container" action="./azienda?referrer=azienda?azienda=${azienda.utente}" method="post">
+		        <div class="w3-section">
+		          <!-- The user CF is hidden, it is used to retrieve the current user from database -->
+		          <input type="hidden" name="utente" value="${studente.utente}" />
+		          <input type="hidden" name="azienda" value="${azienda.utente}" />
+		          <#if parere??>
+		          		<!-- To update the review -->
+		          		<input type="hidden" name="update" value="update" />
+		          </#if>
+		          <label for="parere"><b>Parere</b></label>
+				  <textarea id="parere" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="255" placeholder="Esprimi il tuo parere sull'azienda" name="parere" autocomplete="off" required><#if parere??>${parere.parere}</#if></textarea>
+	          	  <label for="rating"><b>Valuta</b></label><br />
+	          	  <fieldset id="rating" class="rating">
+			        <input type="radio" id="star5" name="rating" value="5" <#if parere?? && parere.voto == 5>checked</#if> />
+			        <label class="full" for="star5" title="Eccellente"></label>
+			        <input type="radio" id="star4" name="rating" value="4" <#if parere?? && parere.voto == 4>checked</#if> />
+			        <label class="full" for="star4" title="Ottimo"></label>
+			        <input type="radio" id="star3" name="rating" value="3" <#if parere?? && parere.voto == 3>checked</#if> />
+			        <label class="full" for="star3" title="Buono"></label>
+			        <input type="radio" id="star2" name="rating" value="2" <#if parere?? && parere.voto == 2>checked</#if> />
+			        <label class="full" for="star2" title="Discreto"></label>
+			        <input type="radio" id="star1" name="rating" value="1" <#if !parere?? || (parere?? && parere.voto?? && parere.voto == 1)>checked</#if> />
+			        <label class="full" for="star1" title="Pessimo"></label>
+			      </fieldset><br /><br />
+	          	  <button class="w3-button w3-block w3-section w3-padding univaq-color-background" type="submit" name="recensisci" value="recensisci">
+	          	  	<#if !parere??>
+	          	  		Aggiungi recensione
+	          	  	<#else>
+	          	  		Aggiorna recensione
+	          	  	</#if>
+	          	  </button>
+		        </div>
+		      </form>
+	      </div>
+      </div>
+      </#if>

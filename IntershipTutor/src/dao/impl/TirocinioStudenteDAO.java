@@ -151,6 +151,28 @@ public class TirocinioStudenteDAO implements TirocinioStudenteDAOInterface {
 	}
 	
 	@Override
+	public int updateParere(String codiceFiscale, String parere) throws DataLayerException {
+		String updateQuery = "UPDATE tirociniostudente SET parere = ? WHERE studente = ?;";
+		PreparedStatement preparedStatement;
+        int status = 0;
+        
+        try (Connection connection = DBConnector.getDatasource().getConnection()) {
+            preparedStatement = connection.prepareStatement(updateQuery);
+
+            preparedStatement.setString(1, parere);
+            preparedStatement.setString(2, codiceFiscale);
+
+            status = preparedStatement.executeUpdate();
+
+            connection.close();
+        } catch (SQLException e) {
+        	throw new DataLayerException("Unable to set review of student intership", e);
+        }
+		
+		return status;
+	}
+	
+	@Override
 	public List<Studente> getStudentiInRangeByTirocinioConclusoAccordingToAzienda(Azienda azienda, int paginaCorrente) throws DataLayerException {
 		List<Studente> studenti = new ArrayList<>();
 		PreparedStatement preparedStatement;

@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,6 +13,8 @@ import dao.OffertaTirocinioDAOInterface;
 import data.database.DBConnector;
 import data.model.Azienda;
 import data.model.OffertaTirocinio;
+import data.model.ParereAzienda;
+import data.model.Studente;
 import data.model.enumeration.CampoRicercaTirocinio;
 import framework.data.DataLayerException;
 
@@ -220,12 +223,12 @@ public class OffertaTirocinioDAO implements OffertaTirocinioDAOInterface {
 	
 	@Override
 	public int getCountAccordingToAzienda(Azienda azienda) throws DataLayerException {
-		String insertQuery = "SELECT COUNT(*) AS count FROM offertatirocinio WHERE azienda = ?";
+		String query = "SELECT COUNT(*) AS count FROM offertatirocinio WHERE azienda = ?";
 		PreparedStatement preparedStatement;
         int count = 0;
         
         try (Connection connection = DBConnector.getDatasource().getConnection()) {
-            preparedStatement = connection.prepareStatement(insertQuery);
+            preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, azienda.getCodiceFiscale());
 
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -557,6 +560,34 @@ public class OffertaTirocinioDAO implements OffertaTirocinioDAOInterface {
         }
 		
 		return offerteTirocinio;
+	}
+
+	@Override
+	public Map<String, String> getPareriTirocinio(OffertaTirocinio offertaTirocinio) throws DataLayerException {
+		Map<String, String> pareri = new HashMap<>();
+		PreparedStatement preparedStatement;
+		String query = "SELECT * FROM (offertatirocinio JOIN tirociniostudente ON offertatirocinio.id_tirocinio = tirociniostudente.id_tirocinio) " 
+					 + "JOIN studente ON tirociniostudente.studente = studente.utente WHERE offertatirocinio.id_tirocinio = ? AND parere IS NOT NULL;";
+		
+		try (Connection connection = DBConnector.getDatasource().getConnection()) {
+            preparedStatement = connection.prepareStatement(query);
+
+            preparedStatement.setInt(1, offertaTirocinio.getIdTirocinio());
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+            	String nome = resultSet.getString(Studente.NOME);
+            	String cognome = resultSet.getString(Studente.COGNOME);
+                String parere = resultSet.getString(ParereAzienda.PARERE);
+                pareri.put(nome + " " + cognome, parere);
+            }
+
+            connection.close();
+        } catch (SQLException e) {
+        	throw new DataLayerException("Unable to get reviews", e);
+        }
+		
+		return pareri;
 	}
 
 }

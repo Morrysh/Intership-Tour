@@ -75,6 +75,12 @@
 								Dal ${offerta.dataInizio?iso_local} al ${offerta.dataFine?iso_local}
 							</p>
 						</#if>
+						<#if offerta.oraInizio?? && offerta.oraFine??>
+				          	<p class="info">
+				          		<i class="far fa-clock fa-fw w3-margin-right"></i>
+				          		da ${offerta.oraInizio[0..4]} al ${offerta.oraFine[0..4]} 
+				          	</p>
+			          	</#if>
 						<p  class="proposte-tirocinio">
 						    <#if offerta.modalita?length &lt; 500>
 						        ${offerta.modalita}

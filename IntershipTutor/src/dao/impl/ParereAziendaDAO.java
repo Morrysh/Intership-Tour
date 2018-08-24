@@ -18,7 +18,7 @@ public class ParereAziendaDAO implements ParereAziendaDAOInterface {
 
 	@Override
 	public int insert(ParereAzienda parereAzienda) throws DataLayerException {
-		String insertQuery = "INSERT INTO parereAzienda VALUES (?, ?, ?);";
+		String insertQuery = "INSERT INTO parereAzienda VALUES (?, ?, ?, ?);";
 		PreparedStatement preparedStatement;
         int status = 0;
         
@@ -28,6 +28,7 @@ public class ParereAziendaDAO implements ParereAziendaDAOInterface {
             preparedStatement.setString(1, parereAzienda.getStudente());
             preparedStatement.setString(2, parereAzienda.getAzienda());
             preparedStatement.setString(3, parereAzienda.getParere());
+            preparedStatement.setInt(4, parereAzienda.getVoto());
 
             status = preparedStatement.executeUpdate();
 
@@ -41,8 +42,26 @@ public class ParereAziendaDAO implements ParereAziendaDAOInterface {
 
 	@Override
 	public int update(ParereAzienda parereAzienda) throws DataLayerException {
-		// TODO Auto-generated method stub
-		return 0;
+		String updateQuery = "UPDATE parereazienda SET parere = ?, voto = ? WHERE azienda = ? AND studente = ?;";
+		PreparedStatement preparedStatement;
+        int status = 0;
+        
+        try (Connection connection = DBConnector.getDatasource().getConnection()) {
+            preparedStatement = connection.prepareStatement(updateQuery);
+
+            preparedStatement.setString(1, parereAzienda.getParere());
+            preparedStatement.setInt(2, parereAzienda.getVoto());
+            preparedStatement.setString(3, parereAzienda.getAzienda());
+            preparedStatement.setString(4, parereAzienda.getStudente());
+
+            status = preparedStatement.executeUpdate();
+
+            connection.close();
+        } catch (SQLException e) {
+        	throw new DataLayerException("Unable to update company review", e);
+        }
+		
+		return status;
 	}
 
 	@Override
@@ -102,5 +121,33 @@ public class ParereAziendaDAO implements ParereAziendaDAOInterface {
 		
 		
 		return voto*100/5;
+	}
+
+	@Override
+	public ParereAzienda getParereStudente(Studente studente, Azienda azienda) throws DataLayerException {
+		ParereAzienda parereAzienda = null;
+		PreparedStatement preparedStatement;
+		String query = "SELECT * FROM parereazienda WHERE studente = ? AND azienda = ?;";
+		
+		try (Connection connection = DBConnector.getDatasource().getConnection()) {
+			preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, studente.getCodiceFiscale());
+            preparedStatement.setString(2, azienda.getCodiceFiscale());
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+            	parereAzienda = new ParereAzienda(
+                		resultSet.getString(ParereAzienda.STUDENTE),
+                		resultSet.getString(ParereAzienda.AZIENDA),
+		 				resultSet.getString(ParereAzienda.PARERE),
+                        resultSet.getInt(ParereAzienda.VOTO));
+            }
+
+            connection.close();
+        } catch (SQLException e) {
+        	throw new DataLayerException("Unable to get company review according to student", e);
+        }
+		
+		return parereAzienda;
 	}
 }

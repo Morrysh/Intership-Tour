@@ -1,7 +1,5 @@
 package data.model;
 
-import data.model.enumeration.VotoAzienda;
-
 public class ParereAzienda {
 	
 	// DB fields
@@ -13,16 +11,16 @@ public class ParereAzienda {
 	private String studente;
 	private String azienda;
 	private String parere;
-	private VotoAzienda voto;
+	private int voto;
 	
 	public ParereAzienda() {
 		this.studente = "";
 		this.azienda = "";
 		this.parere = "";
-		this.voto = null;
+		this.voto = 0;
 	}
 	
-	public ParereAzienda(String studente, String azienda, String parere, VotoAzienda voto) {
+	public ParereAzienda(String studente, String azienda, String parere, int voto) {
 		this.studente = studente;
 		this.azienda = azienda;
 		this.parere = parere;
@@ -53,11 +51,11 @@ public class ParereAzienda {
 		this.parere = parere;
 	}
 	
-	public VotoAzienda getVoto() {
+	public int getVoto() {
 		return voto;
 	}
 
-	public void setvoto(VotoAzienda voto) {
+	public void setvoto(int voto) {
 		this.voto = voto;
 	}
 

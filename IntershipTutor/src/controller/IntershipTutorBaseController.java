@@ -60,13 +60,16 @@ public abstract class IntershipTutorBaseController extends HttpServlet {
         else if(URI.contains(GestoreTirocinioStudente.SERVLET_URI)) {
         	verify_user_intership_student(session, request, response);
         }
+        else if(URI.contains(GestoreAzienda.SERVLET_URI)) {
+        	verify_user_company(session, request, response);
+        }
         else {
         	processRequest(request, response);
         }
         
     }
-    
-    private void verify_user_download(HttpSession session, HttpServletRequest request, HttpServletResponse response) throws ServletException {
+
+	private void verify_user_download(HttpSession session, HttpServletRequest request, HttpServletResponse response) throws ServletException {
 		if(session != null) {
 			// Richiesta di download di una convenzione da parte di un'azienda
 			if(request.getParameter("azienda") != null) {
@@ -154,7 +157,8 @@ public abstract class IntershipTutorBaseController extends HttpServlet {
 					action_error(request, response);
 			    }
 			}
-			else if(request.getParameter("id_tirocinio") != null &&
+			else if((request.getParameter("id_tirocinio") != null ||
+					 request.getParameter("recensisci") != null) &&
 					request.getParameter("aggiugi") == null &&
 				    request.getParameter("rimuovi") == null &&
 				    request.getParameter("aggiorna") == null &&
@@ -228,6 +232,33 @@ public abstract class IntershipTutorBaseController extends HttpServlet {
 		else {
 			request.setAttribute("message", "Accesso non autorizzato");
 			action_error(request, response);
+		}
+	}
+    
+    private void verify_user_company(HttpSession session, HttpServletRequest request, HttpServletResponse response) throws ServletException {
+		if(request.getParameter("recensisci") != null) {
+			if(session != null) {
+				if(request.getAttribute("utente") instanceof Studente) {
+					if(((Studente)request.getAttribute("utente")).getCodiceFiscale().equals(request.getParameter("utente"))){
+						processRequest(request, response);
+					}
+					else {
+						request.setAttribute("message", "Studente non autorizzato");
+						action_error(request, response);
+					}
+				}
+				else {
+					request.setAttribute("message", "Utente non autorizzato");
+					action_error(request, response);
+				}
+			}
+			else {
+				request.setAttribute("message", "Accesso non autorizzato");
+				action_error(request, response);
+			}
+		}
+		else {
+			processRequest(request, response);
 		}
 	}
 

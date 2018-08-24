@@ -3,6 +3,7 @@ package controller;
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.Time;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -10,8 +11,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import dao.impl.AziendaDAO;
 import dao.impl.OffertaTirocinioDAO;
+import dao.impl.TirocinioStudenteDAO;
 import data.model.Azienda;
 import data.model.OffertaTirocinio;
+import data.model.Studente;
+import data.model.TirocinioStudente;
+import data.model.enumeration.StatoRichiestaTirocinio;
 import framework.data.DataLayerException;
 import framework.result.FailureResult;
 import framework.result.TemplateManagerException;
@@ -153,11 +158,7 @@ public class GestoreOffertaTirocinio extends IntershipTutorBaseController{
 			// NOT USING request.getContextPath becouse it doesn't work with Heroku
 			response.sendRedirect(".");
 		}
-		catch(DataLayerException ex) {
-            request.setAttribute("message", "Data access exception: " + ex.getMessage());
-            action_error(request, response);
-        }
-		catch(IOException ex) {
+		catch(DataLayerException | IOException ex) {
             request.setAttribute("message", "Data access exception: " + ex.getMessage());
             action_error(request, response);
         }
@@ -167,10 +168,37 @@ public class GestoreOffertaTirocinio extends IntershipTutorBaseController{
     private void action_default(HttpServletRequest request, HttpServletResponse response, int codiceOffertaTirocinio) throws IOException, ServletException, TemplateManagerException {
     	try {
 	    	TemplateResult res = new TemplateResult(getServletContext());
-	        
-	        OffertaTirocinio offertaTirocinio = new OffertaTirocinioDAO().getOffertaByID(codiceOffertaTirocinio);
+	    	
+	    	OffertaTirocinio offertaTirocinio = new OffertaTirocinioDAO().getOffertaByID(codiceOffertaTirocinio);
 	        Azienda azienda = new AziendaDAO().getAziendaByIDTirocinio(codiceOffertaTirocinio);
+	    	Studente studente = (Studente) request.getAttribute("utente");
+	    	// Eventuale tirocinio effettuato dallo studente loggato
+	    	TirocinioStudente tirocinioStudente = null;
+	    	// Indica se lo studente ha effettuato e terminato il tirocinio di cui si sta visualizzando il dettaglio,
+	    	// Questo ci permetterà di dare la possibilità allo studente di recensire il tirocinio.
+	    	boolean hasIntership = false;
+	    	
+	    	// Verifichiamo che non sia una visita in anonimo
+	    	if(studente != null) {
+	    		// Recuperiamo dal database il tirocinio che lo studente ha effettuato(se ne ha effettuato uno)
+	    		tirocinioStudente = new TirocinioStudenteDAO().getTirocinioStudenteByStudenteCF(studente.getCodiceFiscale());
+	    		// Confronto l'id del tirocinio che lo studente ha effettuato (e terminato)
+	    		// con quello dell'offerta di cui si sta visualizzando il dettaglio
+	    		// se corrispondono lo studente può valutare il tirocinio
+	    		if(tirocinioStudente != null && 
+	    		   tirocinioStudente.getTirocinio() == offertaTirocinio.getIdTirocinio() &&
+	    		   tirocinioStudente.getStato() == StatoRichiestaTirocinio.terminato) {
+	    				hasIntership = true;
+	    		}
+	    	}
+	    	
+	    	// Pareri sul tirocinio che di cui si stanno visualizzando i dettagli
+	    	Map<String, String> pareriTirocinio = new OffertaTirocinioDAO().getPareriTirocinio(offertaTirocinio);
 	        
+	    	request.setAttribute("pareriTirocinio", pareriTirocinio);
+	    	request.setAttribute("tirocinioStudente", tirocinioStudente);
+	    	request.setAttribute("hasIntership", hasIntership);
+	    	request.setAttribute("studente", studente);
 	        request.setAttribute("offertaTirocinio", offertaTirocinio);
 	        request.setAttribute("azienda", azienda);	
 	        
@@ -186,6 +214,25 @@ public class GestoreOffertaTirocinio extends IntershipTutorBaseController{
             action_error(request, response);
         }
     }
+    
+    private void action_recensisci(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException{
+		try {
+			new TirocinioStudenteDAO().updateParere(request.getParameter("utente"),
+													request.getParameter("parere"));
+			
+			if(request.getParameter("referrer") != null) {
+				response.sendRedirect(request.getParameter("referrer") + "&utente=" + request.getParameter("utente"));
+			}
+			else {
+				// NOT USING request.getContextPath becouse it doesn't work with Heroku
+    			response.sendRedirect(".");
+			}
+		}
+		catch(DataLayerException | IOException ex) {
+            request.setAttribute("message", "Data access exception: " + ex.getMessage());
+            action_error(request, response);
+        }
+	}
 
     @Override
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -196,6 +243,9 @@ public class GestoreOffertaTirocinio extends IntershipTutorBaseController{
 			
 			if(request.getParameter("aggiungi") != null) {
 				action_aggiungi(request, response);
+			}
+			else if(request.getParameter("recensisci") != null) {
+				action_recensisci(request, response);
 			}
 			else if (request.getParameter(OffertaTirocinio.ID_TIROCINIO) != null) {
 				int codiceOffertaTirocinio = SecurityLayer.checkNumeric(request.getParameter(OffertaTirocinio.ID_TIROCINIO));

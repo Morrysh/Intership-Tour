@@ -43,4 +43,7 @@ public interface OffertaTirocinioDAOInterface {
 	List<OffertaTirocinio> allOfferteInRangeAccordingToAzienda(Azienda azienda, int paginaCorrente) throws DataLayerException;
 	
 	List<OffertaTirocinio> allOfferteInRangeAccordingToAziendaAndVisibilita(Azienda azienda, boolean visibile, int paginaCorrente) throws DataLayerException;
+
+	Map<String, String> getPareriTirocinio(OffertaTirocinio offertaTirocinio) throws DataLayerException;
+	
 }
