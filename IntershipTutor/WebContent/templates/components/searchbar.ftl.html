@@ -10,9 +10,9 @@
                     <form action="${servlet}" method="get">
 	                     <#list campiRicerca as campoRicerca>
 	                         <label class="field-filter">${campoRicerca?capitalize?replace("_", " ")}</label>
-	                         <input name="${campoRicerca}" class="w3-input" autocomplete="off" 
-	                         <#if campoRicerca.name() == "durata_minima" ||
-	                         	  campoRicerca.name() == "durata_massima" >type="number"</#if> />
+	                         <input name="${campoRicerca}" class="w3-input input-filter" autocomplete="off" 
+	                          		placeholder="${campoRicerca.getPlaceholder()}"
+	                           		type="${campoRicerca.getInputType()}" />
 	                     </#list>
 	                     <button type="submit" class="w3-button w3-right w3-border w3-round">Cerca</button>
                     </form>

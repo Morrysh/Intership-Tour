@@ -13,22 +13,26 @@
 	            <h2 id="label-container" class="padding-edge no-margin">
 	                <label class="pointer" id="label-aziende" for="menu-2">Aziende convenzionate</label>
                 </h2>
+                <hr class="no-margin" />
                 <div class="menu-content-2 w3-container" id="aziende-container">
 	               <#list aziende as azienda>
-	               	   <hr>
+	               	   <hr />
 	                   <div class="azienda">      
-	                        <p class="info">
+	                        <p class="info w3-center w3-margin-bottom">
 	                        	<a href="azienda?azienda=${azienda.codiceFiscale}">
-		                        	<i class="far fa-building fa-fw w3-margin-right"></i> 
 		                        	<b class="w3-text-grey">${azienda.nome}</b>
 	                        	</a>
 	                        </p>
-	                        <p class="info">
-	                        	<i class="fas fa-map-marked-alt fa-fw w3-margin-right"></i>
+	                        <p class="info info-azienda">
+	                        	<i class="far fa-map fa-fw w3-margin-right w3-margin-left"></i>
 	                        	${azienda.regione}
 	                        </p>
-	                        <p class="info">
-	                        	<i class="fas fa-phone fa-fw w3-margin-right"></i>
+	                        <p class="info info-azienda">
+	                        	<i class="far fa-envelope fa-fw w3-margin-right w3-margin-left"></i>
+	                        	${azienda.email}
+	                        </p>
+	                        <p class="info info-azienda">
+	                        	<i class="fas fa-phone fa-fw w3-margin-right w3-margin-left"></i>
 	                        	${azienda.telefono}
 	                        </p>
 	                   </div>

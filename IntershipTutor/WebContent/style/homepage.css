@@ -2,9 +2,6 @@
 	padding: 0
 }
 
-#offerte-container hr:first-child{
-	display: none
-}
 
 #offerte-container hr{
 	margin-bottom: 0
@@ -16,7 +13,7 @@
 }
 
 .azienda{
-	padding: 5px 0
+	padding: 5px 0;
 }
 
 .azienda:first-child{
@@ -27,10 +24,9 @@
     padding-bottom: 10px;
 }
 
-.azienda h4:hover{
-    cursor: pointer;
-    /* color: #F90200; */
-    color: #822627;
+.info-azienda{
+	margin-bottom: 3px !important;
+	font-size: 13px !important
 }
 
 #aziende-container::-webkit-scrollbar {
@@ -48,7 +44,7 @@
 
 #aziende-container hr:first-child{
 	visibility: hidden;
-	margin: 10px 0;
+	margin: 5px 0;
 }
 
 #tirocinio-richiesto,
@@ -173,6 +169,10 @@ input[type="file"]{
         padding-left: 0;
         padding-right: 0;
     }
+    
+    .info-azienda{
+		font-size: 15px !important
+	}
     
 }
 
