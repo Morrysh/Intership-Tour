@@ -13,6 +13,7 @@ import javax.mail.MessagingException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -52,12 +53,12 @@ public class GestoreTirocinioStudente extends IntershipTutorBaseController {
         }
     }
 	
-	private void action_show_candidates(HttpServletRequest request, HttpServletResponse response, int idTirocinio) throws IOException, ServletException, TemplateManagerException{
+	private void action_show_candidates(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException{
 		try {
 			TemplateResult res = new TemplateResult(getServletContext());
 			
 			Azienda azienda = (Azienda) request.getAttribute("utente");
-			
+			int idTirocinio = SecurityLayer.checkNumeric(request.getParameter(TirocinioStudente.ID_TIROCINIO));
 			OffertaTirocinio offertaTirocinio = new OffertaTirocinioDAO().getOffertaByID(idTirocinio);
 			
 			int paginaCorrente = 0;
@@ -74,7 +75,7 @@ public class GestoreTirocinioStudente extends IntershipTutorBaseController {
 				candidatoTirocinio.put(studente, new TirocinioStudenteDAO().getTirocinioStudenteByStudenteCF(studente.getCodiceFiscale()));
 			}	     
 			
-			String queryString = "&id_tirocinio=" + offertaTirocinio.getIdTirocinio() + "&utente=" + request.getParameter("utente");
+			String queryString = "&id_tirocinio=" + offertaTirocinio.getIdTirocinio() + "&candidati=true&utente=" + request.getParameter("utente");
 			
 			//request.setAttribute("servlet", "tirocinioStudente");
 	        //request.setAttribute("searchbartitle", "Filtra le candidature");
@@ -165,7 +166,7 @@ public class GestoreTirocinioStudente extends IntershipTutorBaseController {
         	String messageTitle = "Candidatura Tirocinio";
         	// Corpo email
         	String messageBody = "Lo studente " + studente.getNome() + " " + studente.getCognome() +
-			    				 " ha inviato la sua candidatira ad un tirocinio offerto dall'azienda " + 
+			    				 " ha inviato la sua candidatura ad un tirocinio offerto dall'azienda " + 
 			    				 azienda.getNome() + " scegliendo come tutore universitario " + 
 			    				 request.getParameter(TirocinioStudente.TUTORE_UNIVERSITARIO);
         	// Destinatari email
@@ -197,8 +198,8 @@ public class GestoreTirocinioStudente extends IntershipTutorBaseController {
 			
 			new TirocinioStudenteDAO().delete(studente);
 			
-			if(request.getParameter("referrer") != null) {
-				response.sendRedirect(request.getParameter("referrer") + "&utente=" + request.getParameter("utente"));
+			if(request.getParameter("referer") != null) {
+				response.sendRedirect(request.getHeader("referer"));
 			}
 			else {
 				// NOT USING request.getContextPath becouse it doesn't work with Heroku
@@ -241,9 +242,8 @@ public class GestoreTirocinioStudente extends IntershipTutorBaseController {
 					new TirocinioStudenteDAO().updateStato(codiceFiscale, statoRichiestaTirocinio);
 			}
 			
-			
-			if(request.getParameter("referrer") != null) {
-				response.sendRedirect(request.getParameter("referrer") + "&utente=" + request.getParameter("utente"));
+			if(request.getParameter("referer") != null) {
+				response.sendRedirect(request.getHeader("referer"));
 			}
 			else {
 				// NOT USING request.getContextPath becouse it doesn't work with Heroku
@@ -256,7 +256,10 @@ public class GestoreTirocinioStudente extends IntershipTutorBaseController {
 		}
 	}
 	
-	public void update_training_project(HttpServletRequest request, HttpServletResponse response) throws TemplateManagerException {
+	// Per la generazione automatica del progetto formativo
+	// Usiamo un template che viene riempito con i dati dello studente e dell'azienda,
+	// il templata da stringa viene trasformato in pdf e inserito nel db
+	private void update_training_project(HttpServletRequest request, HttpServletResponse response) throws TemplateManagerException {
 		try {
 			TemplateResult res = new TemplateResult(getServletContext());
 			
@@ -296,34 +299,85 @@ public class GestoreTirocinioStudente extends IntershipTutorBaseController {
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException {
 		
 		try {
-			// Studente
-			if(request.getParameter("rimuovi") != null) {
-				action_rimuovi(request, response);
-			}
-			// Azienda
-			else if(request.getParameter("conclusi") != null) {
-				action_show_concluded_interships(request, response);
-			}
-			// Studente
-			else if(request.getParameter("iscriviti") != null) {
-				if(request.getParameter(TirocinioStudente.ID_TIROCINIO) != null) {
-					action_iscriviti(request, response);
+			
+			// Sessione eventualmente attiva
+			HttpSession session = SecurityLayer.checkSession(request);
+			
+			if(session != null) {
+				// Azioni azienda
+				if(request.getParameter("conclusi") != null ||
+				   request.getParameter("candidati") != null) {
+					// Verifichiamo che l'utente loggato sia un'azienda
+					// e che il suo id corrisponda a quello della richiesta
+					if(request.getAttribute("utente") instanceof Azienda &&
+					   ((Azienda)request.getAttribute("utente")).getCodiceFiscale().equals(request.getParameter("utente"))) {
+						if(request.getParameter("conclusi") != null) {
+							action_show_concluded_interships(request, response);
+						}
+						else if(request.getParameter("candidati") != null) {
+							action_show_candidates(request, response);
+						}
+					}
+					else {
+						request.setAttribute("message", "Azione non autorizzata");
+		                action_error(request, response);
+					}
+				}
+				// Azioni studente
+				else if(request.getParameter("iscriviti") != null) {
+					// Verifichiamo che l'utente loggato sia uno studente
+					// e che il suo id corrisponda a quello della richiesta
+					if(request.getAttribute("utente") instanceof Studente &&
+					   ((Studente)request.getAttribute("utente")).getCodiceFiscale().equals(request.getParameter("utente"))) {
+						action_iscriviti(request, response);
+					}
+					else {
+						request.setAttribute("message", "Azione non autorizzata");
+		                action_error(request, response);
+					}
+				}
+				// Azioni condivise tra azienda e studente
+				else if(request.getParameter("rimuovi") != null ||
+						request.getParameter("candidato") != null) {
+					// Richiesta da uno studente
+					// Verifichiamo che l'utente loggato sia uno studente e che il suo id 
+					// corrisponda a quello della richiesta
+					if(request.getAttribute("utente") instanceof Studente &&
+					   ((Studente)request.getAttribute("utente")).getCodiceFiscale().equals(request.getParameter("utente"))) {
+						if(request.getParameter("rimuovi") != null) {
+							action_rimuovi(request, response);
+						}
+						else if(request.getParameter("candidato") != null) {
+							action_show_candidates(request, response);
+						}
+					}
+					// Richiesta da un'azienda
+					// Verifichiamo che l'utente loggato sia un'azienda e che il suo id 
+					// corrisponda a quello della richiesta
+					else if(request.getAttribute("utente") instanceof Azienda &&
+							((Azienda)request.getAttribute("utente")).getCodiceFiscale().equals(request.getParameter("utente"))) {
+						if(request.getParameter("rimuovi") != null) {
+							action_rimuovi(request, response);
+						}
+						else if(request.getParameter("candidato") != null) {
+							action_update_state(request, response);
+						}
+					}
+					else {
+						request.setAttribute("message", "Utente non autorizzato");
+		                action_error(request, response);
+					}
+				}
+				else {
+					request.setAttribute("message", "Azione non autorizzata");
+	                action_error(request, response);
 				}
 			}
-			// Azienda
-			else if(request.getParameter(OffertaTirocinio.ID_TIROCINIO) != null) {
-				int idTirocinio = SecurityLayer.checkNumeric(request.getParameter(OffertaTirocinio.ID_TIROCINIO));
-				action_show_candidates(request, response, idTirocinio);
-			}
-			// Azienda
-			else if(request.getParameter("candidato") != null &&
-					request.getParameter(TirocinioStudente.STATO) != null) {
-				action_update_state(request, response);
-			}
 			else {
-				request.setAttribute("message", "Non è stata specificato uno studente, un tirocinio o un nuovo stato per la candidatura");
-			    action_error(request, response);
+				request.setAttribute("message", "Accesso non autorizzato");
+				action_error(request, response);
 			}
+			
 		} catch (IOException | TemplateManagerException ex) {
             request.setAttribute("exception", ex);
             action_error(request, response);

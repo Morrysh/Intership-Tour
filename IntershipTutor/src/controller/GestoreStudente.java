@@ -90,23 +90,23 @@ public class GestoreStudente extends IntershipTutorBaseController {
         }
 	}
 
-    private void action_default(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException {
-        
-    }
-
     @Override
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException {
 
     	try {
 			if(request.getParameter("aggiorna") != null) {
-				action_aggiorna(request, response);
+				// Verifichiamo che ci sia un utente loggato
+				// Verifichiamo che l'utente loggato sia uno studente
+				// Verifichiamo che lo studente stia effettivamente modificando il suo profilo
+				if(request.getAttribute("utente") != null &&
+				   request.getAttribute("utente") instanceof Studente &&
+				   ((Studente)request.getAttribute("utente")).getCodiceFiscale().equals(request.getParameter("utente"))) {
+					action_aggiorna(request, response);
+				}
 			}
 			else if(request.getParameter("registrazione") != null) {
 				action_registra(request, response);
-			}
-			else {
-				action_default(request, response);
 			}
         }
     	catch (TemplateManagerException | IOException ex) {

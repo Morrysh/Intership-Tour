@@ -7,15 +7,18 @@ import java.io.OutputStream;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import dao.impl.AziendaDAO;
 import dao.impl.StudenteDAO;
 import dao.impl.TirocinioStudenteDAO;
+import data.model.Amministratore;
 import data.model.Azienda;
 import data.model.Studente;
 import framework.data.DataLayerException;
 import framework.result.FailureResult;
 import framework.result.TemplateManagerException;
+import framework.security.SecurityLayer;
 
 @SuppressWarnings("serial")
 public class Downloader extends IntershipTutorBaseController{
@@ -73,16 +76,58 @@ public class Downloader extends IntershipTutorBaseController{
 	@Override
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException {
 		try {
-			if(request.getParameter("candidato") != null) {
-				action_download_training_project(request, response);
-			}
-			else if(request.getParameter("azienda") != null) {
-				action_download_company_convention(request, response);
+			// Sessione eventualmente attiva
+			HttpSession session = SecurityLayer.checkSession(request);
+			
+			if(session != null) {
+				// Richiesta di download di una convenzione di un'azienda
+				if(request.getParameter("azienda") != null) {
+					// RICHIESTA DI DOWNLOAD DA UN'AZIENDA
+					// Verifichiamo che la richiesta sia fatta da un utente loggato come azienda
+					// e che la convenzione richiesta sia legata effettivamente a quell'azienda
+					if(session.getAttribute("utente") instanceof Azienda &&
+					   ((Azienda)session.getAttribute("utente")).getCodiceFiscale().equals(request.getParameter("azienda"))) {
+						action_download_company_convention(request, response);
+					}
+					// RICHIESTA DI DOWNLOAD DA UN'AMMINISTRATORE
+					else if(session.getAttribute("utente") instanceof Amministratore) {
+						action_download_company_convention(request, response);
+					}
+					else {
+						request.setAttribute("message", "Utente non autorizzata");
+						action_error(request, response);
+					}
+				}
+				// Richiesta di download di un progetto formativo
+				else {
+					// Richiesta proveniente da uno studente
+					if(session.getAttribute("utente") instanceof Studente) {
+						// Verifichiamo che il codice fiscale dello studente che ha fatto richiesta(utente loggato)
+						// corrisponda a quello del progetto formativo che si è richiesto
+						if(((Studente)session.getAttribute("utente")).getCodiceFiscale().equals(request.getParameter("utente"))){
+							action_download_training_project(request, response);
+						}
+						else {
+							request.setAttribute("message", "Studente non autorizzato");
+							action_error(request, response);
+						}
+					}
+					// Richiesta proveniente da un'azienda(si dovrebbe anche verificare che l'azienda
+					// abbia effettivamente emesso il tirocinio per quello studente)
+					else if (request.getAttribute("utente") instanceof Azienda) {
+						action_download_training_project(request, response);
+					}
+					else {
+						request.setAttribute("message", "Utente non autorizzato");
+						action_error(request, response);
+					}
+				}
 			}
 			else {
-				request.setAttribute("message", "Errore nella richiesta");
-	            action_error(request, response);
+				request.setAttribute("message", "Accesso non autorizzato");
+				action_error(request, response);
 			}
+			
         }
     	catch (TemplateManagerException | IOException ex) {
             request.setAttribute("exception", ex);

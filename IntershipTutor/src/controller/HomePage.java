@@ -125,33 +125,12 @@ public class HomePage extends IntershipTutorBaseController {
     		int voto = new ParereAziendaDAO().getMediaVoto(azienda);
     		Map<String, String> pareriAzienda = new ParereAziendaDAO().getPareriAzienda(azienda);
     		
-    		/* Map<CampoRicercaTirocinio, String> campiDaCercare = new HashMap<>();
-            
-            for(CampoRicercaTirocinio campoRicerca : CampoRicercaTirocinio.values()) {
-            	if(request.getParameter(campoRicerca.name()) != "" &&
-            	   request.getParameter(campoRicerca.name()) != null) {
-            		campiDaCercare.put(campoRicerca, (String) request.getParameter(campoRicerca.name()));
-            	}
-            } */
-            
             // La lista verrà riempita con tutte le offerte se l'utente non ha filtrato la ricerca;
             // con le offerte risultanti dalla ricerca in caso contrario
             List<OffertaTirocinio> offerte;
             
             // Totale delle offerte visibili all'utente / 5 (5 offerte per pagina) = numero delle pagine
             int numeroPagine;
-            
-            // Filtraggio avvenuto da parte dell'utente
-            /* if(campiDaCercare.size() != 0) {
-            	// Tutte le offerte in base alla ricerca
-            	offerte = new OffertaTirocinioDAO().allOfferteInRangePerCampo(campiDaCercare, (int) request.getAttribute("paginaCorrente"));
-            	// Massimo 5 offerte per pagina
-                // il .0 è necessario per il cast di Java (1.1 deve essere arrotondato a 2 per esempio)
-            	numeroPagine = (int) Math.ceil(new OffertaTirocinioDAO().getCountAccordingToRicerca(campiDaCercare) / OFFERTE_PER_PAGINA);
-            }*/
-            // Nessun filtraggio
-            //else {
-            	// Tutte le offerte senza filtraggio
              offerte = new OffertaTirocinioDAO().allOfferteInRangeAccordingToAzienda(azienda, (int) request.getAttribute("paginaCorrente"));
              // Massimo 5 offerte per pagina
                 // il .0 è necessario per il cast di Java (1.1 deve essere arrotondato a 2 per esempio)

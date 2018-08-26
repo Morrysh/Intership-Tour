@@ -118,7 +118,7 @@
 						    </#if>
 						</p>
 						<div class="w3-left options">
-							<a href="tirocinioStudente?id_tirocinio=${offerta.idTirocinio}&utente=${utente.utente}">
+							<a href="tirocinioStudente?id_tirocinio=${offerta.idTirocinio}&utente=${utente.utente}&candidati=true">
 								<button class="pointer fas fa-users">
 									Candidati
 								</button>
@@ -159,10 +159,10 @@
 	      	<a href="#close" class="w3-button w3-xlarge w3-display-topright">&times;</a>
 	        <h2>Modifica informazioni</h2>
 	      </div>
-	      <form class="w3-container" action="./azienda" method="post">
+	      <form class="w3-container" action="azienda" method="post">
 	          <div class="w3-section">
 		          <!-- The user CF is hidden, it is used to retrieve the current user from database -->
-		          <input type="hidden" name="utente" value="{utente.utente}" />
+		          <input type="hidden" name="utente" value="${utente.utente}" />
 		          <h3 class="univaq-color profile">Informazioni sull'azienda</h3>
 		          <label for="nomeAzienda"><b>Nome</b></label>
 		          <input id="nomeAzienda" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" value="${utente.nome}" placeholder="Inserisci il tuo nome" name="nome" autocomplete="off" required />
@@ -204,7 +204,7 @@
 		      	<a href="#close" class="w3-button w3-xlarge w3-display-topright">&times;</a>
 		        <h2>Aggiungi tirocinio</h2>
 		      </div>
-		      <form class="w3-container" action="./offertaTirocinio" method="post">
+		      <form class="w3-container" action="offertaTirocinio" method="post">
 		        <div class="w3-section">
 		          <!-- The user CF is hidden, it is used to retrieve the current user from database -->
 		          <input type="hidden" name="utente" value="${utente.utente}" />
@@ -244,7 +244,7 @@
 		      	<a href="#close" class="w3-button w3-xlarge w3-display-topright">&times;</a>
 		        <h2>Aggiungi tirocinio</h2>
 		      </div>
-		      <form class="w3-container" action="./offertaTirocinio" method="post">
+		      <form class="w3-container" action="offertaTirocinio" method="post">
 		        <div class="w3-section">
 		          <!-- The idTirocinio is hidden, it is used on the server -->
 		          <input type="hidden" name="utente" value="${utente.utente}" />

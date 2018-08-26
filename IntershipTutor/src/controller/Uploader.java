@@ -7,6 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
 import dao.impl.AziendaDAO;
@@ -17,6 +18,7 @@ import data.model.Azienda;
 import data.model.Studente;
 import framework.data.DataLayerException;
 import framework.result.FailureResult;
+import framework.security.SecurityLayer;
 
 @MultipartConfig
 @SuppressWarnings("serial")
@@ -43,8 +45,8 @@ public class Uploader extends IntershipTutorBaseController{
 				Studente studente = new StudenteDAO().getStudenteByCF(request.getParameter("candidato"));
 				new TirocinioStudenteDAO().setProgettoFormativo(filePart.getInputStream(), studente);
 				
-				if(request.getParameter("referrer") != null) {
-					response.sendRedirect(request.getParameter("referrer") + "&utente=" + request.getParameter("utente"));
+				if(request.getParameter("referer") != null) {
+					response.sendRedirect(request.getHeader("referer"));
 				}
 				else {
 					// NOT USING request.getContextPath becouse it doesn't work with Heroku
@@ -77,8 +79,8 @@ public class Uploader extends IntershipTutorBaseController{
 				// Convenziona azienda
 				new AziendaDAO().setConvenzione(azienda, true);
 				
-				if(request.getParameter("referrer") != null) {
-					response.sendRedirect(request.getParameter("referrer") + "&utente=" + request.getParameter("utente"));
+				if(request.getParameter("referer") != null) {
+					response.sendRedirect(request.getHeader("referer"));
 				}
 				else {
 					// NOT USING request.getContextPath becouse it doesn't work with Heroku
@@ -99,15 +101,38 @@ public class Uploader extends IntershipTutorBaseController{
 
 	@Override
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException {
-		//try {
-			if(request.getParameter("candidato") != null) {
+		
+		// Sessione eventualmente attiva
+		HttpSession session = SecurityLayer.checkSession(request);
+		
+		if(session != null) {
+			// Richiesta di upload da uno studente
+			if(request.getAttribute("utente") instanceof Studente) {
+				// Verifichiamo che lo studente loggato stia effettivamente caricando un
+				// progetto formativo in accordo al suo codice fiscale
+				if(((Studente)request.getAttribute("utente")).getCodiceFiscale().equals(request.getParameter("utente"))){
+						action_update_training_project(request, response);
+				}
+				else {
+					request.setAttribute("message", "Studente non autorizzato");
+					action_error(request, response);
+				}
+			}
+			// Richiesta di upload da un'azienda(Andrebbe contrallato che l'azienda
+			// abbia effettivamente emesso il tirocinio per quello studente)
+			else if(request.getAttribute("utente") instanceof Azienda) {
 				action_update_training_project(request, response);
 			}
+			// Richiesta di upload da un'amministratore(ci fidiamo)
+			// Upload del documento di convenzione per quell'azienda
 			else if(request.getAttribute("utente") instanceof Amministratore) {
 				action_set_convention(request, response);
 			}
-		//}
-		
+		}
+		else {
+			request.setAttribute("message", "Accesso non autorizzato");
+			action_error(request, response);
+		}		
 	}
 
 }

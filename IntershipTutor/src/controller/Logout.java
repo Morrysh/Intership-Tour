@@ -25,9 +25,9 @@ public class Logout extends IntershipTutorBaseController{
     private void action_logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
         SecurityLayer.disposeSession(request);
         
-        if (request.getParameter("referrer") != null) {
+        if (request.getParameter("referer") != null) {
         	// REMEMBER TO USE THIS TO REDIRECT ON THE PAGE WHERE THE USER UNLOGGED
-            response.sendRedirect(request.getParameter("referrer"));
+            response.sendRedirect(request.getHeader("referer"));
         } else {
         	// NOT USING request.getContextPath becouse it doesn't work with Heroku
 			response.sendRedirect(".");

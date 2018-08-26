@@ -88,10 +88,9 @@
 							</button>
 						</a>
 						</div>
-						<form action="upload?candidato=${candidato.utente}&utente=${azienda.utente}&referrer=tirocinioStudente?id_tirocinio=${offertaTirocinio.idTirocinio}" method="post" enctype='multipart/form-data'>
+						<form action="upload?candidato=${candidato.utente}&utente=${azienda.utente}&referer=tirocinioStudente?id_tirocinio=${offertaTirocinio.idTirocinio}&candidati=candidati" method="post" enctype='multipart/form-data'>
 						    <input class="w3-padding w3-margin-top" type="file" name="file" />
 						    <button id="send" class="w3-button pointer fas fa-upload w3-round " type="submit" > Carica documento</button>
-						    
 						</form>
 				</div>
 			</#list>
@@ -120,7 +119,7 @@
 			      	<a href="#close" class="w3-button w3-xlarge w3-display-topright">&times;</a>
 			        <h2>Concludi il tirocinio</h2>
 			      </div>
-			      <form class="w3-container" action="tirocinioStudente?stato=terminato&referrer=tirocinioStudente?conclusi=true" method="post">
+			      <form class="w3-container" action="tirocinioStudente?stato=terminato&referer=tirocinioStudente?conclusi=true" method="post">
 			        <div class="w3-section">
 			        	<input type="hidden" name="utente" value="${azienda.utente}" />
 			        	<input type="hidden" name="candidato" value="${candidato.codiceFiscale}" />

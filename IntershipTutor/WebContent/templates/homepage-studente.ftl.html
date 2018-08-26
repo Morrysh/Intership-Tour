@@ -217,7 +217,7 @@
 		      <form class="w3-container" action="./studente" method="post">
 		        <div class="w3-section">
 		          <!-- The user CF is hidden, it is used to retrieve the current user from database -->
-		          <!-- <input type="hidden" name="utente" value="${utente.utente}" />  -->
+		          <input type="hidden" name="utente" value="${utente.utente}" />
 		          <h3 class="univaq-color profile">Informazioni personali</h3>
 		          <label for="nomeStudente"><b>Nome</b></label>
 		          <input id="nomeStudente" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" value="${utente.nome}" placeholder="Inserisci il tuo nome" name="nome" autocomplete="off" required />

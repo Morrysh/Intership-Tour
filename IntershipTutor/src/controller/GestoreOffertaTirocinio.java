@@ -52,9 +52,11 @@ public class GestoreOffertaTirocinio extends IntershipTutorBaseController{
 					dataFine = Date.valueOf(request.getParameter(OffertaTirocinio.DATA_FINE));
 				
 				// Controlliamo che gli orari inseriti non siano vuoti(sono opzionali)
-				if(!(request.getParameter(OffertaTirocinio.ORA_INIZIO)).isEmpty()) 
+				if(!(request.getParameter(OffertaTirocinio.ORA_INIZIO)).isEmpty())
+					// Aggiungiamo :00 altrimento il valore dell'html non è compatibile con il db
 					oraInizio = Time.valueOf(request.getParameter(OffertaTirocinio.ORA_INIZIO) + ":00");
 				if(!(request.getParameter(OffertaTirocinio.ORA_FINE)).isEmpty()) 
+					// Aggiungiamo :00 altrimento il valore dell'html non è compatibile con il db
 					oraFine = Time.valueOf(request.getParameter(OffertaTirocinio.ORA_FINE) + ":00");
 				
 				OffertaTirocinio nuovaOfferta = new OffertaTirocinio(
@@ -71,7 +73,7 @@ public class GestoreOffertaTirocinio extends IntershipTutorBaseController{
 						SecurityLayer.checkNumeric((request.getParameter(OffertaTirocinio.NUMERO_ORE))));
 				
 				new OffertaTirocinioDAO().insert(nuovaOfferta);
-				// NOT USING request.getContextPath becouse it doesn't work with Heroku
+				// NOT USING request.getContextPath because it doesn't work with Heroku
     			response.sendRedirect(".");
 			}
 			else {
@@ -86,7 +88,7 @@ public class GestoreOffertaTirocinio extends IntershipTutorBaseController{
 	}
 	
 	// Aggiorna offerta tirocinio
-	private void action_aggiorna(HttpServletRequest request, HttpServletResponse response, int codiceOffertaTirocinio) throws IOException, ServletException, TemplateManagerException{
+	private void action_aggiorna(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException{
 		
 		try {
 			Azienda azienda = (Azienda) request.getAttribute("utente");
@@ -101,8 +103,10 @@ public class GestoreOffertaTirocinio extends IntershipTutorBaseController{
 			
 			// Controlliamo che gli orari inseriti non siano vuoti(sono opzionali)
 			if(!(request.getParameter(OffertaTirocinio.ORA_INIZIO)).isEmpty()) 
+				// Aggiungiamo :00 altrimento il valore dell'html non è compatibile con il db
 				oraInizio = Time.valueOf(request.getParameter(OffertaTirocinio.ORA_INIZIO) + ":00");
 			if(!(request.getParameter(OffertaTirocinio.ORA_FINE)).isEmpty()) 
+				// Aggiungiamo :00 altrimento il valore dell'html non è compatibile con il db
 				oraFine = Time.valueOf(request.getParameter(OffertaTirocinio.ORA_FINE) + ":00");
 			
 			OffertaTirocinio nuovaOfferta = new OffertaTirocinio(
@@ -121,11 +125,11 @@ public class GestoreOffertaTirocinio extends IntershipTutorBaseController{
 			
 			new OffertaTirocinioDAO().update(nuovaOfferta);
 			
-			if(request.getParameter("referrer") != null) {
-				response.sendRedirect(request.getParameter("referrer"));
+			if(request.getParameter("referer") != null) {
+				response.sendRedirect(request.getHeader("referer"));
 			}
 			else {
-				// NOT USING request.getContextPath becouse it doesn't work with Heroku
+				// NOT USING request.getContextPath because it doesn't work with Heroku
     			response.sendRedirect(".");
 			}
 				
@@ -137,13 +141,13 @@ public class GestoreOffertaTirocinio extends IntershipTutorBaseController{
 	}
 	
 	// Rimuovi offerta tirocinio
-	private void action_rimuovi(HttpServletRequest request, HttpServletResponse response, int codiceOffertaTirocinio) throws IOException, ServletException, TemplateManagerException{
+	private void action_rimuovi(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException{
 		try {
-			int idTirocinio = SecurityLayer.checkNumeric(request.getParameter(OffertaTirocinio.ID_TIROCINIO));
+			int codiceOffertaTirocinio = SecurityLayer.checkNumeric(request.getParameter(OffertaTirocinio.ID_TIROCINIO));
 			
-			new OffertaTirocinioDAO().delete(idTirocinio);
+			new OffertaTirocinioDAO().delete(codiceOffertaTirocinio);
 			
-			// NOT USING request.getContextPath becouse it doesn't work with Heroku
+			// NOT USING request.getContextPath because it doesn't work with Heroku
 			response.sendRedirect(".");
 			
 		} catch (DataLayerException | IOException ex) {
@@ -152,8 +156,9 @@ public class GestoreOffertaTirocinio extends IntershipTutorBaseController{
 		}
 	}
 	
-	private void action_visibilita(HttpServletRequest request, HttpServletResponse response, int codiceOffertaTirocinio) throws IOException, ServletException, TemplateManagerException{
+	private void action_visibilita(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException{
 		try {
+			int codiceOffertaTirocinio = SecurityLayer.checkNumeric(request.getParameter(OffertaTirocinio.ID_TIROCINIO));
 			new OffertaTirocinioDAO().setVisibilita(codiceOffertaTirocinio, Boolean.valueOf(request.getParameter("visibilita")));
 			// NOT USING request.getContextPath becouse it doesn't work with Heroku
 			response.sendRedirect(".");
@@ -165,22 +170,30 @@ public class GestoreOffertaTirocinio extends IntershipTutorBaseController{
 	}
 	
 	// Mostra dettagli dell'offerta
-    private void action_default(HttpServletRequest request, HttpServletResponse response, int codiceOffertaTirocinio) throws IOException, ServletException, TemplateManagerException {
+    private void action_default(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException {
     	try {
 	    	TemplateResult res = new TemplateResult(getServletContext());
 	    	
+	    	int codiceOffertaTirocinio = SecurityLayer.checkNumeric(request.getParameter(OffertaTirocinio.ID_TIROCINIO));
+	    	
 	    	OffertaTirocinio offertaTirocinio = new OffertaTirocinioDAO().getOffertaByID(codiceOffertaTirocinio);
 	        Azienda azienda = new AziendaDAO().getAziendaByIDTirocinio(codiceOffertaTirocinio);
-	    	Studente studente = (Studente) request.getAttribute("utente");
-	    	// Eventuale tirocinio effettuato dallo studente loggato
-	    	TirocinioStudente tirocinioStudente = null;
-	    	// Indica se lo studente ha effettuato e terminato il tirocinio di cui si sta visualizzando il dettaglio,
-	    	// Questo ci permetterà di dare la possibilità allo studente di recensire il tirocinio.
-	    	boolean hasIntership = false;
 	    	
-	    	// Verifichiamo che non sia una visita in anonimo
-	    	if(studente != null) {
-	    		// Recuperiamo dal database il tirocinio che lo studente ha effettuato(se ne ha effettuato uno)
+	    	// Pareri sul tirocinio che di cui si stanno visualizzando i dettagli
+	    	Map<String, String> pareriTirocinio = new OffertaTirocinioDAO().getPareriTirocinio(offertaTirocinio);
+	        
+	    	// Verifichiamo che l'utente loggato sia uno studente
+	        // in modo da dargli la possibilità di recensire l'azienda(se ha effettuato un tirocinio
+	        // tramite essa) o di aggiornare la sua recensione
+	    	if(request.getAttribute("utente") instanceof Studente) {
+	    		Studente studente = (Studente) request.getAttribute("utente");
+		    	// Eventuale tirocinio effettuato dallo studente loggato
+		    	TirocinioStudente tirocinioStudente = null;
+		    	// Indica se lo studente ha effettuato e terminato il tirocinio di cui si sta visualizzando il dettaglio,
+		    	// Questo ci permetterà di dare la possibilità allo studente di recensire il tirocinio.
+		    	boolean hasIntership = false;
+		    	
+		    	// Recuperiamo dal database il tirocinio che lo studente ha effettuato(se ne ha effettuato uno)
 	    		tirocinioStudente = new TirocinioStudenteDAO().getTirocinioStudenteByStudenteCF(studente.getCodiceFiscale());
 	    		// Confronto l'id del tirocinio che lo studente ha effettuato (e terminato)
 	    		// con quello dell'offerta di cui si sta visualizzando il dettaglio
@@ -189,16 +202,13 @@ public class GestoreOffertaTirocinio extends IntershipTutorBaseController{
 	    		   tirocinioStudente.getTirocinio() == offertaTirocinio.getIdTirocinio() &&
 	    		   tirocinioStudente.getStato() == StatoRichiestaTirocinio.terminato) {
 	    				hasIntership = true;
+	    				request.setAttribute("tirocinioStudente", tirocinioStudente);
+	    		    	request.setAttribute("hasIntership", hasIntership);
+	    		    	request.setAttribute("studente", studente);
 	    		}
 	    	}
 	    	
-	    	// Pareri sul tirocinio che di cui si stanno visualizzando i dettagli
-	    	Map<String, String> pareriTirocinio = new OffertaTirocinioDAO().getPareriTirocinio(offertaTirocinio);
-	        
 	    	request.setAttribute("pareriTirocinio", pareriTirocinio);
-	    	request.setAttribute("tirocinioStudente", tirocinioStudente);
-	    	request.setAttribute("hasIntership", hasIntership);
-	    	request.setAttribute("studente", studente);
 	        request.setAttribute("offertaTirocinio", offertaTirocinio);
 	        request.setAttribute("azienda", azienda);	
 	        
@@ -220,11 +230,11 @@ public class GestoreOffertaTirocinio extends IntershipTutorBaseController{
 			new TirocinioStudenteDAO().updateParere(request.getParameter("utente"),
 													request.getParameter("parere"));
 			
-			if(request.getParameter("referrer") != null) {
-				response.sendRedirect(request.getParameter("referrer") + "&utente=" + request.getParameter("utente"));
+			if(request.getParameter("referer") != null) {
+				response.sendRedirect(request.getHeader("referer"));
 			}
 			else {
-				// NOT USING request.getContextPath becouse it doesn't work with Heroku
+				// NOT USING request.getContextPath because it doesn't work with Heroku
     			response.sendRedirect(".");
 			}
 		}
@@ -241,31 +251,57 @@ public class GestoreOffertaTirocinio extends IntershipTutorBaseController{
     	try {
 			request.setAttribute("page_css", "gestore-offerta-tirocinio");
 			
-			if(request.getParameter("aggiungi") != null) {
-				action_aggiungi(request, response);
-			}
-			else if(request.getParameter("recensisci") != null) {
-				action_recensisci(request, response);
-			}
-			else if (request.getParameter(OffertaTirocinio.ID_TIROCINIO) != null) {
-				int codiceOffertaTirocinio = SecurityLayer.checkNumeric(request.getParameter(OffertaTirocinio.ID_TIROCINIO));
-				if(request.getParameter("rimuovi") != null) {
-					action_rimuovi(request, response, codiceOffertaTirocinio);
-				}
-				else if(request.getParameter("aggiorna") != null) {
-					action_aggiorna(request, response, codiceOffertaTirocinio);
-				}
-				else if(request.getParameter("visibilita") != null) {
-					action_visibilita(request, response, codiceOffertaTirocinio);
+			// Azioni consentite all'azienda
+			if(request.getParameter("aggiungi")   != null || 
+			   request.getParameter("aggiorna")   != null || 
+			   request.getParameter("rimuovi")    != null  ||
+			   request.getParameter("visibilita") != null) {
+				
+				// Verifichiamo che ci sia un utente loggato, 
+				// Verifichiamo che sia un'azienda
+				// Verifichiamo che l'azienda stia compiendo azioni sia su una delle sue offerte
+				if(request.getAttribute("utente") != null && 
+				   request.getAttribute("utente") instanceof Azienda &&
+				   ((Azienda)request.getAttribute("utente")).getCodiceFiscale().equals(request.getParameter("utente"))) {
+					if(request.getParameter("aggiungi") != null) {
+						action_aggiungi(request, response);
+					}
+					else if(request.getParameter("aggiorna") != null) {
+						action_aggiorna(request, response);
+					}
+					else if(request.getParameter("rimuovi") != null) {
+						action_rimuovi(request, response);
+					}
+					else if(request.getParameter("visibilita") != null) {
+						action_visibilita(request, response);
+					}
 				}
 				else {
-		    		action_default(request, response, codiceOffertaTirocinio);
+					request.setAttribute("message", "Azione non autorizzata");
+	                action_error(request, response);
+				}
+				
+			}
+			// Lo studente vuole recensire l'offerta di tirocinio
+			
+			// Verifichiamo che ci sia un utente loggato, 
+			// Verifichiamo che sia uno studente
+			else if(request.getParameter("recensisci") != null){
+				// Andrebbe controllato che lo studente stia recensendo un tirocinio
+				// che ha effettivamente svolto
+				if(request.getAttribute("utente") != null && 
+				   request.getAttribute("utente") instanceof Studente) {
+					action_recensisci(request, response);
+				}
+				else {
+					request.setAttribute("message", "Utente non autorizzato");
+	                action_error(request, response);
 				}
 			}
 			else {
-				request.setAttribute("message", "Non è stato specificato un tirocinio valido");
-			    action_error(request, response);
+				action_default(request, response);
 			}
+			
     	}
 		catch (TemplateManagerException | IOException e) {
 			request.setAttribute("exception", e);

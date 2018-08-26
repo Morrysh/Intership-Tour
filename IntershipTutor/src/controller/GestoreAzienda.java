@@ -10,6 +10,7 @@ import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -38,6 +39,9 @@ import framework.security.SecurityLayer;
 public class GestoreAzienda extends IntershipTutorBaseController {
 	
 	public static final String SERVLET_URI = "/azienda";
+	// Numero massimo di offerte per pagina per la paginazione,
+	// questo numero deve corrispondere a quello in offertaTirocinioDAO
+	final static double OFFERTE_PER_PAGINA = OffertaTirocinioDAO.OFFERTE_PER_PAGINA;
 	
 	private void action_error(HttpServletRequest request, HttpServletResponse response) {
         if (request.getAttribute("exception") != null) {
@@ -93,7 +97,7 @@ public class GestoreAzienda extends IntershipTutorBaseController {
 			
 			new AziendaDAO().update(azienda);
 			
-			// NOT USING request.getContextPath becouse it doesn't work with Heroku
+			// NOT USING request.getContextPath because it doesn't work with Heroku
 			response.sendRedirect(".");
 			
 		} catch (DataLayerException | IOException e) {
@@ -137,40 +141,15 @@ public class GestoreAzienda extends IntershipTutorBaseController {
 	}
 
 	// Show details
-    private void action_default(HttpServletRequest request, HttpServletResponse response, String codiceFiscale) throws IOException, ServletException, TemplateManagerException {
+    private void action_default(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException {
         try {
 	    	TemplateResult res = new TemplateResult(getServletContext());
 	    	
-	    	Studente studente = (Studente) request.getAttribute("utente");
-	    	Azienda azienda = new AziendaDAO().getAziendaByCF(codiceFiscale);
-	    	// Eventuale parere già espresso sull'azienda dallo studente loggato.
-	    	ParereAzienda parere = null;
-	    	// Indica se lo studente ha effettuato e terminato il tirocinio con l'azienda di cui sta visualizzando il dettaglio,
-	    	// Questo ci permetterà di dare la possibilità allo studente di recensire l'azienda.
-	    	boolean hasIntership = false;
-	    	
-	    	// Verifichiamo che non sia una visita in anonimo
-	    	if(studente != null) {
-	    		// Recuperiamo il tirocinio dello studente loggato se ne ha uno 
-	    		TirocinioStudente tirocinioStudente = 
-	    				new TirocinioStudenteDAO().getTirocinioStudenteByStudenteCF(studente.getCodiceFiscale());
-	    		
-	    		// Verifichiamo che lo studente abbia un tirocinio e che sia terminato
-	    		if(tirocinioStudente != null && tirocinioStudente.getStato() == StatoRichiestaTirocinio.terminato) {
-		    		int idTirocinio = tirocinioStudente.getTirocinio();
-		    		Azienda aziendaStudente = new AziendaDAO().getAziendaByIDTirocinio(idTirocinio);
-		    		// Verifichiamo che il tirocinio terminato dello studente sia dell'azienda che si sta guardando
-		    		if(azienda != null && aziendaStudente.getCodiceFiscale().equals(aziendaStudente.getCodiceFiscale())) {
-		    			parere = new ParereAziendaDAO().getParereStudente(studente, azienda);
-		    			hasIntership = true;
-		    		}
-		    	}
-	    	}	    	
-	    	
+	    	Azienda azienda = new AziendaDAO().getAziendaByCF(request.getParameter("azienda"));   	
 	        Map<String, String> pareriAzienda = new ParereAziendaDAO().getPareriAzienda(azienda);
 	        int voto = new ParereAziendaDAO().getMediaVoto(azienda);
 	        
-	        int numeroPagine = (int) Math.ceil(new OffertaTirocinioDAO().getCountAccordingToAzienda(azienda) / 5.0);
+	        int numeroPagine = (int) Math.ceil(new OffertaTirocinioDAO().getCountAccordingToAzienda(azienda) / OFFERTE_PER_PAGINA);
 	        
 	        int paginaCorrente = 0;
 	        if(request.getParameter("pagina") != null) {
@@ -181,9 +160,35 @@ public class GestoreAzienda extends IntershipTutorBaseController {
 	        		new OffertaTirocinioDAO().allOfferteInRangeAccordingToAziendaAndVisibilita(
 	        				azienda, true, paginaCorrente);
 
-	        request.setAttribute("parere", parere);
-	        request.setAttribute("hasIntership", hasIntership);
-	        request.setAttribute("studente", studente);
+	        // Verifichiamo che l'utente loggato sia uno studente
+	        // in modo da dargli la possibilità di recensire l'azienda(se ha effettuato un tirocinio
+	        // tramite essa) o di aggiornare la sua recensione
+	        if(request.getAttribute("utente") instanceof Studente) {
+	    		Studente studente = (Studente) request.getAttribute("utente");
+	    		// Eventuale parere già espresso sull'azienda dallo studente loggato.
+		    	ParereAzienda parere = null;
+		    	// Indica se lo studente ha effettuato e terminato il tirocinio con l'azienda di cui sta visualizzando il dettaglio,
+		    	// Questo ci permetterà di dare la possibilità allo studente di recensire l'azienda.
+		    	boolean hasIntership = false; 
+	    		// Recuperiamo il tirocinio dello studente loggato se ne ha uno 
+	    		TirocinioStudente tirocinioStudente = 
+	    				new TirocinioStudenteDAO().getTirocinioStudenteByStudenteCF(studente.getCodiceFiscale());
+	    		
+	    		// Verifichiamo che lo studente abbia un tirocinio e che sia terminato
+	    		if(tirocinioStudente != null && tirocinioStudente.getStato() == StatoRichiestaTirocinio.terminato) {
+		    		int idTirocinio = tirocinioStudente.getTirocinio();
+		    		Azienda aziendaStudente = new AziendaDAO().getAziendaByIDTirocinio(idTirocinio);
+		    		// Verifichiamo che il tirocinio terminato dello studente sia dell'azienda che si sta guardando
+		    		if(aziendaStudente != null && aziendaStudente.getCodiceFiscale().equals(azienda.getCodiceFiscale())) {
+		    			parere = new ParereAziendaDAO().getParereStudente(studente, azienda);
+		    			hasIntership = true;
+		    			request.setAttribute("studente", studente);
+		    			request.setAttribute("parere", parere);
+		    	        request.setAttribute("hasIntership", hasIntership);
+		    		}
+		    	}
+	    	}
+	        
 	        request.setAttribute("azienda", azienda);
 	        request.setAttribute("tirocini", offerte);
 	        request.setAttribute("voto", voto);
@@ -215,11 +220,11 @@ public class GestoreAzienda extends IntershipTutorBaseController {
 				new ParereAziendaDAO().insert(parereAzienda);
 			}
 			
-			if(request.getParameter("referrer") != null) {
-				response.sendRedirect(request.getParameter("referrer") + "&utente=" + request.getParameter("utente"));
+			if(request.getParameter("referer") != null) {
+				response.sendRedirect(request.getHeader("referer"));
 			}
 			else {
-				// NOT USING request.getContextPath becouse it doesn't work with Heroku
+				// NOT USING request.getContextPath because it doesn't work with Heroku
     			response.sendRedirect(".");
 			}
 			
@@ -236,26 +241,55 @@ public class GestoreAzienda extends IntershipTutorBaseController {
 
     	try {
     		request.setAttribute("page_css", "gestore-azienda");
-    		
-    		if(request.getParameter("aggiorna") != null) {
-    			action_aggiorna(request, response);
+  
+    		if(request.getParameter("aggiorna") != null || request.getParameter("recensisci") != null) {
+    			HttpSession session = SecurityLayer.checkSession(request);
+    			
+    			if(session != null) {
+    				// Richiesta di aggiornamento del profilo di un'azienda
+    				if(request.getParameter("aggiorna") != null) {
+    					// Verifichiamo che l'utente loggato sia un'azineda    					
+    					if(request.getAttribute("utente") instanceof Azienda &&
+    					((Azienda)request.getAttribute("utente")).getCodiceFiscale().equals(request.getParameter("utente"))) {
+    						action_aggiorna(request, response);
+    					}
+    					else {
+    						request.setAttribute("message", "Azione non autorizzata");
+    	                    action_error(request, response);
+    					}
+    				}
+    				// Lo studente vuole recensire l'azienda
+    				else {
+    					// Verifichiamo che l'utente loggato sia uno studente
+    					if(request.getAttribute("utente") instanceof Studente) {
+    						// Si dovrebbe verificare che lo studente abbia effettivamente 
+    						// svolto l'attività di tirocinio con quest'azienda.
+    						action_recensisci(request, response);
+    					}
+    					else {
+    						request.setAttribute("message", "Studente non autenticato");
+    	                    action_error(request, response);
+    					}
+    				}
+    			}
+    			else {
+    				request.setAttribute("message", "Azione non autorizzata");
+                    action_error(request, response);
+    			}
+    			
     		}
-    		else if(request.getParameter("recensisci") != null) {
-    			action_recensisci(request, response);
+    		else if(request.getParameter("azienda") != null) {
+    			action_default(request, response);
     		}
     		else if(request.getParameter("registrazione") != null) {
     			action_registra(request, response);
     		}
     		else {
-    			if(request.getParameter("azienda") != null) {
-    				String codiceFiscale = request.getParameter("azienda");
-					action_default(request, response, codiceFiscale);
-    			}
-    			else {
-    				request.setAttribute("message", "Non è stata specificata un'azienda");
-    			    action_error(request, response);
-    			}
+    			request.setAttribute("message", "Nessuna opzione valida specificata");
+                action_error(request, response);
     		}
+    		
+    		
 		} catch (IOException | TemplateManagerException ex) {
             request.setAttribute("exception", ex);
             action_error(request, response);

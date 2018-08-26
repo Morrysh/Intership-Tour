@@ -1,4 +1,3 @@
-
 <!-- Page Container -->
 <div id="candidati-container" class="w3-content w3-margin-top">
 
@@ -88,13 +87,13 @@
 					<#if !offertaTirocinio.dataInizio?? || !offertaTirocinio.dataFine??>
 						<a class="w3-left" href="#accept-modal">
 					<#else>
-						<a href="tirocinioStudente?candidato=${candidato.codiceFiscale}&stato=accettato&utente=${azienda.utente}&referrer=tirocinioStudente?id_tirocinio=${tirocinio.tirocinio}">
+						<a href="tirocinioStudente?candidato=${candidato.codiceFiscale}&stato=accettato&utente=${azienda.utente}&referer=tirocinioStudente?id_tirocinio=${tirocinio.tirocinio}">
 					</#if>
 						<button class="pointer w3-round fas fa-check w3-padding">
 							Accetta
 						</button>
 					</a>
-					<a class="w3-right" href="tirocinioStudente?candidato=${candidato.codiceFiscale}&stato=rifiutato&utente=${azienda.utente}&referrer=tirocinioStudente?id_tirocinio=${tirocinio.tirocinio}">
+					<a class="w3-right" href="tirocinioStudente?candidato=${candidato.codiceFiscale}&stato=rifiutato&utente=${azienda.utente}&referer=tirocinioStudente?id_tirocinio=${tirocinio.tirocinio}">
 						<button class="pointer w3-round fas fa-times w3-padding">
 							Rifiuta
 						</button>
@@ -111,7 +110,7 @@
 								Progetto formativo
 							</button>
 						</a>
-						<form action="upload?candidato=${candidato.utente}&utente=${utente.utente}&referrer=tirocinioStudente?id_tirocinio=${offertaTirocinio.idTirocinio}" method="post" enctype='multipart/form-data'>
+						<form action="upload?candidato=${candidato.utente}&utente=${utente.utente}&referer=tirocinioStudente?id_tirocinio=${offertaTirocinio.idTirocinio}&candidati=true" method="post" enctype='multipart/form-data'>
 						    <input class="w3-padding w3-margin-top" type="file" name="file" />
 						    <button id="send" class="w3-button pointer fas fa-upload w3-round " type="submit" > Carica documento</button>
 						</form>
@@ -125,7 +124,7 @@
 							Progetto formativo
 						</button>
 					</a>
-					<a class="w3-left" href="tirocinioStudente?rimuovi=true&candidato=${candidato.utente}&utente=${azienda.utente}&referrer=tirocinioStudente?id_tirocinio=${tirocinio.tirocinio}">
+					<a class="w3-left" href="tirocinioStudente?rimuovi=true&candidato=${candidato.utente}&utente=${azienda.utente}&referer=tirocinioStudente?id_tirocinio=${tirocinio.tirocinio}">
 						<button class="pointer w3-round far fas fa-trash-alt w3-padding">
 							Elimina
 						</button>
@@ -134,7 +133,7 @@
 					<p class="w3-right w3-text-gray w3-padding no-margin">
 						Il candidato è stato respinto
 					</p>
-					<a class="w3-left" href="tirocinioStudente?rimuovi=true&candidato=${candidato.utente}&utente=${azienda.utente}&referrer=tirocinioStudente?id_tirocinio=${tirocinio.tirocinio}">
+					<a class="w3-left" href="tirocinioStudente?rimuovi=true&candidato=${candidato.utente}&utente=${azienda.utente}&referer=tirocinioStudente?id_tirocinio=${tirocinio.tirocinio}">
 						<button class="pointer w3-round far fas fa-trash-alt w3-padding">
 							Elimina
 						</button>
@@ -164,9 +163,9 @@
 
 	      <div class="w3-center"><br>
 	      	<a href="#close" class="w3-button w3-xlarge w3-display-topright">&times;</a>
-	        <h2>Aggiungi tirocinio</h2>
+	        <h2>Aggiorna tirocinio</h2>
 	      </div>
-	      <form class="w3-container" action="offertaTirocinio?referrer=tirocinioStudente?id_tirocinio=${offertaTirocinio.idTirocinio}" method="post">
+	      <form class="w3-container" action="offertaTirocinio?referer=tirocinioStudente?id_tirocinio=${offertaTirocinio.idTirocinio}&candidati=candidati" method="post">
 	        <div class="w3-section">
 	          <!-- The idTirocinio is hidden, it is used on the server -->
 	          <input type="hidden" name="utente" value="${azienda.utente}" />
@@ -205,7 +204,7 @@
 		      	<a href="#close" class="w3-button w3-xlarge w3-display-topright">&times;</a>
 		        <h2>Concludi il tirocinio</h2>
 		      </div>
-		      <form class="w3-container" action="tirocinioStudente?stato=terminato&referrer=tirocinioStudente?id_tirocinio=${offerta.tirocinio}" method="post">
+		      <form class="w3-container" action="tirocinioStudente?stato=terminato&referer=tirocinioStudente?id_tirocinio=${offerta.tirocinio}" method="post">
 		        <div class="w3-section">
 		        	<input type="hidden" name="utente" value="${azienda.utente}" />
 		        	<input type="hidden" name="candidato" value="${candidato.codiceFiscale}" />
@@ -228,7 +227,7 @@
 	      	<a href="#close" class="w3-button w3-xlarge w3-display-topright">&times;</a>
 	        <h2>Aggiungi il periodo di svolgimento</h2>
 	      </div>
-	      <form class="w3-container" action="offertaTirocinio?referrer=tirocinioStudente?id_tirocinio=${offertaTirocinio.idTirocinio}" method="post">
+	      <form class="w3-container" action="offertaTirocinio?referer=tirocinioStudente?id_tirocinio=${offertaTirocinio.idTirocinio}" method="post">
 	        <div class="w3-section">
 	          <!-- Theese infos are hidden, they are used on the server -->
 	          <input type="hidden" name="utente" value="${azienda.utente}" />

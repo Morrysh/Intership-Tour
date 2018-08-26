@@ -56,12 +56,12 @@ public class Login extends IntershipTutorBaseController {
 		            
 		            SecurityLayer.createSession(request, utenteLoggato);
 	            
-	        		/*if(request.getParameter("referrer") != null)
-		                response.sendRedirect(request.getParameter("referrer"));
+	        		/*if(request.getParameter("referer") != null)
+		                response.sendRedirect(request.getParameter("referer"));
 	        		else*/
 		            
-		            	// NOT USING request.getContextPath becouse it doesn't work with Heroku
-	        			response.sendRedirect(".");
+	            	// NOT USING request.getContextPath becouse it doesn't work with Heroku
+        			response.sendRedirect(".");
 		        }
 	            else {
 	        		response.sendRedirect("." + "#access-manager-modal");
