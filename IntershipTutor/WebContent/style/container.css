@@ -214,7 +214,7 @@ input#menu {
 }
 
 input:checked ~ .menu-content-2{
-	max-height: 500px;
+	max-height: 74vh;
 	overflow-y: scroll;
     font-size: 100%;	
 }

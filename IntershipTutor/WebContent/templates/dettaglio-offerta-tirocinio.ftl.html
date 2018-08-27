@@ -159,10 +159,10 @@
 	      	<a href="#" class="w3-button w3-xlarge w3-display-topright">&times;</a>
 	        <h2>Esprimi il tuo parere su questo tirocinio</h2>
 	      </div>
-	        <form class="w3-container" action="./offertaTirocinio?referer=offertaTirocinio?id_tirocinio=${offertaTirocinio.idTirocinio}" method="post">
+	        <form class="w3-container" action="offertaTirocinio?referer=offertaTirocinio?id_tirocinio=${offertaTirocinio.idTirocinio}" method="post">
 		        <div class="w3-section">
 		          <!-- The user CF is hidden, it is used to retrieve the current user from database -->
-		          <input type="hidden" name="utente" value="${studente.utente}" />
+		          <!-- <input type="hidden" name="utente" value="${studente.utente}" />  -->
 		          <input type="hidden" name="tirocinio" value="${offertaTirocinio.idTirocinio}" />
 		          <#if tirocinioStudente?? && tirocinioStudente.parere??>
 		          		<!-- To update the review -->

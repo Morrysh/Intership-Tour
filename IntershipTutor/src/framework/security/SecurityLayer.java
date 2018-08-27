@@ -71,13 +71,13 @@ public class SecurityLayer {
         }
     }
     
-    public static String addSlashes(String s) {
+    /*public static String addSlashes(String s) {
         return s.replaceAll("(['\"\\\\])", "\\\\$1");
     }
 
     public static String stripSlashes(String s) {
         return s.replaceAll("\\\\(['\"\\\\])", "$1");
-    }
+    }*/
 
     public static int checkNumeric(String s) throws NumberFormatException {
         //convertiamo la stringa in numero, ma assicuriamoci prima che sia valida

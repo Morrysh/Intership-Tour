@@ -15,6 +15,7 @@ import dao.impl.TirocinioStudenteDAO;
 import data.model.Amministratore;
 import data.model.Azienda;
 import data.model.Studente;
+import data.model.TirocinioStudente;
 import framework.data.DataLayerException;
 import framework.result.FailureResult;
 import framework.result.TemplateManagerException;
@@ -82,19 +83,20 @@ public class Downloader extends IntershipTutorBaseController{
 			if(session != null) {
 				// Richiesta di download di una convenzione di un'azienda
 				if(request.getParameter("azienda") != null) {
-					// RICHIESTA DI DOWNLOAD DA UN'AZIENDA
+					// Richiesta di download da un'azienda
 					// Verifichiamo che la richiesta sia fatta da un utente loggato come azienda
 					// e che la convenzione richiesta sia legata effettivamente a quell'azienda
 					if(session.getAttribute("utente") instanceof Azienda &&
-					   ((Azienda)session.getAttribute("utente")).getCodiceFiscale().equals(request.getParameter("azienda"))) {
+					   ((Azienda)session.getAttribute("utente")).getCodiceFiscale()
+					   		.equals(request.getParameter("azienda"))) {
 						action_download_company_convention(request, response);
 					}
-					// RICHIESTA DI DOWNLOAD DA UN'AMMINISTRATORE
+					// Richiesta di download da un'amministratore
 					else if(session.getAttribute("utente") instanceof Amministratore) {
 						action_download_company_convention(request, response);
 					}
 					else {
-						request.setAttribute("message", "Utente non autorizzata");
+						request.setAttribute("message", "Azienda non autorizzata");
 						action_error(request, response);
 					}
 				}
@@ -104,7 +106,9 @@ public class Downloader extends IntershipTutorBaseController{
 					if(session.getAttribute("utente") instanceof Studente) {
 						// Verifichiamo che il codice fiscale dello studente che ha fatto richiesta(utente loggato)
 						// corrisponda a quello del progetto formativo che si è richiesto
-						if(((Studente)session.getAttribute("utente")).getCodiceFiscale().equals(request.getParameter("utente"))){
+						
+						if(((Studente)request.getAttribute("utente")).getCodiceFiscale()
+								.equals(request.getParameter("candidato"))){
 							action_download_training_project(request, response);
 						}
 						else {
@@ -112,10 +116,26 @@ public class Downloader extends IntershipTutorBaseController{
 							action_error(request, response);
 						}
 					}
-					// Richiesta proveniente da un'azienda(si dovrebbe anche verificare che l'azienda
-					// abbia effettivamente emesso il tirocinio per quello studente)
+					// Richiesta proveniente da un'azienda
 					else if (request.getAttribute("utente") instanceof Azienda) {
-						action_download_training_project(request, response);
+						// Verifichiamo che lo studente abbia effettivamente un tirocinio in corso
+						// con l'azienda che vuole scaricare il progetto formativo
+						TirocinioStudente tirocinioStudente = 
+								new TirocinioStudenteDAO().getTirocinioStudenteByStudenteCF(request.getParameter("candidato"));
+						if(tirocinioStudente != null) {
+							Azienda azienda = new AziendaDAO().getAziendaByIDTirocinio(tirocinioStudente.getTirocinio());
+							if(((Azienda)request.getAttribute("utente")).getCodiceFiscale().equals(azienda.getCodiceFiscale())){
+								action_download_training_project(request, response);
+							}
+							else {
+								request.setAttribute("message", "Azienda non autorizzata");
+								action_error(request, response);
+							}
+						}
+						else {
+							request.setAttribute("message", "Errore nella richiesta");
+							action_error(request, response);
+						}
 					}
 					else {
 						request.setAttribute("message", "Utente non autorizzato");
@@ -129,7 +149,7 @@ public class Downloader extends IntershipTutorBaseController{
 			}
 			
         }
-    	catch (TemplateManagerException | IOException ex) {
+    	catch (TemplateManagerException | IOException | DataLayerException ex) {
             request.setAttribute("exception", ex);
             action_error(request, response);
 

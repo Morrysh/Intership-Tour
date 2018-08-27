@@ -207,8 +207,11 @@ public class GestoreAzienda extends IntershipTutorBaseController {
     
     private void action_recensisci(HttpServletRequest request, HttpServletResponse response) {
 		try {
+			
+			String codiceFiscale = ((Studente)request.getAttribute("utente")).getCodiceFiscale();
+			
 			ParereAzienda parereAzienda = new ParereAzienda(
-					request.getParameter("utente"),
+					codiceFiscale,
 					request.getParameter("azienda"),
 					request.getParameter("parere"),
 					SecurityLayer.checkNumeric(request.getParameter("rating")));
@@ -250,7 +253,8 @@ public class GestoreAzienda extends IntershipTutorBaseController {
     				if(request.getParameter("aggiorna") != null) {
     					// Verifichiamo che l'utente loggato sia un'azineda    					
     					if(request.getAttribute("utente") instanceof Azienda &&
-    					((Azienda)request.getAttribute("utente")).getCodiceFiscale().equals(request.getParameter("utente"))) {
+    						((Azienda)request.getAttribute("utente")).getCodiceFiscale()
+    							.equals(request.getParameter("utente"))) {
     						action_aggiorna(request, response);
     					}
     					else {
@@ -262,8 +266,6 @@ public class GestoreAzienda extends IntershipTutorBaseController {
     				else {
     					// Verifichiamo che l'utente loggato sia uno studente
     					if(request.getAttribute("utente") instanceof Studente) {
-    						// Si dovrebbe verificare che lo studente abbia effettivamente 
-    						// svolto l'attività di tirocinio con quest'azienda.
     						action_recensisci(request, response);
     					}
     					else {
@@ -276,7 +278,6 @@ public class GestoreAzienda extends IntershipTutorBaseController {
     				request.setAttribute("message", "Azione non autorizzata");
                     action_error(request, response);
     			}
-    			
     		}
     		else if(request.getParameter("azienda") != null) {
     			action_default(request, response);

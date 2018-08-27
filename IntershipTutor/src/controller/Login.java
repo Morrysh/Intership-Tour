@@ -82,7 +82,6 @@ public class Login extends IntershipTutorBaseController {
             throws ServletException {
     	try {
             action_login(request, response);
-
         } 
     	catch (TemplateManagerException | IOException ex) {
             request.setAttribute("exception", ex);

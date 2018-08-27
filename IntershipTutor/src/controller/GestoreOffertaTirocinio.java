@@ -227,7 +227,10 @@ public class GestoreOffertaTirocinio extends IntershipTutorBaseController{
     
     private void action_recensisci(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException{
 		try {
-			new TirocinioStudenteDAO().updateParere(request.getParameter("utente"),
+			
+			String codiceFiscale = ((Studente)request.getAttribute("utente")).getCodiceFiscale();
+			
+			new TirocinioStudenteDAO().updateParere(codiceFiscale,
 													request.getParameter("parere"));
 			
 			if(request.getParameter("referer") != null) {
@@ -254,7 +257,7 @@ public class GestoreOffertaTirocinio extends IntershipTutorBaseController{
 			// Azioni consentite all'azienda
 			if(request.getParameter("aggiungi")   != null || 
 			   request.getParameter("aggiorna")   != null || 
-			   request.getParameter("rimuovi")    != null  ||
+			   request.getParameter("rimuovi")    != null ||
 			   request.getParameter("visibilita") != null) {
 				
 				// Verifichiamo che ci sia un utente loggato, 
@@ -283,12 +286,10 @@ public class GestoreOffertaTirocinio extends IntershipTutorBaseController{
 				
 			}
 			// Lo studente vuole recensire l'offerta di tirocinio
-			
-			// Verifichiamo che ci sia un utente loggato, 
-			// Verifichiamo che sia uno studente
 			else if(request.getParameter("recensisci") != null){
-				// Andrebbe controllato che lo studente stia recensendo un tirocinio
-				// che ha effettivamente svolto
+				// Verifichiamo che ci sia un utente loggato, 
+				// Verifichiamo che sia uno studente
+				// Verifichiamo che l'id dell'utente loggato corrisponda a quello della richiesta
 				if(request.getAttribute("utente") != null && 
 				   request.getAttribute("utente") instanceof Studente) {
 					action_recensisci(request, response);

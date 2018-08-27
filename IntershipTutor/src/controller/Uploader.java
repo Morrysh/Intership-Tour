@@ -16,6 +16,7 @@ import dao.impl.TirocinioStudenteDAO;
 import data.model.Amministratore;
 import data.model.Azienda;
 import data.model.Studente;
+import data.model.TirocinioStudente;
 import framework.data.DataLayerException;
 import framework.result.FailureResult;
 import framework.security.SecurityLayer;
@@ -101,38 +102,60 @@ public class Uploader extends IntershipTutorBaseController{
 
 	@Override
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException {
-		
-		// Sessione eventualmente attiva
-		HttpSession session = SecurityLayer.checkSession(request);
-		
-		if(session != null) {
-			// Richiesta di upload da uno studente
-			if(request.getAttribute("utente") instanceof Studente) {
-				// Verifichiamo che lo studente loggato stia effettivamente caricando un
-				// progetto formativo in accordo al suo codice fiscale
-				if(((Studente)request.getAttribute("utente")).getCodiceFiscale().equals(request.getParameter("utente"))){
+		try {
+			// Sessione eventualmente attiva
+			HttpSession session = SecurityLayer.checkSession(request);
+			
+			if(session != null) {
+				// Richiesta di upload da uno studente
+				if(request.getAttribute("utente") instanceof Studente) {
+					// Verifichiamo che lo studente loggato stia effettivamente caricando un
+					// progetto formativo in accordo al suo codice fiscale
+					if(((Studente)request.getAttribute("utente")).getCodiceFiscale()
+							.equals(request.getParameter("candidato"))){
 						action_update_training_project(request, response);
+					}
+					else {
+						request.setAttribute("message", "Studente non autorizzato");
+						action_error(request, response);
+					}
 				}
-				else {
-					request.setAttribute("message", "Studente non autorizzato");
-					action_error(request, response);
+				// Richiesta di upload da un'azienda(Andrebbe contrallato che l'azienda
+				// abbia effettivamente emesso il tirocinio per quello studente)
+				else if(request.getAttribute("utente") instanceof Azienda) {
+					// Verifichiamo che lo studente abbia effettivamente un tirocinio in corso
+					// con l'azienda che vuole caricare il progetto formativo
+					TirocinioStudente tirocinioStudente = 
+							new TirocinioStudenteDAO().getTirocinioStudenteByStudenteCF(request.getParameter("candidato"));
+					if(tirocinioStudente != null) {
+						Azienda azienda = new AziendaDAO().getAziendaByIDTirocinio(tirocinioStudente.getTirocinio());
+						if(((Azienda)request.getAttribute("utente")).getCodiceFiscale().equals(azienda.getCodiceFiscale())){
+							action_update_training_project(request, response);
+						}
+						else {
+							request.setAttribute("message", "Azienda non autorizzata");
+							action_error(request, response);
+						}
+					}
+					else {
+						request.setAttribute("message", "Errore nella richiesta");
+						action_error(request, response);
+					}
+				}
+				// Richiesta di upload da un'amministratore(ci fidiamo)
+				// Upload del documento di convenzione per quell'azienda
+				else if(request.getAttribute("utente") instanceof Amministratore) {
+					action_set_convention(request, response);
 				}
 			}
-			// Richiesta di upload da un'azienda(Andrebbe contrallato che l'azienda
-			// abbia effettivamente emesso il tirocinio per quello studente)
-			else if(request.getAttribute("utente") instanceof Azienda) {
-				action_update_training_project(request, response);
-			}
-			// Richiesta di upload da un'amministratore(ci fidiamo)
-			// Upload del documento di convenzione per quell'azienda
-			else if(request.getAttribute("utente") instanceof Amministratore) {
-				action_set_convention(request, response);
-			}
+			else {
+				request.setAttribute("message", "Accesso non autorizzato");
+				action_error(request, response);
+			}		
 		}
-		else {
-			request.setAttribute("message", "Accesso non autorizzato");
-			action_error(request, response);
-		}		
+		catch(DataLayerException ex) {
+			request.setAttribute("exception", ex);
+            action_error(request, response);
+		}
 	}
-
 }
