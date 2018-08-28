@@ -253,17 +253,22 @@ public class HomePage extends IntershipTutorBaseController {
     
     // Setting all common variables in all templates
     private void setCommonAttributes(HttpServletRequest request, HttpServletResponse response) {
-
-		int paginaCorrente = 0;
-        if(request.getParameter("pagina") != null) {
-        	paginaCorrente = (SecurityLayer.checkNumeric(request.getParameter("pagina")));
-        }
-        
-        request.setAttribute("servlet", request.getContextPath());
-        request.setAttribute("searchbartitle", "Filtra le proposte di tirocinio");
-        request.setAttribute("paginaCorrente", paginaCorrente);
-		request.setAttribute("campiRicerca", CampoRicercaTirocinio.values());
     	
+    	try {
+			int paginaCorrente = 0;
+	        if(request.getParameter("pagina") != null) {
+	        	paginaCorrente = (SecurityLayer.checkNumeric(request.getParameter("pagina")));
+	        }
+	        
+	        request.setAttribute("servlet", request.getContextPath());
+	        request.setAttribute("searchbartitle", "Filtra le proposte di tirocinio");
+	        request.setAttribute("paginaCorrente", paginaCorrente);
+			request.setAttribute("campiRicerca", CampoRicercaTirocinio.values());
+    	}
+    	catch(IllegalArgumentException ex) {
+    		request.setAttribute("message", "Data access exception: " + ex.getMessage());
+            action_error(request, response);
+    	}
     	
     }
 

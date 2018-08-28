@@ -10,24 +10,28 @@ import data.database.DBConnector;
 import data.model.Utente;
 import data.model.enumeration.TipoUtente;
 import framework.data.DataLayerException;
+import utils.password.SecurePassword;
 
 public class UtenteDAO implements UtenteDAOInterface {
 
 	@Override
 	public int insert(Utente utente) throws DataLayerException {
-		String insertQuery = "INSERT INTO utente VALUES (?, ?, ?, ?, ?, ?);";
+		String insertQuery = "INSERT INTO utente VALUES (?, ?, ?, ?, ?, ?, ?);";
 		PreparedStatement preparedStatement;
         int status = 0;
         
         try (Connection connection = DBConnector.getDatasource().getConnection()) {
             preparedStatement = connection.prepareStatement(insertQuery);
+            
+            byte[] salt = SecurePassword.getSalt();
 
             preparedStatement.setString(1, utente.getCodiceFiscale());
             preparedStatement.setString(2, utente.getUsername());
             preparedStatement.setString(3, utente.getEmail());
-            preparedStatement.setString(4, utente.getPassword());
-            preparedStatement.setString(5, utente.getTelefono());
-            preparedStatement.setString(6, utente.getTipoUtente().name());
+            preparedStatement.setString(4, SecurePassword.getSHA1Password(utente.getPassword(), salt));
+            preparedStatement.setBytes(5, salt);
+            preparedStatement.setString(6, utente.getTelefono());
+            preparedStatement.setString(7, utente.getTipoUtente().name());
 
             status = preparedStatement.executeUpdate();
 
@@ -41,19 +45,22 @@ public class UtenteDAO implements UtenteDAOInterface {
 
 	@Override
 	public int update(Utente utente) throws DataLayerException {
-		String insertQuery = "UPDATE utente SET username = ?, email = ?, password = ?, telefono = ? " +
+		String updateQuery = "UPDATE utente SET username = ?, email = ?, password = ?, hash = ?, telefono = ? " +
 							 "WHERE codice_fiscale = ?";
 		PreparedStatement preparedStatement;
         int status = 0;
         
         try (Connection connection = DBConnector.getDatasource().getConnection()) {
-            preparedStatement = connection.prepareStatement(insertQuery);
+            preparedStatement = connection.prepareStatement(updateQuery);
 
+            byte[] salt = SecurePassword.getSalt();
+            
             preparedStatement.setString(1, utente.getUsername());
             preparedStatement.setString(2, utente.getEmail());
-            preparedStatement.setString(3, utente.getPassword());
-            preparedStatement.setString(4, utente.getTelefono());
-            preparedStatement.setString(5, utente.getCodiceFiscale());
+            preparedStatement.setString(3, SecurePassword.getSHA1Password(utente.getPassword(), salt));
+            preparedStatement.setBytes(4, salt);
+            preparedStatement.setString(5, utente.getTelefono());
+            preparedStatement.setString(6, utente.getCodiceFiscale());
 
             status = preparedStatement.executeUpdate();
 
@@ -186,7 +193,7 @@ public class UtenteDAO implements UtenteDAOInterface {
 
 	@Override
 	public Utente getLogged(String username, String password) throws DataLayerException {
-		String queryUtente = "SELECT * FROM utente WHERE username = ? AND password = ?;";
+		String queryUtente = "SELECT * FROM utente WHERE username = ?";
         PreparedStatement preparedStatement;
         Utente utente = null;
 
@@ -194,7 +201,6 @@ public class UtenteDAO implements UtenteDAOInterface {
             preparedStatement = connection.prepareStatement(queryUtente);
 
             preparedStatement.setString(1, username);
-            preparedStatement.setString(2, password);
 
             ResultSet resultSet = preparedStatement.executeQuery();
             	if (resultSet.next()) {
@@ -203,15 +209,25 @@ public class UtenteDAO implements UtenteDAOInterface {
                         resultSet.getString(Utente.USERNAME),
                         resultSet.getString(Utente.EMAIL),
                         resultSet.getString(Utente.PASSWORD),
+                        resultSet.getBytes(Utente.HASH),
                         resultSet.getString(Utente.TELEFONO),
                         TipoUtente.valueOf(resultSet.getString(Utente.TIPO_UTENTE)));
             }
             
             connection.close();
+            
+            if(utente != null) {
+	            String hashedPassword = SecurePassword.getSHA1Password(password, utente.getHash());
+	            if (hashedPassword.equals(utente.getPassword())){
+	            	return utente;
+	            }
+            }
+            
         } catch (SQLException e) {
         	throw new DataLayerException("Unable to check user credentials", e);
         }
-        return utente;
+        
+        return null;
 	}
 
 }

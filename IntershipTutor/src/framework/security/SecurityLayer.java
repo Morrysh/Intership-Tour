@@ -1,6 +1,8 @@
 package framework.security;
 
 import java.io.IOException;
+import java.sql.Date;
+import java.sql.Time;
 import java.util.Calendar;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -79,13 +81,43 @@ public class SecurityLayer {
         return s.replaceAll("\\\\(['\"\\\\])", "$1");
     }*/
 
-    public static int checkNumeric(String s) throws NumberFormatException {
+    public static int checkNumeric(String number) throws NumberFormatException {
         //convertiamo la stringa in numero, ma assicuriamoci prima che sia valida
-        if (s != null) {
+        try {
             //se la conversione fallisce, viene generata un'eccezione
-            return Integer.parseInt(s);
-        } else {
-            throw new NumberFormatException("String argument is null");
+            return Integer.valueOf(number);
+        } catch(NumberFormatException e) {
+            throw new NumberFormatException("Il valore inserito non è un numero");
+        }
+    }
+    
+    public static Boolean checkBoolean(String bool) throws NumberFormatException {
+        //convertiamo la stringa in booleano, ma assicuriamoci prima che sia valida
+        try {
+            //se la conversione fallisce, viene generata un'eccezione
+            return Boolean.valueOf(bool);
+        } catch(IllegalArgumentException e) {
+            throw new IllegalArgumentException("Il valore inserito non è valido");
+        }
+    }
+    
+    public static Time checkTime(String time) throws NumberFormatException {
+        //convertiamo la stringa in Time, ma assicuriamoci prima che sia valida
+        try {
+            //se la conversione fallisce, viene generata un'eccezione
+            return Time.valueOf(time);
+        } catch(IllegalArgumentException e) {
+            throw new IllegalArgumentException("Il valore inserito non è un orario");
+        }
+    }
+    
+    public static Date checkDate(String date) throws NumberFormatException {
+        //convertiamo la stringa in Date, ma assicuriamoci prima che sia valida
+        try {
+            //se la conversione fallisce, viene generata un'eccezione
+            return Date.valueOf(date);
+        } catch(IllegalArgumentException e) {
+            throw new IllegalArgumentException("Il valore inserito non è una data");
         }
     }
 

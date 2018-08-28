@@ -1,7 +1,6 @@
 package controller;
 
 import java.io.IOException;
-import java.sql.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +13,7 @@ import data.model.enumeration.TipoUtente;
 import framework.data.DataLayerException;
 import framework.result.FailureResult;
 import framework.result.TemplateManagerException;
+import framework.security.SecurityLayer;
 
 @SuppressWarnings("serial")
 public class GestoreStudente extends IntershipTutorBaseController {
@@ -38,21 +38,21 @@ public class GestoreStudente extends IntershipTutorBaseController {
 			studente.setUsername(request.getParameter(Utente.USERNAME));
 			studente.setPassword(request.getParameter(Utente.PASSWORD));
 			studente.setTelefono(request.getParameter(Utente.TELEFONO));
-			studente.setDataNascita(Date.valueOf(request.getParameter(Studente.DATA_NASCITA)));
+			studente.setDataNascita(SecurityLayer.checkDate(request.getParameter(Studente.DATA_NASCITA)));
 			studente.setLuogoNascita(request.getParameter(Studente.LUOGO_NASCITA));
 			studente.setProvinciaNascita(request.getParameter(Studente.PROVINCIA_NASCITA));
 			studente.setResidenza(request.getParameter(Studente.RESIDENZA));
 			studente.setProvinciaResidenza(request.getParameter(Studente.PROVINCIA_RESIDENZA));
 			studente.setTipoLaurea(request.getParameter(Studente.TIPO_LAUREA));
 			studente.setCorsoLaurea(request.getParameter(Studente.CORSO_LAUREA));
-			studente.setHandicap(Boolean.valueOf(request.getParameter(Studente.HANDICAP)));
+			studente.setHandicap(SecurityLayer.checkBoolean(request.getParameter(Studente.HANDICAP)));
 			
 			new StudenteDAO().update(studente);
 			
 			// NOT USING request.getContextPath becouse it doesn't work with Heroku
 			response.sendRedirect(".");
 		}
-		catch(DataLayerException | IOException ex) {
+		catch(DataLayerException | IOException | IllegalArgumentException ex) {
             request.setAttribute("message", "Data access exception: " + ex.getMessage());
             action_error(request, response);
         }
@@ -70,21 +70,21 @@ public class GestoreStudente extends IntershipTutorBaseController {
 				request.getParameter(Studente.CODICE_FISCALE),
 				request.getParameter(Studente.NOME),
 				request.getParameter(Studente.COGNOME),
-				Date.valueOf(request.getParameter(Studente.DATA_NASCITA)),
+				SecurityLayer.checkDate(request.getParameter(Studente.DATA_NASCITA)),
 				request.getParameter(Studente.LUOGO_NASCITA),
 				request.getParameter(Studente.PROVINCIA_NASCITA),
 				request.getParameter(Studente.RESIDENZA),
 				request.getParameter(Studente.PROVINCIA_RESIDENZA),
 				request.getParameter(Studente.TIPO_LAUREA),
 				request.getParameter(Studente.CORSO_LAUREA),
-				Boolean.valueOf(request.getParameter(Studente.HANDICAP)));
+				SecurityLayer.checkBoolean(request.getParameter(Studente.HANDICAP)));
 			
 			new StudenteDAO().insert(studente);
 			
 			// NOT USING request.getContextPath becouse it doesn't work with Heroku
 			response.sendRedirect(".");
 		}
-		catch(DataLayerException | IOException ex) {
+		catch(DataLayerException | IOException | IllegalArgumentException ex) {
             request.setAttribute("message", "Data access exception: " + ex.getMessage());
             action_error(request, response);
         }

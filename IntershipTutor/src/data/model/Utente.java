@@ -9,6 +9,7 @@ public class Utente {
 	public static final String USERNAME = "username";
 	public static final String EMAIL = "email";
 	public static final String PASSWORD = "password";
+	public static final String HASH = "hash";
 	public static final String TELEFONO = "telefono";
 	public static final String TIPO_UTENTE = "tipo";
 	
@@ -16,6 +17,7 @@ public class Utente {
 	private String username;
 	private String email;
 	private String password;
+	private byte[] hash;
 	private String telefono; 
 	private TipoUtente tipoUtente;
 	
@@ -34,6 +36,17 @@ public class Utente {
 		this.username = username;
 		this.email = email;
 		this.password = password;
+		this.telefono = telefono;
+		this.tipoUtente = tipoUtente;
+	}
+	
+	public Utente(String codiceFiscale, String username, String email, String password,
+			byte[] hash, String telefono, TipoUtente tipoUtente) {
+		this.codiceFiscale = codiceFiscale;
+		this.username = username;
+		this.email = email;
+		this.password = password;
+		this.hash = hash;
 		this.telefono = telefono;
 		this.tipoUtente = tipoUtente;
 	}
@@ -85,6 +98,14 @@ public class Utente {
 	
 	public void setTipoUtente(TipoUtente tipoUtente) {
 		this.tipoUtente = tipoUtente;
+	}
+
+	public byte[] getHash() {
+		return hash;
+	}
+
+	public void setHash(byte[] hash) {
+		this.hash = hash;
 	}
 
 }

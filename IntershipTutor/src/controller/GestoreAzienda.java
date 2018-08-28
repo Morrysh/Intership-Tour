@@ -199,7 +199,7 @@ public class GestoreAzienda extends IntershipTutorBaseController {
 	        
 			res.activate("dettaglio-azienda.ftl.html", request, response);
         }
-        catch (DataLayerException ex) {
+        catch (DataLayerException | IllegalArgumentException ex) {
             request.setAttribute("message", "Data access exception: " + ex.getMessage());
             action_error(request, response);
         }
@@ -232,7 +232,7 @@ public class GestoreAzienda extends IntershipTutorBaseController {
 			}
 			
 		}
-		 catch (DataLayerException | IOException e) {
+		 catch (DataLayerException | IOException | IllegalArgumentException e) {
 			request.setAttribute("message", "Data access exception: " + e.getMessage());
             action_error(request, response);
 		 } 

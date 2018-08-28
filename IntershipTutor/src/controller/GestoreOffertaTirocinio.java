@@ -47,17 +47,17 @@ public class GestoreOffertaTirocinio extends IntershipTutorBaseController{
 				Time oraInizio = null, oraFine = null;
 				
 				if(!(request.getParameter(OffertaTirocinio.DATA_INIZIO)).isEmpty()) 
-					dataInizio = Date.valueOf(request.getParameter(OffertaTirocinio.DATA_INIZIO));
+					dataInizio = SecurityLayer.checkDate(request.getParameter(OffertaTirocinio.DATA_INIZIO));
 				if(!(request.getParameter(OffertaTirocinio.DATA_FINE)).isEmpty()) 
-					dataFine = Date.valueOf(request.getParameter(OffertaTirocinio.DATA_FINE));
+					dataFine = SecurityLayer.checkDate(request.getParameter(OffertaTirocinio.DATA_FINE));
 				
 				// Controlliamo che gli orari inseriti non siano vuoti(sono opzionali)
 				if(!(request.getParameter(OffertaTirocinio.ORA_INIZIO)).isEmpty())
 					// Aggiungiamo :00 altrimento il valore dell'html non è compatibile con il db
-					oraInizio = Time.valueOf(request.getParameter(OffertaTirocinio.ORA_INIZIO) + ":00");
+					oraInizio = SecurityLayer.checkTime(request.getParameter(OffertaTirocinio.ORA_INIZIO) + ":00");
 				if(!(request.getParameter(OffertaTirocinio.ORA_FINE)).isEmpty()) 
 					// Aggiungiamo :00 altrimento il valore dell'html non è compatibile con il db
-					oraFine = Time.valueOf(request.getParameter(OffertaTirocinio.ORA_FINE) + ":00");
+					oraFine = SecurityLayer.checkTime(request.getParameter(OffertaTirocinio.ORA_FINE) + ":00");
 				
 				OffertaTirocinio nuovaOfferta = new OffertaTirocinio(
 						azienda.getCodiceFiscale(),
@@ -80,7 +80,7 @@ public class GestoreOffertaTirocinio extends IntershipTutorBaseController{
 				request.setAttribute("message", "Azienda non convenzionata, permesso negato");
 	            action_error(request, response);
 			}
-		} catch (DataLayerException | IOException ex) {
+		} catch (DataLayerException | IOException | IllegalArgumentException ex) {
 			request.setAttribute("message", "Data access exception: " + ex.getMessage());
 	        action_error(request, response);
 		}
@@ -97,20 +97,20 @@ public class GestoreOffertaTirocinio extends IntershipTutorBaseController{
 			Time oraInizio = null, oraFine = null;
 			
 			if(!(request.getParameter(OffertaTirocinio.DATA_INIZIO)).isEmpty()) 
-				dataInizio = Date.valueOf(request.getParameter(OffertaTirocinio.DATA_INIZIO));
+				dataInizio = SecurityLayer.checkDate(request.getParameter(OffertaTirocinio.DATA_INIZIO));
 			if(!(request.getParameter(OffertaTirocinio.DATA_FINE)).isEmpty()) 
-				dataFine = Date.valueOf(request.getParameter(OffertaTirocinio.DATA_FINE));
+				dataFine = SecurityLayer.checkDate(request.getParameter(OffertaTirocinio.DATA_FINE));
 			
 			// Controlliamo che gli orari inseriti non siano vuoti(sono opzionali)
 			if(!(request.getParameter(OffertaTirocinio.ORA_INIZIO)).isEmpty()) 
 				// Aggiungiamo :00 altrimento il valore dell'html non è compatibile con il db
-				oraInizio = Time.valueOf(request.getParameter(OffertaTirocinio.ORA_INIZIO) + ":00");
+				oraInizio = SecurityLayer.checkTime(request.getParameter(OffertaTirocinio.ORA_INIZIO) + ":00");
 			if(!(request.getParameter(OffertaTirocinio.ORA_FINE)).isEmpty()) 
 				// Aggiungiamo :00 altrimento il valore dell'html non è compatibile con il db
-				oraFine = Time.valueOf(request.getParameter(OffertaTirocinio.ORA_FINE) + ":00");
+				oraFine = SecurityLayer.checkTime(request.getParameter(OffertaTirocinio.ORA_FINE) + ":00");
 			
 			OffertaTirocinio nuovaOfferta = new OffertaTirocinio(
-					Integer.valueOf(request.getParameter(OffertaTirocinio.ID_TIROCINIO)),
+					SecurityLayer.checkNumeric(request.getParameter(OffertaTirocinio.ID_TIROCINIO)),
 					azienda.getCodiceFiscale(),
 					request.getParameter(OffertaTirocinio.TITOLO),
 					request.getParameter(OffertaTirocinio.LUOGO),
@@ -133,7 +133,7 @@ public class GestoreOffertaTirocinio extends IntershipTutorBaseController{
     			response.sendRedirect(".");
 			}
 				
-		} catch (DataLayerException | IOException ex) {
+		} catch (DataLayerException | IOException | IllegalArgumentException ex) {
 			request.setAttribute("message", "Data access exception: " + ex.getMessage());
             action_error(request, response);
 		}
@@ -159,11 +159,11 @@ public class GestoreOffertaTirocinio extends IntershipTutorBaseController{
 	private void action_visibilita(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException{
 		try {
 			int codiceOffertaTirocinio = SecurityLayer.checkNumeric(request.getParameter(OffertaTirocinio.ID_TIROCINIO));
-			new OffertaTirocinioDAO().setVisibilita(codiceOffertaTirocinio, Boolean.valueOf(request.getParameter("visibilita")));
+			new OffertaTirocinioDAO().setVisibilita(codiceOffertaTirocinio, SecurityLayer.checkBoolean(request.getParameter("visibilita")));
 			// NOT USING request.getContextPath becouse it doesn't work with Heroku
 			response.sendRedirect(".");
 		}
-		catch(DataLayerException | IOException ex) {
+		catch(DataLayerException | IOException | IllegalArgumentException ex) {
             request.setAttribute("message", "Data access exception: " + ex.getMessage());
             action_error(request, response);
         }
@@ -307,11 +307,7 @@ public class GestoreOffertaTirocinio extends IntershipTutorBaseController{
 		catch (TemplateManagerException | IOException e) {
 			request.setAttribute("exception", e);
             action_error(request, response);
-		} 
-    	catch (NumberFormatException ex) {
-            request.setAttribute("message", "Invalid number submitted");
-            action_error(request, response);
-        }
+		}
     }
 
     @Override
