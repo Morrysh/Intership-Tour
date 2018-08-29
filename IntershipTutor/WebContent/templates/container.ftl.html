@@ -21,7 +21,7 @@
 <body>
 
 	<!-- NAVBAR PC -->
-	<div class="w3-bar univaq-color-background w3-large w3-padding-large w3-hide-small">
+	<div id="navbar-pc" class="w3-bar univaq-color-background w3-large w3-hide-small">
 	    <a href="." class="w3-bar-item no-padding">
 	        <i class="fa fa-home w3-margin-right univaq-color-background pointer"></i>
 	        IntershipTutor
@@ -41,7 +41,7 @@
 	
 	
 	<!-- NAVBAR MOBILE -->
-	<div class="w3-bar univaq-color-background w3-large  w3-hide-medium">
+	<div id="navbar-mobile" class="w3-bar univaq-color-background w3-large  w3-hide-medium">
 	    <div class="collapsible-menu-1 w3-padding-large w3-hide-large">
 	    	<a href=".">
 	            <i class="fa fa-home w3-margin-right univaq-color-background"></i>
@@ -69,8 +69,12 @@
     
 	</div>
     <!-- FOOTER -->
-    <footer class="w3-container univaq-color-background">
-        <h5>Copyright &copy; 2018 Martella Stefano - Icaro Iari - Morelli Davide</h5>
+    <footer>
+    	<a href="#navbar-pc" class="w3-hide-small"><i class="icon up fa fa-arrow-up"></i></a>
+        <p id="credits" class="univaq-color-background">
+        	Copyright &copy; 2018 by<br />
+        	Stefano Martella - Iari Icaro - Davide Morelli
+        </p>
     </footer>
     
     <!-- Scripts -->
@@ -84,13 +88,13 @@
 			<div class="tab-frame">
 			
 				<div class="popup w3-card w3-round w3-padding w3-white">
-					<input class="login-tab" type="radio" checked name="tab" id="tab1">
+					<input class="login-tab" type="radio" name="tab" id="tab1" <#if !studenteNR?? && !aziendaNR??>checked</#if>>
 					<label class="tab-label w3-round" for="tab1">Login</label>
 					
-					<input class="login-tab" type="radio" name="tab" id="tab2">
+					<input class="login-tab" type="radio" name="tab" id="tab2" <#if studenteNR??>checked</#if>>
 					<label class="tab-label w3-round" for="tab2">Registrazione</label>
 					
-					<input class="login-tab" type="radio" name="tab" id="tab3">
+					<input class="login-tab" type="radio" name="tab" id="tab3" <#if aziendaNR??>checked</#if>>
 					<label class="tab-label w3-round" for="tab3">Azienda</label>
 					
 					

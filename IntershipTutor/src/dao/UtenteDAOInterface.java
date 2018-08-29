@@ -14,6 +14,8 @@ public interface UtenteDAOInterface {
 	
 	int getCountAccordingToUserType(TipoUtente tipoUtente) throws DataLayerException;
 	
+	boolean checkCodiceFiscaleDisponibile(String email) throws DataLayerException;
+	
 	boolean checkEmailDisponibile(String email) throws DataLayerException;
 	
 	boolean checkUsernameDisponibile(String username) throws DataLayerException;

@@ -57,10 +57,6 @@ textarea::-webkit-scrollbar-thumb {
   background-color: #dedede;
 }
 
-footer h5{
-	font-size: 13px
-}
-
 i{
 	transition: .2s all ease;
 }
@@ -69,6 +65,10 @@ i{
 .fas,
 .far{
 	color: #822627;
+}
+
+#navbar-pc{
+	padding: 16px 25px
 }
 
 #nome-utente{
@@ -134,6 +134,12 @@ i{
 .univaq-color{
     background-color: #ffffff;
     color: #822627;
+}
+
+.warning{
+	color: #ff0000 !important;
+	font-size: 12px;
+	padding: 0 5px;
 }
 
 .bold{
@@ -396,6 +402,46 @@ a{
 #pagination{
     margin-top: 20px
 }
+
+/* Footer */
+footer {
+  margin-top: -2em;
+  text-align: center;
+}
+
+#credits {
+  margin: 3rem 0 0 0;
+  padding: 2.5rem 0 2rem 0;
+  text-align: center;
+  font-size: .9em;
+}
+
+.icon {
+  width: 2.5em;
+  height: 2.5em;
+  font-size: 1em;
+  color: rgba(130, 38, 39, 0.8);
+  border-radius: 100%;
+  border: 1px solid #822627;
+  background: transparent;
+  margin: 0 auto;
+  display: inline-block;
+  transition: box-shadow .5s, color .5s, background .5s;
+  text-align: center;
+}
+
+a[href="#navbar-pc"] .up {
+  line-height: 2.5em;
+  position: relative;
+  background: #fff;
+  bottom: -4.4em;
+}
+
+a[href="#navbar-pc"] .up:hover {
+  box-shadow: 0 0 0 2px rgba(130, 38, 39, 0.6);
+  color: #822627;
+}
+/* Enf footer */
 
 #pagination .w3-button{
 	margin: 0

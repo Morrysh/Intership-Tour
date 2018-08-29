@@ -118,6 +118,11 @@ public class UtenteDAO implements UtenteDAOInterface {
 	}
 	
 	@Override
+	public boolean checkCodiceFiscaleDisponibile(String codiceFiscale) throws DataLayerException {
+		return this.checkCampoDisponibile(Utente.CODICE_FISCALE, codiceFiscale);
+	}
+	
+	@Override
 	public boolean checkEmailDisponibile(String email) throws DataLayerException {
 		return this.checkCampoDisponibile(Utente.EMAIL, email);
 	}
