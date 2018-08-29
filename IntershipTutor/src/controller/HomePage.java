@@ -36,7 +36,7 @@ import framework.security.SecurityLayer;
 @SuppressWarnings("serial")
 public class HomePage extends IntershipTutorBaseController {
 	
-	public static final String SERVLET_URI = "/homepage";
+	public static final String SERVLET_URI = "/";
 	// Numero massimo di offerte per pagina per la paginazione,
 	// questo numero deve corrispondere a quello in offertaTirocinioDAO
 	final static double OFFERTE_PER_PAGINA = OffertaTirocinioDAO.OFFERTE_PER_PAGINA;
@@ -260,7 +260,7 @@ public class HomePage extends IntershipTutorBaseController {
 	        	paginaCorrente = (SecurityLayer.checkNumeric(request.getParameter("pagina")));
 	        }
 	        
-	        request.setAttribute("servlet", request.getContextPath());
+	        request.setAttribute("servlet", SERVLET_URI);
 	        request.setAttribute("searchbartitle", "Filtra le proposte di tirocinio");
 	        request.setAttribute("paginaCorrente", paginaCorrente);
 			request.setAttribute("campiRicerca", CampoRicercaTirocinio.values());

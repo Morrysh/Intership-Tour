@@ -118,21 +118,16 @@
 						    </#if>
 						</p>
 						<div class="w3-left options">
-							<a href="tirocinioStudente?id_tirocinio=${offerta.idTirocinio}&utente=${utente.utente}&candidati=true">
-								<button class="pointer fas fa-users">
-									Candidati
-								</button>
+							<a class="pointer fas fa-users" href="tirocinioStudente?id_tirocinio=${offerta.idTirocinio}&utente=${utente.utente}&candidati=true">
+								Candidati
 						  	</a>
 						</div>
 						<div class="w3-right options">
-		                      <a href="#update-intership-modal-${offerta.idTirocinio}">
-								<button class="pointer far fa-edit"></button>
+		                      <a class="w3-padding-small pointer far fa-edit" href="#update-intership-modal-${offerta.idTirocinio}">
 							  </a>
-							  <a href="offertaTirocinio?id_tirocinio=${offerta.idTirocinio}&rimuovi=true&utente=${utente.utente}">
-								<button class="pointer far fa-trash-alt"></button>
+							  <a class="w3-padding-small pointer far fa-trash-alt" href="offertaTirocinio?id_tirocinio=${offerta.idTirocinio}&rimuovi=true&utente=${utente.utente}">
 							  </a>
-							  <a href="offertaTirocinio?id_tirocinio=${offerta.idTirocinio}&utente=${utente.utente}&visibilita=${offerta.visibile?string('false','true')}">
-		                      	<button class="pointer <#if offerta.visibile> far fa-eye <#else> far fa-eye-slash </#if>"></button>
+							  <a class="w3-padding-small pointer <#if offerta.visibile> far fa-eye <#else> far fa-eye-slash </#if>" href="offertaTirocinio?id_tirocinio=${offerta.idTirocinio}&utente=${utente.utente}&visibilita=${offerta.visibile?string('false','true')}">
 	                      	</a>
                       	</div>
 				 </div>
@@ -184,9 +179,9 @@
 		          <label for="usernameAzienda"><b>Username</b></label>
 	         	  <input id="usernameAzienda" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="15" type="text" value="${utente.username}" placeholder="Inserisci il tuo username" name="username" autocomplete="off" required />
 		          <label for="emailAzienda"><b>Email</b></label>
-	         	  <input id="emailAzienda" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" value="${utente.email}" placeholder="Inserisci la tua email" name="email" autocomplete="off" required />
+	         	  <input id="emailAzienda" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="email" value="${utente.email}" placeholder="Inserisci la tua email" name="email" autocomplete="off" required />
 		          <label for="telefonoAzienda"><b>Telefono</b></label>
-	          	  <input id="telefonoAzienda" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="20" type="number" value="${utente.telefono}" placeholder="Inserisci il tuo telefono" name="telefono" autocomplete="off" required />
+	          	  <input id="telefonoAzienda" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="20" type="tel" value="${utente.telefono}" placeholder="Inserisci il tuo telefono" name="telefono" autocomplete="off" required />
 		          <label for="passwordAzienda"><b>Password</b></label>
 	          	  <input id="passwordAzienda" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="password" value="${utente.password}" placeholder="Inserisci la password" name="password" autocomplete="off" required />
 	          	  <button class="w3-button w3-block w3-section w3-padding univaq-color-background" type="submit" name="aggiorna" value="aggiorna">Modifica</button>
@@ -217,17 +212,17 @@
 				  <label for="modalita"><b>Modalit&agrave;</b></label>
 				  <textarea id="modalita" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="2500" placeholder="Inserisci le modalita con cui verrà effettuato il tirocinio" name="modalita" autocomplete="off" required></textarea>
 				  <label for="rimborso"><b>Rimborso</b></label>
-				  <input id="rimborso" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="255" type="number" placeholder="Inserisci l'importo del rimborso se previsto" name="rimborso" />
+				  <input id="rimborso" class="w3-input w3-border-bottom w3-margin-bottom" type="number" placeholder="Inserisci l'importo del rimborso se previsto" name="rimborso" />
 				  <label for="dataInizio"><b>Data inizio</b></label>
-				  <input id="dataInizio" class="w3-input w3-border-bottom w3-margin-bottom" type="date" placeholder="Inserisci la data di inizio del tirocinio" name="data_inizio" autocomplete="off" />
+				  <input id="dataInizio" class="w3-input w3-border-bottom w3-margin-bottom" type="date" name="data_inizio" autocomplete="off" />
 				  <label for="dataFine"><b>Data fine</b></label>
-				  <input id="dataFine" class="w3-input w3-border-bottom w3-margin-bottom" type="date" placeholder="Inserisci la data in cui si concluderà il tirocinio" name="data_fine" autocomplete="off" />
+				  <input id="dataFine" class="w3-input w3-border-bottom w3-margin-bottom" type="date" name="data_fine" autocomplete="off" />
 				  <label for="oraInizio"><b>Ora inizio</b></label>
-				  <input id="oraInizio" class="w3-input w3-border-bottom w3-margin-bottom" type="time" placeholder="Inserisci l'orario di inizio" name="ora_inizio" />					  
+				  <input id="oraInizio" class="w3-input w3-border-bottom w3-margin-bottom" type="time" name="ora_inizio" />					  
 		          <label for="oraFine"><b>Ora fine</b></label>
-	         	  <input id="oraFine" class="w3-input w3-border-bottom w3-margin-bottom" type="time" placeholder="Inserisci l'orario di fine" name="ora_fine" />
+	         	  <input id="oraFine" class="w3-input w3-border-bottom w3-margin-bottom" type="time" name="ora_fine" />
 	         	  <label for="numeroOre"><b>Numero ore</b></label>
-	         	  <input id="numeroOre" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="5" type="number" placeholder="Inserisci il numero di ore previste per il tirocinio" name="numero_ore" autocomplete="off" required />
+	         	  <input id="numeroOre" class="w3-input w3-border-bottom w3-margin-bottom" type="number" placeholder="Inserisci il numero di ore previste per il tirocinio" name="numero_ore" autocomplete="off" required />
 	          	  <button class="w3-button w3-block w3-section w3-padding univaq-color-background" type="submit" name="aggiungi" value="aggiungi">Aggiungi</button>
 		        </div>
 		      </form>
@@ -258,17 +253,17 @@
 				  <label for="modalita-${offerta.idTirocinio}"><b>Modalit&agrave;</b></label>
 				  <textarea id="modalita-${offerta.idTirocinio}" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="2500" placeholder="Inserisci le modalita con cui verrà effettuato il tirocinio" name="modalita" autocomplete="off" required>${offerta.modalita}</textarea>
 				  <label for="rimborso-${offerta.idTirocinio}"><b>Rimborso</b></label>
-				  <input id="rimborso-${offerta.idTirocinio}" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="255" type="number" placeholder="Inserisci l'importo del rimborso se previsto" <#if offerta.rimborso??>value="${offerta.rimborso}"</#if> name="rimborso" />
+				  <input id="rimborso-${offerta.idTirocinio}" class="w3-input w3-border-bottom w3-margin-bottom" type="number" placeholder="Inserisci l'importo del rimborso se previsto" <#if offerta.rimborso??>value="${offerta.rimborso}"</#if> name="rimborso" />
 				  <label for="dataInizio-${offerta.idTirocinio}"><b>Data inizio</b></label>
-				  <input id="dataInizio-${offerta.idTirocinio}" class="w3-input w3-border-bottom w3-margin-bottom" type="date" placeholder="Inserisci la data di inizio del tirocinio" name="data_inizio" <#if offerta.dataInizio??> value="${offerta.dataInizio?iso_local}"</#if> autocomplete="off" />
+				  <input id="dataInizio-${offerta.idTirocinio}" class="w3-input w3-border-bottom w3-margin-bottom" type="date" name="data_inizio" <#if offerta.dataInizio??> value="${offerta.dataInizio?iso_local}"</#if> autocomplete="off" />
 				  <label for="dataFine-${offerta.idTirocinio}"><b>Data fine</b></label>
-				  <input id="dataFine-${offerta.idTirocinio}" class="w3-input w3-border-bottom w3-margin-bottom" type="date" placeholder="Inserisci la data in cui si concluderà il tirocinio" name="data_fine" <#if offerta.dataFine??> value="${offerta.dataFine?iso_local}"</#if> autocomplete="off" />
+				  <input id="dataFine-${offerta.idTirocinio}" class="w3-input w3-border-bottom w3-margin-bottom" type="date" name="data_fine" <#if offerta.dataFine??> value="${offerta.dataFine?iso_local}"</#if> autocomplete="off" />
 				  <label for="oraInizio-${offerta.idTirocinio}"><b>Ora inizio</b></label>
-				  <input id="oraInizio-${offerta.idTirocinio}" class="w3-input w3-border-bottom w3-margin-bottom" type="time" placeholder="Inserisci l'orario di inizio" <#if offerta.oraFine??> value="${offerta.oraInizio?iso_local[0..4]}"</#if> name="ora_inizio" />					  
+				  <input id="oraInizio-${offerta.idTirocinio}" class="w3-input w3-border-bottom w3-margin-bottom" type="time" <#if offerta.oraFine??> value="${offerta.oraInizio?iso_local[0..4]}"</#if> name="ora_inizio" />					  
 		          <label for="oraFine-${offerta.idTirocinio}"><b>Ora fine</b></label>
-	         	  <input id="oraFine-${offerta.idTirocinio}" class="w3-input w3-border-bottom w3-margin-bottom" type="time" placeholder="Inserisci l'orario di fine" <#if offerta.oraFine??>value="${offerta.oraFine?iso_local[0..4]}"</#if> name="ora_fine" />
+	         	  <input id="oraFine-${offerta.idTirocinio}" class="w3-input w3-border-bottom w3-margin-bottom" type="time" <#if offerta.oraFine??>value="${offerta.oraFine?iso_local[0..4]}"</#if> name="ora_fine" />
 	         	  <label for="numeroOre-${offerta.idTirocinio}"><b>Numero ore</b></label>
-	         	  <input id="numeroOre-${offerta.idTirocinio}" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="5" type="number" placeholder="Inserisci il numero di ore previste per il tirocinio" name="numero_ore" value="${offerta.numeroOre}" autocomplete="off" required />
+	         	  <input id="numeroOre-${offerta.idTirocinio}" class="w3-input w3-border-bottom w3-margin-bottom" type="number" placeholder="Inserisci il numero di ore previste per il tirocinio" name="numero_ore" value="${offerta.numeroOre}" autocomplete="off" required />
 	          	  <button class="w3-button w3-block w3-section w3-padding univaq-color-background" type="submit" name="aggiorna" value="aggiorna">Aggiorna</button>
 		        </div>
 		      </form>

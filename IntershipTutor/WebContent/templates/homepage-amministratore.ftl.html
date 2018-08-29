@@ -3,15 +3,15 @@
 
 <head>
     <title>Intership Tour</title>
-    <link rel="icon" href="img/univaq_logo.png">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="icon" href="img/univaq_logo.png" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="style/fontawesome/regular.min.css" rel="stylesheet" />
+    <link href="style/fontawesome/solid.min.css" rel="stylesheet" />
+    <link href="style/fontawesome/fontawesome.min.css" rel="stylesheet" />
+    <link href="style/w3/w3.css" rel="stylesheet" />
     <link href="style/homepage-amministratore.css" rel="stylesheet">
-    <link href="style/w3.css" rel="stylesheet">
-    <script src="js/index.js"></script>
+    <!-- <script src="js/index.js"></script>  -->
 </head>
 
 <body class="w3-light-grey">
@@ -36,7 +36,7 @@
 	            <i class="fa fa-home w3-margin-right univaq-color-background"></i>
 	            IntershipTutor
 	        </a>
-	            <input type="checkbox" id="menu-1">
+	            <input type="checkbox" id="menu-1" />
 	            <label for="menu-1"><i class="fa fa-bars w3-right univaq-color-background"></i></label>
 	        <div class="menu-content-1">
 	            <ul>
@@ -70,7 +70,6 @@
 	    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-users fa-fw"></i>  Traffic</a>
 	    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bullseye fa-fw"></i>  Geo</a>
 	    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bell fa-fw"></i>  News</a>
-	    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bank fa-fw"></i>  General</a>
 	    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-history fa-fw"></i>  History</a>
 	    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cog fa-fw"></i>  Settings</a><br><br>
 	  </div>
@@ -140,7 +139,7 @@
 		        	</h5>
 		        	<form action="upload?azienda=${azienda.utente}&utente=${amministratore.utente}" method="post" enctype='multipart/form-data'>
 					    <input type="file" name="file" />
-					    <button id="send" class="w3-button pointer fas fa-upload w3-round " type="submit" > Carica documento</button>
+					    <button id="send-${azienda.utente}" class="w3-button pointer fas fa-upload w3-round " type="submit" > Carica documento</button>
 					</form>
 		        </td>
 		      </tr>
@@ -253,7 +252,9 @@
 			        	<p class="content">${azienda.email}</p>
 			        	<p class="label"><b>telefono</b></p>
 			        	<p class="content">${azienda.telefono}</p>
-			        	<a href="download?azienda=${azienda.utente}&utente=${amministratore.utente}"><button class="w3-button w3-block w3-red w3-hover-deep-orange">Scarica schema convenzione</button></a>
+			        	<a href="download?azienda=${azienda.utente}&utente=${amministratore.utente}" class="w3-button w3-block w3-red w3-hover-deep-orange">
+			        		Scarica schema convenzione
+			        	</a>
 			        </div>
 		      </div>
 			</div>			

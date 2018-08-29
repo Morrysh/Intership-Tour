@@ -3,18 +3,18 @@
 
 <head>
     <title>Intership Tour</title>
-    <link rel="icon" href="img/univaq_logo.png">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="style/fontawesome/regular.min.css" rel="stylesheet">
-    <link href="style/fontawesome/solid.min.css" rel="stylesheet">
-    <link href="style/fontawesome/fontawesome.min.css" rel="stylesheet">
-    <link href="style/w3/w3.css" rel="stylesheet">
+    <link rel="icon" href="img/univaq_logo.png" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="style/fontawesome/regular.min.css" rel="stylesheet" />
+    <link href="style/fontawesome/solid.min.css" rel="stylesheet" />
+    <link href="style/fontawesome/fontawesome.min.css" rel="stylesheet" />
+    <link href="style/w3/w3.css" rel="stylesheet" />
     <#if page_css??>
-    	<link href="style/${page_css}.css" rel="stylesheet">
+    	<link href="style/${page_css}.css" rel="stylesheet" />
     </#if>
-    <link href="style/container.css" rel="stylesheet">
-    <script src="js/index.js"></script>
+    <link href="style/container.css" rel="stylesheet" />
+    <!-- <script src="js/index.js"></script>  -->
     
 </head>
 
@@ -47,7 +47,7 @@
 	            <i class="fa fa-home w3-margin-right univaq-color-background"></i>
 	            IntershipTutor
 	        </a>
-	            <input type="checkbox" id="menu-1">
+	            <input type="checkbox" id="menu-1" />
 	            <label for="menu-1"><i class="fa fa-bars w3-right univaq-color-background"></i></label>
 	        <div class="menu-content-1">
 	            <ul>
@@ -62,9 +62,9 @@
 	</div>
 	<div id="container">
 	
-	<!--------------------------------------
+	<!-- 
 		 INCLUSIONE TEMPLATE NON STATICO
-	 ---------------------------------------->
+	-->
     <#include content_tpl>
     
 	</div>
@@ -88,13 +88,13 @@
 			<div class="tab-frame">
 			
 				<div class="popup w3-card w3-round w3-padding w3-white">
-					<input class="login-tab" type="radio" name="tab" id="tab1" <#if !studenteNR?? && !aziendaNR??>checked</#if>>
+					<input class="login-tab" type="radio" name="tab" id="tab1" <#if !studenteNR?? && !aziendaNR??>checked</#if> />
 					<label class="tab-label w3-round" for="tab1">Login</label>
 					
-					<input class="login-tab" type="radio" name="tab" id="tab2" <#if studenteNR??>checked</#if>>
+					<input class="login-tab" type="radio" name="tab" id="tab2" <#if studenteNR??>checked</#if> />
 					<label class="tab-label w3-round" for="tab2">Registrazione</label>
 					
-					<input class="login-tab" type="radio" name="tab" id="tab3" <#if aziendaNR??>checked</#if>>
+					<input class="login-tab" type="radio" name="tab" id="tab3" <#if aziendaNR??>checked</#if> />
 					<label class="tab-label w3-round" for="tab3">Azienda</label>
 					
 					
@@ -132,7 +132,7 @@
 					          <label for="codiceFiscaleStudente"><b>Codice fiscale</b></label>
 					          <input id="cognomeStudente" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="16" type="text" placeholder="Inserisci il tuo codice fiscale" name="codice_fiscale" autocomplete="off" required />
 					          <label for="dataNascita"><b>Data di nascita</b></label>
-					          <input id="dataNascita" class="w3-input w3-border-bottom w3-margin-bottom" type="date" placeholder="Inserisci la tua data di nascita" name="data_nascita" autocomplete="off" required />
+					          <input id="dataNascita" class="w3-input w3-border-bottom w3-margin-bottom" type="date" name="data_nascita" autocomplete="off" required />
 					          <label for="luogoNascita"><b>Luogo di Nascita</b></label>
 							  <input id="luogoNascita" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" placeholder="Inserisci il tuo luogo di nascita" name="luogo_nascita" autocomplete="off" required />
 							  <label for="provinciaNascita"><b>Provincia di Nascita</b></label>
@@ -158,9 +158,9 @@
 					          <label for="usernameStudente"><b>Username</b></label>
 				         	  <input id="usernameStudente" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="15" type="text" placeholder="Inserisci il tuo username" name="username" autocomplete="off" required />
 					          <label for="emailStudente"><b>Email</b></label>
-				         	  <input id="emailStudente" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" placeholder="Inserisci la tua email" name="email" autocomplete="off" required />
+				         	  <input id="emailStudente" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="email" placeholder="Inserisci la tua email" name="email" autocomplete="off" required />
 					          <label for="telefonoStudente"><b>Telefono</b></label>
-				          	  <input id="telefonoStudente" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="20" type="number" placeholder="Inserisci il tuo telefono" name="telefono" autocomplete="off" required />
+				          	  <input id="telefonoStudente" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="20" type="tel" placeholder="Inserisci il tuo telefono" name="telefono" autocomplete="off" required />
 					          <label for="passwordStudente"><b>Password</b></label>
 				          	  <input id="passwordStudente" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="password" placeholder="Inserisci la password" name="password" autocomplete="off" required />
 				          	  <button class="w3-button w3-block w3-section w3-padding univaq-color-background" type="submit" name="registrazione" value="registrazione">Registrati</button>
@@ -200,9 +200,9 @@
 					          <label for="usernameAzienda"><b>Username</b></label>
 				         	  <input id="usernameAzienda" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="15" type="text" placeholder="Inserisci il tuo username" name="username" autocomplete="off" required />
 					          <label for="emailAzienda"><b>Email</b></label>
-				         	  <input id="emailAzienda" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" placeholder="Inserisci la tua email" name="email" autocomplete="off" required />
+				         	  <input id="emailAzienda" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="email" placeholder="Inserisci la tua email" name="email" autocomplete="off" required />
 					          <label for="telefonoAzienda"><b>Telefono</b></label>
-				          	  <input id="telefonoAzienda" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="20" type="number" placeholder="Inserisci il tuo telefono" name="telefono" autocomplete="off" required />
+				          	  <input id="telefonoAzienda" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="20" type="tel" placeholder="Inserisci il tuo telefono" name="telefono" autocomplete="off" required />
 					          <label for="passwordAzienda"><b>Password</b></label>
 				          	  <input id="passwordAzienda" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="password" placeholder="Inserisci la password" name="password" autocomplete="off" required />
 				          	  <button class="w3-button w3-block w3-section w3-padding univaq-color-background" type="submit" name="registrazione" value="registrazione">Registra l'azienda</button>

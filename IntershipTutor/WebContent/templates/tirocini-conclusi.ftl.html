@@ -77,15 +77,11 @@
 					</div>
 					<br /><br />
 						<div class="w3-block">
-						<a class="w3-right" href="#conclude-modal-${candidato.codiceFiscale}">
-							<button class="pointer w3-round fas fa-check-double w3-padding">
-								Termina
-							</button>
+						<a class="w3-button pointer w3-round fas fa-check-double w3-padding w3-right" href="#conclude-modal-${candidato.codiceFiscale}">
+							Termina
 						</a>
-						<a class="w3-left" href="download?candidato=${candidato.utente}&utente=${azienda.utente}">
-							<button class="pointer w3-round fas fa-download w3-padding">
-								Progetto formativo
-							</button>
+						<a class="w3-button pointer w3-round fas fa-download w3-padding w3-left" href="download?candidato=${candidato.utente}&utente=${azienda.utente}">
+							Progetto formativo
 						</a>
 						</div>
 						<form action="upload?candidato=${candidato.utente}&referer=tirocinioStudente?id_tirocinio=${offertaTirocinio.idTirocinio}&candidati=candidati" method="post" enctype='multipart/form-data'>
@@ -124,9 +120,9 @@
 			        	<input type="hidden" name="utente" value="${azienda.utente}" />
 			        	<input type="hidden" name="candidato" value="${candidato.codiceFiscale}" />
 						<label for="descrizioneDettagliata"><b>Descrizione dettagliata</b></label>
-		          		<textarea id="descrizioneDettagliata" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="2000" type="text" placeholder="Inserisci una descrizione dettagliata sull'attività svolta" name="descrizione_dettagliata" autocomplete="off" required></textarea>
+		          		<textarea id="descrizioneDettagliata" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="2000" placeholder="Inserisci una descrizione dettagliata sull'attività svolta" name="descrizione_dettagliata" autocomplete="off" required></textarea>
 				        <label for="oreSvolte"><b>Ore svolte</b></label>
-				        <input id="oreSvolte" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="11" type="number" placeholder="Inserisci le ore svolte" name="ore_svolte" autocomplete="off" required />
+				        <input id="oreSvolte" class="w3-input w3-border-bottom w3-margin-bottom" type="number" placeholder="Inserisci le ore svolte" name="ore_svolte" autocomplete="off" required />
 				        <label for="giudizioFinale"><b>Giudizio finale</b></label>
 				        <input id="giudizioFinale" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="2000" type="text" placeholder="Inserisci un giudizio finale" name="giudizio_finale" autocomplete="off" required />
 						<button class="w3-button w3-block w3-section w3-padding univaq-color-background" type="submit" name="concludi" value="concludi">Concludi</button>

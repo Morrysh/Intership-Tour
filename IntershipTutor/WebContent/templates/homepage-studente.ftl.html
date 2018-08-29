@@ -58,7 +58,7 @@
 			               		<#if tirocinioStudente.stato.name() == "accettato">
 			               			<form action="upload?candidato=${utente.utente}" method="post" enctype='multipart/form-data'>
 									    <input type="file" name="file" />
-									    <input class="pointer" type="submit" value="&#xf093" />
+									    <input class="pointer" type="submit" value="&#xf093;" />
 									</form>
 			               			<p class="info pointer">
 				               			<a href="download?candidato=${utente.utente}">
@@ -184,10 +184,8 @@
 						    </#if>
 						</p>
 						<#if !tirocinioStudente??>
-							<a href="#intership-subscription-modal-${offerta.idTirocinio}">
-								<button class="w3-button w3-right w3-round far fa-share-square">
-									Invia proposta
-								</button>
+							<a class="w3-button w3-right w3-round far fa-share-square" href="#intership-subscription-modal-${offerta.idTirocinio}">
+								Invia proposta
 							</a>
 						</#if>
 					 </div>
@@ -224,7 +222,7 @@
 		          <label for="cognomeStudente"><b>Cognome</b></label>
 		          <input id="cognomeStudente" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" value="${utente.cognome}" placeholder="Inserisci il tuo cognome" name="cognome" autocomplete="off" required />
 		          <label for="dataNascita"><b>Data di nascita</b></label>
-		          <input id="dataNascita" class="w3-input w3-border-bottom w3-margin-bottom" type="date" value="${utente.dataNascita?iso_local}" placeholder="Inserisci la tua data di nascita" name="data_nascita" autocomplete="off" required />
+		          <input id="dataNascita" class="w3-input w3-border-bottom w3-margin-bottom" type="date" value="${utente.dataNascita?iso_local}" name="data_nascita" autocomplete="off" required />
 		          <label for="luogoNascita"><b>Luogo di Nascita</b></label>
 				  <input id="luogoNascita" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" value="${utente.luogoNascita}" placeholder="Inserisci il tuo luogo di nascita" name="luogo_nascita" autocomplete="off" required />
 				  <label for="provinciaNascita"><b>Provincia di Nascita</b></label>
@@ -250,9 +248,9 @@
 	         	  <label for="usernameStudente"><b>Username</b></label>
 	         	  <input id="usernameStudente" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="15" type="text" value="${utente.username}" placeholder="Inserisci il tuo username" name="username" autocomplete="off" required />
 		          <label for="emailStudente"><b>Email</b></label>
-	         	  <input id="emailStudente" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" value="${utente.email}" placeholder="Inserisci la tua email" name="email" autocomplete="off" required />
+	         	  <input id="emailStudente" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="email" value="${utente.email}" placeholder="Inserisci la tua email" name="email" autocomplete="off" required />
 		          <label for="telefonoStudente"><b>Telefono</b></label>
-	          	  <input id="telefonoStudente" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="20" type="number" value="${utente.telefono}" placeholder="Inserisci il tuo telefono" name="telefono" autocomplete="off" required />
+	          	  <input id="telefonoStudente" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="20" type="tel" value="${utente.telefono}" placeholder="Inserisci il tuo telefono" name="telefono" autocomplete="off" required />
 		          <label for="passwordStudente"><b>Password</b></label>
 	          	  <input id="passwordStudente" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="password" value="${utente.password}" placeholder="Inserisci la password" name="password" autocomplete="off" required />
 	          	  <button class="w3-button w3-block w3-section w3-padding univaq-color-background" type="submit" name="aggiorna" value="aggiorna">Modifica</button>
@@ -277,12 +275,12 @@
 						<label for="nomeTutore-${offerta.idTirocinio}"><b>Nome e Cognome Tutore</b></label>
 		          		<input id="nomeTutore-${offerta.idTirocinio}" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" placeholder="Inserisci il nome e cognome del tutore scelto" name="tutore_universitario" autocomplete="off" required />
 				        <label for="telefonoTutore-${offerta.idTirocinio}"><b>Telefono tutore</b></label>
-				        <input id="telefonoTutore-${offerta.idTirocinio}" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="15" type="number" placeholder="Inserisci il numero di telefono del tutore scelto" name="telefono_tutore" autocomplete="off" required />
+				        <input id="telefonoTutore-${offerta.idTirocinio}" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="15" type="tel" placeholder="Inserisci il numero di telefono del tutore scelto" name="telefono_tutore" autocomplete="off" required />
 				        <label for="emailTutore-${offerta.idTirocinio}"><b>Email tutore</b></label>
-				        <input id="emailTutore-${offerta.idTirocinio}" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" placeholder="Inserisci l'email del tutore scelto" name="email_tutore" autocomplete="off" required />
+				        <input id="emailTutore-${offerta.idTirocinio}" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="email" placeholder="Inserisci l'email del tutore scelto" name="email_tutore" autocomplete="off" required />
 				        <h3 class="univaq-color profile">Informazioni aggiuntive</h3>
 				        <label for="cfu-${offerta.idTirocinio}"><b>CFU</b></label>
-						<input id="cfu-${offerta.idTirocinio}" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="11" type="number" placeholder="Inserisci i CFU che desideri conseguire con il tirocinio scelto" name="cfu" autocomplete="off" required />
+						<input id="cfu-${offerta.idTirocinio}" class="w3-input w3-border-bottom w3-margin-bottom" type="number" placeholder="Inserisci i CFU che desideri conseguire con il tirocinio scelto" name="cfu" autocomplete="off" required />
 						<button class="w3-button w3-block w3-section w3-padding univaq-color-background" type="submit" name="iscriviti" value="iscriviti">Invia</button>
 			        </div>
 			      </form>
