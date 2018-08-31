@@ -10,6 +10,6 @@
         username="intership" 
         password="intership"
         driverClassName="com.mysql.jdbc.Driver"
-        url="jdbc:mysql://localhost/intershiptu	tor?zeroDateTimeBehavior=convertToNull"
+        url="jdbc:mysql://localhost/intershiptutor?zeroDateTimeBehavior=convertToNull"
     />
 </Context>
