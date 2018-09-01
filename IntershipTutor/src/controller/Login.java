@@ -46,9 +46,15 @@ public class Login extends IntershipTutorBaseController {
 		            switch(utente.getTipoUtente()) {
 			        	case studente:
 			        		utenteLoggato = (Studente) new StudenteDAO().getStudenteByCF(utente.getCodiceFiscale());
+			        		// Settiamo la password non cifrata per fare in modo che possa essere visualizzata
+			            	// e cambiata dalla homepage dello studente
+			            	((Studente) utenteLoggato).setPassword(password);
 			        		break;
 			        	case azienda:
 			        		utenteLoggato = (Azienda) new AziendaDAO().getAziendaByCF(utente.getCodiceFiscale());
+			        		// Settiamo la password non cifrata per fare in modo che possa essere visualizzata
+			            	// e cambiata dalla homepage dell'azienda
+			            	((Azienda) utenteLoggato).setPassword(password);
 			        		break;
 			        	case amministratore:
 			        		utenteLoggato = (Amministratore) new AmministratoreDAO().getAmministratoreByCF(utente.getCodiceFiscale());
@@ -57,7 +63,7 @@ public class Login extends IntershipTutorBaseController {
 		            SecurityLayer.createSession(request, utenteLoggato);
 	            
 	        		/*if(request.getParameter("referer") != null)
-		                response.sendRedirect(request.getParameter("referer"));
+		                response.sendRedirect(request.getHeader("referer"));
 	        		else*/
 		            
 	            	// NOT USING request.getContextPath becouse it doesn't work with Heroku
