@@ -1,3 +1,9 @@
+html,
+body {
+	margin: 0;
+	height: 100%
+}
+
 a{
 	text-decoration: none
 }
@@ -15,6 +21,7 @@ footer h5{
 }
 
 #main-content{
+	height: 100%;
 	background: #dfdfdf url(../img/cream_pixels.png);
 }
 
@@ -65,6 +72,7 @@ footer h5{
 #sidebar,
 #page-content{
 	margin-top: 60px;
+	height: 100%
 }
 
 /* Collapsible */

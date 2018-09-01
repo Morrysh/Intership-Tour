@@ -141,7 +141,7 @@ public class Login extends IntershipTutorBaseController {
     	try {
     		// La precudera di recupero password per ora è in questa servlet,
     		// da valutare se tenerla qui o spostarla in una nuova servlet
-    		if(request.getParameter("recupera") != null) {
+    		if(request.getParameter("ottieni") != null) {
     			// Procedura per recuperare la password
     			action_recover(request, response);
     		}
