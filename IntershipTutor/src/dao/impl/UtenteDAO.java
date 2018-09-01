@@ -162,9 +162,35 @@ public class UtenteDAO implements UtenteDAOInterface {
 	}
 
 	@Override
-	public Utente getUtenteByUsernameAndPassword(String username, String password) throws DataLayerException {
-		// TODO Auto-generated method stub
-		return null;
+	public Utente getUtenteByEmail(String email) throws DataLayerException {
+		String queryUtente = "SELECT * FROM utente WHERE email = ?";
+        PreparedStatement preparedStatement;
+        Utente utente = null;
+
+        try (Connection connection = DBConnector.getDatasource().getConnection()) {
+            preparedStatement = connection.prepareStatement(queryUtente);
+
+            preparedStatement.setString(1, email);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            	if (resultSet.next()) {
+            		utente = new Utente(
+                		resultSet.getString(Utente.CODICE_FISCALE),
+                        resultSet.getString(Utente.USERNAME),
+                        resultSet.getString(Utente.EMAIL),
+                        resultSet.getString(Utente.PASSWORD),
+                        resultSet.getBytes(Utente.HASH),
+                        resultSet.getString(Utente.TELEFONO),
+                        TipoUtente.valueOf(resultSet.getString(Utente.TIPO_UTENTE)));
+            }
+            
+            connection.close();
+            
+        } catch (SQLException e) {
+        	throw new DataLayerException("Unable to get user by email", e);
+        }
+        
+        return utente;
 	}
 
 	@Override

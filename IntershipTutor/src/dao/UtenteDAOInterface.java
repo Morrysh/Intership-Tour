@@ -22,7 +22,7 @@ public interface UtenteDAOInterface {
 	
 	boolean checkTelefonoDisponibile(String telefono) throws DataLayerException;
 	
-	Utente getUtenteByUsernameAndPassword(String username, String password) throws DataLayerException;
+	Utente getUtenteByEmail(String email) throws DataLayerException;
 	
 	Utente getUtenteByCF(String codiceFiscale) throws DataLayerException;
 	

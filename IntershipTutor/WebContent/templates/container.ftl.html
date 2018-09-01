@@ -97,6 +97,8 @@
 					<input class="login-tab" type="radio" name="tab" id="tab3" <#if aziendaNR??>checked</#if> />
 					<label class="tab-label w3-round" for="tab3">Azienda</label>
 					
+					<input class="login-tab" type="radio" name="tab" id="tab4" />
+					
 					
 					<!-- Login modal -->
 					<div id="login-modal" class="tab">
@@ -110,6 +112,9 @@
 								<input id="username" class="w3-input w3-border-bottom" type="text" placeholder="Inserisci il tuo username" name="username" autocomplete="off" required />
 								<label for="password"><b>Password</b></label>
 								<input id="password" class="w3-input w3-border-bottom" type="password" placeholder="Inserisci la tua password" name="password" required />
+									<p class="info  w3-margin-bottom w3-right pointer">
+										<label class="tab-label w3-round" for="tab4">Password dimenticata?</label>
+									</p>
 								<button class="w3-button w3-block w3-padding univaq-color-background" type="submit" name="login" value="login">Login</button>
 							</div>
 		      			</form>
@@ -210,9 +215,29 @@
 					    </form>
 					</div>
 					<!-- End sign up company modal -->
+					
+					<!-- Password recover modal -->
+					<div id="recover-password" class="tab">
+						<div class="w3-center"><br>
+							<a href="#" class="w3-button w3-xlarge w3-display-topright">&times;</a>
+							<h2 class="w3-margin-bottom">Recupera la tua password</h2>
+						</div>
+						<form class="w3-container" action="login" method="post">
+					        <div class="w3-section">
+					          <h3 class="univaq-color profile">Inserisci l'email di recupero</h3>
+					          <label for="emailRecupero"><b>Email</b></label>
+				         	  <input id="emailRecupero" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="email" placeholder="Inserisci l'email dove desideri ricevere la nuova password" name="email" autocomplete="off" required />
+				          	  <button class="w3-button w3-block w3-section w3-padding univaq-color-background" type="submit" name="recupera" value="recupera">Recupera password</button>
+				          </div>
+					    </form>
+					</div>
+					<!-- End password recover modal -->
 				</div>
 			</div>
 		</div>
+		
+		
+		
 	<!-- End modals -->
 	</#if>
 </body>
