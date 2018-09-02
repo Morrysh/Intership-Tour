@@ -29,11 +29,11 @@
 		                   ${utente.telefono}
 		                </p>
 		                <hr class="no-margin" />
-		                <p class="info padding-top-bot pointer">
-		                	<a href="#update-student-modal">
+		                <p class="info padding-top-bot">
+		                	<label class="pointer" for="update-student-modal">
 			                   <i class="far fa-edit fa-fw w3-margin-right w3-margin-bottom w3-text-theme"></i>
 			                   Modifica Profilo
-		                   </a>
+		                   </label>
 		                </p>
 		               	<#if tirocinioRichiesto?? && tirocinioStudente??>
 		               		<h2 id="tirocinio-richiesto" class="w3-center univaq-color">Tirocinio Richiesto</h2>
@@ -88,10 +88,10 @@
 		               			</p>
 			               		<hr class="no-margin" />
 			               		<p class="info">
-			               			<a href="#summary-modal">
+			               			<label class="pointer" for="summary-modal">
 				               			<i class="fas fa-clipboard-check fa-fw w3-margin-right w3-margin-bottom w3-margin-top w3-text-theme"></i>
 				               			Riepilogo
-			               			</a>
+			               			</label>
 			               		</p>
 			               	</#if>
 		               	</#if>
@@ -184,9 +184,9 @@
 						    </#if>
 						</p>
 						<#if !tirocinioStudente??>
-							<a class="w3-button w3-right w3-round far fa-share-square" href="#intership-subscription-modal-${offerta.idTirocinio}">
+							<label class="w3-button w3-right w3-round far fa-share-square" for="intership-subscription-modal-${offerta.idTirocinio}">
 								Invia proposta
-							</a>
+							</label>
 						</#if>
 					 </div>
 				</#list>
@@ -205,11 +205,16 @@
 
 <!-- Modals -->
 <!-- Update student profile modal -->
-      <div id="update-student-modal" class="overlay">
-	    <div class="w3-card w3-white w3-round popup w3-padding">
+	  <input type="checkbox" class="modal" id="update-student-modal" <#if updateFailed??>checked</#if> />
+      <div  class="modal">
+	    <div class="w3-card w3-white w3-round modal-frame w3-padding">
 	
 	      <div class="w3-center"><br>
-	      	<a href="#close" class="w3-button w3-xlarge w3-display-topright">&times;</a>
+	      	<#if studenteNR??>
+				<a href="." class="w3-xlarge pointer close w3-button w3-padding">&times;</a>
+			<#else>
+				<label for="update-student-modal" class="w3-xlarge pointer close w3-button w3-padding">&times;</label>
+			</#if>
 	        <h2>Modifica informazioni</h2>
 	      </div>
 		      <form class="w3-container" action="./studente" method="post">
@@ -241,16 +246,25 @@
 			          <span class="checkmark"></span>Si
 			      </label><br />
 			      <label class="radio-container">
-						  	<input type="radio" name="handicap" value="false" <#if !utente.handicap>checked</#if>>
+						 <input type="radio" name="handicap" value="false" <#if !utente.handicap>checked</#if>>
 		          	<span class="checkmark"></span>No
 			      </label>
 	         	  <h3 class="univaq-color profile">Account</h3>
 	         	  <label for="usernameStudente"><b>Username</b></label>
-	         	  <input id="usernameStudente" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="15" type="text" value="${utente.username}" placeholder="Inserisci il tuo username" name="username" autocomplete="off" required />
+	         	  <input id="usernameStudente" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="15" type="text" <#if studenteNR??>value="${studenteNR.username}"<#else>value="${utente.username}"</#if> placeholder="Inserisci il tuo username" name="username" autocomplete="off" required />
+		          <#if usernameInUso?? && usernameInUso??>
+					<p class="warning">Username non disponibile</p>
+				  </#if>
 		          <label for="emailStudente"><b>Email</b></label>
-	         	  <input id="emailStudente" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="email" value="${utente.email}" placeholder="Inserisci la tua email" name="email" autocomplete="off" required />
+	         	  <input id="emailStudente" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="email" <#if studenteNR??>value="${studenteNR.email}"<#else>value="${utente.email}"</#if> placeholder="Inserisci la tua email" name="email" autocomplete="off" required />
+		          <#if emailInUso?? && emailInUso??>
+		          	<p class="warning">Email non disponibile</p>
+		          </#if>
 		          <label for="telefonoStudente"><b>Telefono</b></label>
-	          	  <input id="telefonoStudente" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="20" type="tel" value="${utente.telefono}" placeholder="Inserisci il tuo telefono" name="telefono" autocomplete="off" required />
+	          	  <input id="telefonoStudente" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="20" type="tel" <#if studenteNR??>value="${studenteNR.telefono}"<#else>value="${utente.telefono}"</#if> placeholder="Inserisci il tuo telefono" name="telefono" autocomplete="off" required />
+		          <#if telefonoInUso?? && telefonoInUso??>
+		          	<p class="warning">Telefono non disponibile</p>
+		          </#if>
 		          <label for="passwordStudente"><b>Password</b></label>
 	          	  <input id="passwordStudente" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="password" value="${utente.password}" placeholder="Inserisci la password" name="password" autocomplete="off" required />
 	          	  <button class="w3-button w3-block w3-section w3-padding univaq-color-background" type="submit" name="aggiorna" value="aggiorna">Modifica</button>
@@ -261,10 +275,11 @@
       
       <!-- Inteship subscription modal -->
       <#list offerte as offerta>
-	      <div id="intership-subscription-modal-${offerta.idTirocinio}" class="overlay">
-		    <div class="w3-card w3-white w3-round popup w3-padding">
+      	  <input type="checkbox" class="modal" id="intership-subscription-modal-${offerta.idTirocinio}" />
+	      <div  class="modal">
+		    <div class="w3-card w3-white w3-round modal-frame w3-padding">
 		      <div class="w3-center"><br>
-		      	<a href="#close" class="w3-button w3-xlarge w3-display-topright">&times;</a>
+		      	<label for="intership-subscription-modal-${offerta.idTirocinio}" class="w3-xlarge pointer close w3-button w3-padding">&times;</label>
 		        <h2>Inserisci le informazioni</h2>
 		      </div>
 			      <form class="w3-container" action="tirocinioStudente" method="post">
@@ -277,7 +292,7 @@
 				        <label for="telefonoTutore-${offerta.idTirocinio}"><b>Telefono tutore</b></label>
 				        <input id="telefonoTutore-${offerta.idTirocinio}" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="15" type="tel" placeholder="Inserisci il numero di telefono del tutore scelto" name="telefono_tutore" autocomplete="off" required />
 				        <label for="emailTutore-${offerta.idTirocinio}"><b>Email tutore</b></label>
-				        <input id="emailTutore-${offerta.idTirocinio}" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="email" placeholder="Inserisci l'email del tutore scelto" name="email_tutore" autocomplete="off" required />
+				        <input id="emailTutore-${offerta.idTirocinio}" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="email" placeholder="Inserisci l&#39;email del tutore scelto" name="email_tutore" autocomplete="off" required />
 				        <h3 class="univaq-color profile">Informazioni aggiuntive</h3>
 				        <label for="cfu-${offerta.idTirocinio}"><b>CFU</b></label>
 						<input id="cfu-${offerta.idTirocinio}" class="w3-input w3-border-bottom w3-margin-bottom" type="number" placeholder="Inserisci i CFU che desideri conseguire con il tirocinio scelto" name="cfu" autocomplete="off" required />
@@ -289,11 +304,12 @@
       </#list>
 
 	  <#if tirocinioStudente?? && tirocinioStudente.stato.name() == "terminato">
-		  <div id="summary-modal" class="overlay">
-			    <div class="w3-card w3-white w3-round popup w3-padding">
+	  	  <input type="checkbox" class="modal" id="summary-modal" />
+		  <div class="modal">
+			    <div class="w3-card w3-white w3-round modal-frame w3-padding">
 			      <div class="w3-center"><br>
-			      	<a href="#close" class="w3-button w3-xlarge w3-display-topright">&times;</a>
-			        <h2>Riepilogo attività svolta</h2>
+			      	<label for="summary-modal" class="w3-xlarge pointer close w3-button w3-padding">&times;</label>
+			        <h2>Riepilogo attivit&#224; svolta</h2>
 			      </div>
 			        <div class="w3-section w3-padding">
 			        	<p><b>Descrizione dettagliata</b></p>

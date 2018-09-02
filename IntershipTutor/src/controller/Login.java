@@ -122,14 +122,20 @@ public class Login extends IntershipTutorBaseController {
         			response.sendRedirect(".");
 		        }
 	            else {
-	        		response.sendRedirect("." + "#access-manager-modal");
+	            	// Facciamo in modo che il modal per il login venga riaperto
+	            	// se l'utente sbaglia le credenziali
+	            	request.setAttribute("failed", true);
+	            	request.getRequestDispatcher(".").forward(request,response);
 	            }
 	        }
 	        else {
-	        	response.sendRedirect("." + "#access-manager-modal");
+	        	// Facciamo in modo che il modal per il login venga riaperto
+            	// se l'utente sbaglia le credenziali
+	        	request.setAttribute("failed", true);
+            	request.getRequestDispatcher(".").forward(request,response);
 	        }
         }
-        catch (DataLayerException ex) {
+        catch (DataLayerException | ServletException ex) {
             request.setAttribute("message", "Data access exception: " + ex.getMessage());
             action_error(request, response);
         }

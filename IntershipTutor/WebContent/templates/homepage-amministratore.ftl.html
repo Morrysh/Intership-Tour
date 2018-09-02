@@ -135,9 +135,9 @@
 				      <tr>
 				        <td class="w3-round">
 				        	<h5 class="w3-padding-small">
-				        		<a href="#company-details-modal-${azienda.utente}">
+				        		<label class="pointer" for="company-details-modal-${azienda.utente}">
 				        			${azienda.nome}<span class="info">     (dettagli...)</span>
-				        		</a>
+				        		</label>
 				        	</h5>
 				        	<form class="padding-top-bot" action="upload?azienda=${azienda.utente}&utente=${amministratore.utente}" method="post" enctype='multipart/form-data'>
 							    <input type="file" name="file" />
@@ -231,10 +231,11 @@
 		
 		<!-- Modal -->
 		<#list aziendeNonConv as azienda>
-		<div id="company-details-modal-${azienda.utente}" class="overlay">
-		    <div class="w3-card w3-white w3-round popup w3-padding">
+		<input type="checkbox" class="modal" id="company-details-modal-${azienda.utente}" />
+		<div class="modal">
+		    <div class="w3-card w3-white w3-round modal-frame w3-padding">
 			      <div class="w3-center"><br>
-			      	<a href="#close" class="w3-button w3-xlarge w3-display-topright">&times;</a>
+			      	<label for="company-details-modal-${azienda.utente}" class="w3-xlarge pointer close w3-button w3-padding">&times;</label>
 			        <h2>Informazioni su ${azienda.nome}</h2>
 			      </div>
 			        <div class="w3-section">

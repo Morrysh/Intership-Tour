@@ -49,22 +49,23 @@
           </div>
           <#if pareriAzienda?size gt 0>
          	<hr />
-         	<a href="#pareri-azienda-modal">
-	         	<p class="info pointer">
+         	<p class="no-padding">
+	         	<label class="info pointer w3-margin-bottom" for="pareri-azienda-modal">
 		         	<i class="fas fa-clipboard-list fa-fw w3-margin-right"></i>
 		          	Pareri
-		         </p>
-	         </a>
-          <#else>
-         	<br />
+		         </label>
+	         </p>
           </#if>
           <#if hasIntership?? && hasIntership>
-          	 <a href="#review">
-	         	<p class="info pointer">
+          	 <#if pareriAzienda?size == 0>
+          	  <hr class="no-margin" />
+          	 </#if>
+          	 <p class="no-padding">
+	          	 <label class="info pointer" for="review">
 		         	<i class="fas fa-marker fa-fw w3-margin-right "></i>
 		          	Recensisci
-		         </p>
-	         </a>
+		         </label>
+	         </p>
           </#if>
         </div>
       </div>
@@ -202,11 +203,12 @@
 <!-- Modals -->
     
 	<!-- Read reviews modal -->
-    <div id="pareri-azienda-modal" class="overlay">
-	    <div class="w3-card w3-white w3-round popup w3-padding">
+	<input type="checkbox" class="modal" id="pareri-azienda-modal" />
+    <div class="modal">
+	    <div class="w3-card w3-white w3-round modal-frame w3-padding">
 	
 	      <div class="w3-center"><br>
-	      	<a href="#" class="w3-button w3-xlarge w3-display-topright">&times;</a>
+	      	<label for="pareri-azienda-modal" class="w3-xlarge pointer close w3-button w3-padding">&times;</label>
 	        <h2>Pareri su ${azienda.nome}</h2>
 	      </div>
 	        <div class="w3-section">
@@ -221,11 +223,12 @@
       
       <!-- Review modal -->
       <#if studente?? && hasIntership?? && hasIntership>
-      <div id="review" class="overlay">
-	    <div class="w3-card w3-white w3-round popup w3-padding">
+      <input type="checkbox" class="modal" id="review" />
+      <div class="modal">
+	    <div class="w3-card w3-white w3-round modal-frame w3-padding">
 	
 	      <div class="w3-center"><br>
-	      	<a href="#" class="w3-button w3-xlarge w3-display-topright">&times;</a>
+	      	<label for="review" class="w3-xlarge pointer close w3-button w3-padding">&times;</label>
 	        <h2>Pareri su ${azienda.nome}</h2>
 	      </div>
 	        <form class="w3-container" action="./azienda?referer=azienda?azienda=${azienda.utente}" method="post">
@@ -238,7 +241,7 @@
 		          		<input type="hidden" name="update" value="update" />
 		          </#if>
 		          <label for="parere"><b>Parere</b></label>
-				  <textarea id="parere" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="255" placeholder="Esprimi il tuo parere sull'azienda" name="parere" autocomplete="off" required><#if parere??>${parere.parere}</#if></textarea>
+				  <textarea id="parere" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="255" placeholder="Esprimi il tuo parere sull&#39;azienda" name="parere" autocomplete="off" required><#if parere??>${parere.parere}</#if></textarea>
 	          	  <label for="rating"><b>Valuta</b></label><br />
 	          	  <fieldset id="rating" class="rating">
 			        <input type="radio" id="star5" name="rating" value="5" <#if parere?? && parere.voto == 5>checked</#if> />

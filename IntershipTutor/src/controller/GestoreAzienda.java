@@ -21,6 +21,7 @@ import dao.impl.AziendaDAO;
 import dao.impl.OffertaTirocinioDAO;
 import dao.impl.ParereAziendaDAO;
 import dao.impl.TirocinioStudenteDAO;
+import dao.impl.UtenteDAO;
 import data.model.Azienda;
 import data.model.OffertaTirocinio;
 import data.model.ParereAzienda;
@@ -51,6 +52,63 @@ public class GestoreAzienda extends IntershipTutorBaseController {
         }
     }
 	
+		// Funzione per controllare se l'azienda può registrarsi o aggiornare la registrazione 
+		// con i campi inseriti(verifica dei duplicati)
+		private boolean check_fields(HttpServletRequest request, HttpServletResponse response, Azienda azienda) throws DataLayerException {
+			try {
+				boolean registrazione_ok = true;
+				
+				// Registazione
+				if(request.getParameter("registrazione") != null) {
+					if(!new UtenteDAO().checkCodiceFiscaleDisponibile(azienda.getCodiceFiscale())) {
+						request.setAttribute("PIInUso", true);
+						registrazione_ok = false;
+					}
+					if(!new UtenteDAO().checkEmailDisponibile(azienda.getEmail())) {
+						request.setAttribute("emailAInUso", true);
+						registrazione_ok = false;
+					}
+					if(!new UtenteDAO().checkUsernameDisponibile(azienda.getUsername())) {
+						request.setAttribute("usernameAInUso", true);
+						registrazione_ok = false;
+					}
+					if(!new UtenteDAO().checkTelefonoDisponibile(azienda.getTelefono())) {
+						request.setAttribute("telefonoAInUso", true);
+						registrazione_ok = false;
+					}
+				}
+				// Richiesta aggiornamento profilo
+				else {
+					
+					Azienda aziendaLoggata = (Azienda)request.getAttribute("utente");
+					
+					if(!(aziendaLoggata.getEmail().equals(azienda.getEmail())) &&
+					   !new UtenteDAO().checkEmailDisponibile(azienda.getEmail())) {
+						
+						request.setAttribute("emailAInUso", true);
+						registrazione_ok = false;
+					}
+					if(!(aziendaLoggata.getUsername().equals(azienda.getUsername())) &&
+					   !new UtenteDAO().checkUsernameDisponibile(azienda.getUsername())) {
+						
+						request.setAttribute("usernameAInUso", true);
+						registrazione_ok = false;
+					}
+					if(!(aziendaLoggata.getTelefono().equals(azienda.getTelefono())) &&
+					   !new UtenteDAO().checkTelefonoDisponibile(azienda.getTelefono())) {
+						
+						request.setAttribute("telefonoAInUso", true);
+						registrazione_ok = false;
+					}
+				}
+				
+				return registrazione_ok;
+			}
+			catch(DataLayerException ex) {
+				throw new DataLayerException("Errore nella verifica dei campi");
+			}
+		}
+	
 	private void setConvezioneAzienda(HttpServletRequest request, HttpServletResponse response, Azienda azienda) {
 		try {
 			TemplateResult res = new TemplateResult(getServletContext());
@@ -80,7 +138,8 @@ public class GestoreAzienda extends IntershipTutorBaseController {
 	
 	private void action_aggiorna(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException{
 		try {
-			Azienda azienda = (Azienda) request.getAttribute("utente");
+			Azienda aziendaLoggata = (Azienda) request.getAttribute("utente");
+			Azienda azienda = new Azienda();
 			
 			azienda.setNome(request.getParameter(Azienda.NOME));
 			azienda.setEmail(request.getParameter(Azienda.EMAIL));
@@ -95,10 +154,34 @@ public class GestoreAzienda extends IntershipTutorBaseController {
 			azienda.setNomeResponsabile(request.getParameter(Azienda.NOME_RESPONSABILE));
 			azienda.setCognomeResponsabile(request.getParameter(Azienda.COGNOME_RESPONSABILE));
 			
-			new AziendaDAO().update(azienda);
+			boolean registrazione_ok = check_fields(request, response, azienda);
 			
-			// NOT USING request.getContextPath because it doesn't work with Heroku
-			response.sendRedirect(".");
+			if(registrazione_ok) {
+				aziendaLoggata.setNome(azienda.getNome());
+				aziendaLoggata.setEmail(azienda.getEmail());
+				aziendaLoggata.setUsername(azienda.getUsername());
+				aziendaLoggata.setTelefono(azienda.getTelefono());
+				aziendaLoggata.setRegione(azienda.getRegione());
+				aziendaLoggata.setIndirizzoSedeLegale(azienda.getIndirizzoSedeLegale());
+				aziendaLoggata.setForoCompetente(azienda.getForoCompetente());
+				aziendaLoggata.setNomeRappresentante(azienda.getNomeRappresentante());
+				aziendaLoggata.setCognomeRappresentante(azienda.getCognomeRappresentante());
+				aziendaLoggata.setNomeResponsabile(azienda.getNomeResponsabile());
+				aziendaLoggata.setCognomeResponsabile(azienda.getCognomeResponsabile());
+				// Aggiorniamo i dati dell'azienda
+				new AziendaDAO().update(azienda);
+				// NOT USING request.getContextPath because it doesn't work with Heroku
+				response.sendRedirect(".");
+			}
+			else {
+				// aziendaNR contiene i dati inseriti per la registrazione 
+				// che non è andata a buon fine a causa di vlaori duplicati
+				// verrà usato per non far reinserire tutti i valori all'utente
+				// che ha tentato la registrazione
+				request.setAttribute("updateAFailed", true);
+				request.setAttribute("aziendaNR", azienda);
+				request.getRequestDispatcher(".").forward(request,response);
+			}
 			
 		} catch (DataLayerException | IOException e) {
 			request.setAttribute("message", "Data access exception: " + e.getMessage());
@@ -126,13 +209,26 @@ public class GestoreAzienda extends IntershipTutorBaseController {
 					request.getParameter(Azienda.COGNOME_RESPONSABILE),
 					false);
 			
-			new AziendaDAO().insert(azienda);
+			boolean registrazione_ok = check_fields(request, response, azienda);
 			
-			// Generiamo il pdf schema convenzione
-			setConvezioneAzienda(request, response, azienda);
-			
-			// NOT USING request.getContextPath becouse it doesn't work with Heroku
-			response.sendRedirect(".");
+			if(registrazione_ok) {
+				new AziendaDAO().insert(azienda);
+				// Generiamo il pdf schema convenzione
+				setConvezioneAzienda(request, response, azienda);
+				// NOT USING request.getContextPath becouse it doesn't work with Heroku
+				response.sendRedirect(".");
+			}
+			else {
+				// aziendaNR contiene i dati inseriti per la registrazione 
+				// che non è andata a buon fine a causa di vlaori duplicati
+				// verrà usato per non far reinserire tutti i valori all'utente
+				// che ha tentato la registrazione
+				request.setAttribute("signUpAFailed", true);
+				// Riapriamo il modal della registrazione
+				request.setAttribute("failed", true);
+				request.setAttribute("aziendaNR", azienda);
+				request.getRequestDispatcher(".").forward(request,response);
+			}
 			
 		} catch (DataLayerException | IOException e) {
 			request.setAttribute("message", "Data access exception: " + e.getMessage());

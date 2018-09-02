@@ -32,10 +32,10 @@
 		        <i class="fas fa-sign-out-alt w3-margin-left univaq-color-background"></i>
 		    </a>
 	    <#else>
-	    	<a href="#access-manager-modal" class="w3-bar-item w3-right no-padding pointer">
+	    	<label class="w3-right w3-text-white pointer" for="access-manager-modal">
 		        Accedi
 		        <i class="fas fa-sign-in-alt w3-margin-left univaq-color-background"></i>
-		    </a>
+		    </label>
 	    </#if>
 	</div>
 	
@@ -52,9 +52,18 @@
 	        <div class="menu-content-1">
 	            <ul>
 	            	<#if utente??>
-	            		<li><a href="logout" class="w3-bar-item">Esci</a></li>
+	            		<li>
+	            			<a href="logout" class="w3-bar-item fas fa-sign-out-alt">
+	            				Esci
+	            			</a>
+	            		</li>
 	            	<#else>
-	            		<li><a href="#access-manager-modal" class="w3-bar-item">Accedi</a></li>
+	            		<li>
+	            			<label class="w3-text-white" for="access-manager-modal">
+	            				<i class="fas fa-sign-in-alt w3-margin-right univaq-color-background"></i>
+						        Accedi
+						    </label>
+	            		</li>
 	            	</#if>
 	            </ul>                    
 	        </div>
@@ -83,18 +92,24 @@
     
     <!-- Modals -->
     <#if !utente??>
-		<!-- Login modal form -->
-		<div id="access-manager-modal" class="overlay">
+    	<!-- Login modal form -->
+    	<input type="checkbox" class="modal" id="access-manager-modal" <#if failed?? && failed>checked</#if> />
+		<div class="modal">
 			<div class="tab-frame">
 			
-				<div class="popup w3-card w3-round w3-padding w3-white">
-					<input class="login-tab" type="radio" name="tab" id="tab1" <#if !studenteNR?? && !aziendaNR??>checked</#if> />
+				<div class=" w3-card w3-round w3-padding w3-white modal-frame">
+					<#if aziendaNR?? || studenteNR??>
+						<a href="." class="w3-xlarge pointer close w3-button w3-padding">&times;</a>
+					<#else>
+						<label for="access-manager-modal" class="w3-xlarge pointer close w3-button w3-padding">&times;</label>
+					</#if>				
+					<input class="login-tab" type="radio" name="tab" id="tab1" <#if !signUpFailed?? && !signUpAFailed??>checked</#if> />
 					<label class="tab-label w3-round" for="tab1">Login</label>
 					
-					<input class="login-tab" type="radio" name="tab" id="tab2" <#if studenteNR??>checked</#if> />
+					<input class="login-tab" type="radio" name="tab" id="tab2" <#if signUpFailed??>checked</#if> />
 					<label class="tab-label w3-round" for="tab2">Registrazione</label>
 					
-					<input class="login-tab" type="radio" name="tab" id="tab3" <#if aziendaNR??>checked</#if> />
+					<input class="login-tab" type="radio" name="tab" id="tab3" <#if signUpAFailed??>checked</#if> />
 					<label class="tab-label w3-round" for="tab3">Azienda</label>
 					
 					<input class="login-tab" type="radio" name="tab" id="tab4" />
@@ -103,7 +118,6 @@
 					<!-- Login modal -->
 					<div id="login-modal" class="tab">
 						<div class="w3-center"><br>
-							<a href="#close" class="w3-button w3-xlarge w3-display-topright">&times;</a>
 							<h2 class="w3-margin-bottom">Effettua il login</h2>
 						</div>
 						<form class="w3-container" action="login" method="post">
@@ -124,50 +138,61 @@
 					<!-- Sign up student modal -->
 					<div id="signup-student-modal" class="tab">
 						<div class="w3-center"><br>
-							<a href="#" class="w3-button w3-xlarge w3-display-topright">&times;</a>
 							<h2 class="w3-margin-bottom">Effettua la registrazione</h2>
 						</div>
 						<form class="w3-container" action="studente" method="post">
 					        <div class="w3-section">
 					          <h3 class="univaq-color profile">Informazioni personali</h3>
 					          <label for="nomeStudente"><b>Nome</b></label>
-					          <input id="nomeStudente" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" placeholder="Inserisci il tuo nome" name="nome" autocomplete="off" required />
+					          <input id="nomeStudente" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" placeholder="Inserisci il tuo nome" name="nome" autocomplete="off" <#if studenteNR??>value="${studenteNR.nome}"</#if> required />
 					          <label for="cognomeStudente"><b>Cognome</b></label>
-					          <input id="codiceFiscaleStudente" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" placeholder="Inserisci il tuo nome" name="cognome" autocomplete="off" required />
+					          <input id="codiceFiscaleStudente" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" placeholder="Inserisci il tuo nome" name="cognome" autocomplete="off" <#if studenteNR??>value="${studenteNR.cognome}"</#if> required />
 					          <label for="codiceFiscaleStudente"><b>Codice fiscale</b></label>
-					          <input id="cognomeStudente" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="16" type="text" placeholder="Inserisci il tuo codice fiscale" name="codice_fiscale" autocomplete="off" required />
+					          <input id="cognomeStudente" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="16" type="text" placeholder="Inserisci il tuo codice fiscale" name="codice_fiscale" autocomplete="off" <#if studenteNR??>value="${studenteNR.codiceFiscale}"</#if> required />
+					          <#if CFInUso?? && CFInUso??>
+					          	<p class="warning">Codice fiscale duplicato</p>
+					          </#if>
 					          <label for="dataNascita"><b>Data di nascita</b></label>
-					          <input id="dataNascita" class="w3-input w3-border-bottom w3-margin-bottom" type="date" name="data_nascita" autocomplete="off" required />
+					          <input id="dataNascita" class="w3-input w3-border-bottom w3-margin-bottom" type="date" name="data_nascita" autocomplete="off" <#if studenteNR??>value="${studenteNR.dataNascita?iso_local}"</#if> required />
 					          <label for="luogoNascita"><b>Luogo di Nascita</b></label>
-							  <input id="luogoNascita" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" placeholder="Inserisci il tuo luogo di nascita" name="luogo_nascita" autocomplete="off" required />
+							  <input id="luogoNascita" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" placeholder="Inserisci il tuo luogo di nascita" name="luogo_nascita" autocomplete="off" <#if studenteNR??>value="${studenteNR.luogoNascita}"</#if> required />
 							  <label for="provinciaNascita"><b>Provincia di Nascita</b></label>
-							  <input id="provinciaNascita" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="2" type="text" placeholder="Inserisci la tua provincia di nascita" name="provincia_nascita" autocomplete="off" required />
+							  <input id="provinciaNascita" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="2" type="text" placeholder="Inserisci la tua provincia di nascita" name="provincia_nascita" autocomplete="off" <#if studenteNR??>value="${studenteNR.provinciaNascita}"</#if> required />
 							  <label for="residenza"><b>Residenza</b></label>
-							  <input id="residenza" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" placeholder="Inserisci la tua residenza" name="residenza" autocomplete="off" required />
+							  <input id="residenza" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" placeholder="Inserisci la tua residenza" name="residenza" autocomplete="off" <#if studenteNR??>value="${studenteNR.residenza}"</#if> required />
 							  <label for="provinciaResidenza"><b>Provincia residenza</b></label>
-							  <input id="provinciaResidenza" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="2" type="text" placeholder="Inserisci la provincia della tua residenza" name="provincia_residenza" autocomplete="off" required />
+							  <input id="provinciaResidenza" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="2" type="text" placeholder="Inserisci la provincia della tua residenza" name="provincia_residenza" autocomplete="off" <#if studenteNR??>value="${studenteNR.provinciaResidenza}"</#if> required />
 							  <label for="tipoLaurea"><b>Tipo di laurea</b></label>
-							  <input id="tipoLaurea" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" placeholder="Inserisci il tipo della tua laurea(Triennale/Magistrale)" name="tipo_laurea" autocomplete="off" required />
+							  <input id="tipoLaurea" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" placeholder="Inserisci il tipo della tua laurea(Triennale/Magistrale)" name="tipo_laurea" autocomplete="off" <#if studenteNR??>value="${studenteNR.tipoLaurea}"</#if> required />
 							  <label for="corsoLaurea"><b>Corso di laurea</b></label>
-							  <input id="corsoLaurea" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" placeholder="Inserisci il tuo corso di laurea" name="corso_laurea" autocomplete="off" required />
+							  <input id="corsoLaurea" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" placeholder="Inserisci il tuo corso di laurea" name="corso_laurea" autocomplete="off" <#if studenteNR??>value="${studenteNR.corsoLaurea}"</#if> required />
 					          <h3 class="univaq-color profile">Indicare se si &eacute; portatori di handicap</h3>
 					          <label class="radio-container">
-						          <input type="radio" name="handicap" value="true" required>
+						          <input type="radio" name="handicap" value="true" <#if studenteNR?? && studenteNR.isHandicap()>checked</#if> required>
 						          <span class="checkmark"></span>Si
 						      </label><br />
 						      <label class="radio-container">
-  							  	<input type="radio" name="handicap" value="false">
+  							  	<input type="radio" name="handicap" <#if studenteNR?? && !studenteNR.isHandicap()>checked</#if> value="false">
 					          	<span class="checkmark"></span>No
 						      </label>
 					          <h3 class="univaq-color profile">Account</h3>
 					          <label for="usernameStudente"><b>Username</b></label>
-				         	  <input id="usernameStudente" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="15" type="text" placeholder="Inserisci il tuo username" name="username" autocomplete="off" required />
+				         	  <input id="usernameStudente" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="15" type="text" placeholder="Inserisci il tuo username" name="username" autocomplete="off" <#if studenteNR??>value="${studenteNR.username}"</#if> required />
+					          <#if usernameInUso?? && usernameInUso??>
+								<p class="warning">Username non disponibile</p>
+							  </#if>
 					          <label for="emailStudente"><b>Email</b></label>
-				         	  <input id="emailStudente" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="email" placeholder="Inserisci la tua email" name="email" autocomplete="off" required />
+				         	  <input id="emailStudente" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" placeholder="Inserisci la tua email" name="email" autocomplete="off" <#if studenteNR??>value="${studenteNR.email}"</#if> required />
+					          <#if emailInUso?? && emailInUso??>
+					          	<p class="warning">Email non disponibile</p>
+					          </#if>
 					          <label for="telefonoStudente"><b>Telefono</b></label>
-				          	  <input id="telefonoStudente" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="20" type="tel" placeholder="Inserisci il tuo telefono" name="telefono" autocomplete="off" required />
+				          	  <input id="telefonoStudente" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="20" type="tel" placeholder="Inserisci il tuo telefono" name="telefono" autocomplete="off" <#if studenteNR??>value="${studenteNR.telefono}"</#if> required />
+					          <#if telefonoInUso?? && telefonoInUso??>
+					          	<p class="warning">Telefono non disponibile</p>
+					          </#if>
 					          <label for="passwordStudente"><b>Password</b></label>
-				          	  <input id="passwordStudente" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="password" placeholder="Inserisci la password" name="password" autocomplete="off" required />
+				          	  <input id="passwordStudente" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="password" placeholder="Inserisci la password" name="password" autocomplete="off" <#if studenteNR??>value="${studenteNR.password}"</#if> required />
 				          	  <button class="w3-button w3-block w3-section w3-padding univaq-color-background" type="submit" name="registrazione" value="registrazione">Registrati</button>
 					        </div>
 					    </form>
@@ -177,39 +202,50 @@
 					<!-- Sign up company modal -->
 					<div id="signup-company-modal" class="tab">
 						<div class="w3-center"><br>
-							<a href="#" class="w3-button w3-xlarge w3-display-topright">&times;</a>
 							<h2 class="w3-margin-bottom">Registra la tua azienda</h2>
 						</div>
 						<form class="w3-container" action="azienda" method="post">
 					        <div class="w3-section">
 					          <h3 class="univaq-color profile">Informazioni sull'azienda</h3>
 					          <label for="nomeAzienda"><b>Nome</b></label>
-					          <input id="nomeAzienda" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" placeholder="Inserisci il tuo nome" name="nome" autocomplete="off" required />
+					          <input id="nomeAzienda" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" placeholder="Inserisci il tuo nome" name="nome" autocomplete="off" <#if aziendaNR??>value="${aziendaNR.nome}"</#if> required />
 					          <label for="codiceFiscale"><b>Partita IVA/Codice fiscale</b></label>
-					          <input id="codiceFiscale" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="16" type="text" placeholder="Inserisci la partita IVA della tua azienda" name="codice_fiscale" autocomplete="off" required />
+					          <input id="codiceFiscale" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="16" type="text" placeholder="Inserisci la partita IVA della tua azienda" name="codice_fiscale" autocomplete="off" <#if aziendaNR??>value="${aziendaNR.codiceFiscale}"</#if> required />
+					          <#if PIInUso?? && PIInUso??>
+					          	<p class="warning">Codice fiscale duplicato</p>
+					          </#if>
 					          <label for="regioneAzienda"><b>Regione</b></label>
-					          <input id="regioneAzienda" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" placeholder="Inserisci la regione della tua azienda" name="regione" autocomplete="off" required />
+					          <input id="regioneAzienda" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" placeholder="Inserisci la regione della tua azienda" name="regione" autocomplete="off" required <#if aziendaNR??>value="${aziendaNR.regione}"</#if> />
 					          <label for="indirizzoSedeLegale"><b>Indirizzo sede legale</b></label>
-							  <input id="indirizzoSedeLegale" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" placeholder="Inserisci l'indirizzo della sede legale" name="indirizzo_sede_legale" autocomplete="off" required />
+							  <input id="indirizzoSedeLegale" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" placeholder="Inserisci l'indirizzo della sede legale" name="indirizzo_sede_legale" autocomplete="off" required <#if aziendaNR??>value="${aziendaNR.indirizzoSedeLegale}"</#if> />
 							  <label for="foroCompetente"><b>Foro competente</b></label>
-							  <input id="foroCompetente" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" placeholder="Inserisci il foro competente" name="foro_competente" autocomplete="off" required />
+							  <input id="foroCompetente" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" placeholder="Inserisci il foro competente" name="foro_competente" autocomplete="off" <#if aziendaNR??>value="${aziendaNR.foroCompetente}"</#if> required />
 							  <label for="nomeRappresentante"><b>Nome rappresentante</b></label>
-							  <input id="nomeRappresentante" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" placeholder="Inserisci il nome del rappresentante" name="nome_rappresentante" autocomplete="off" required />
+							  <input id="nomeRappresentante" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" placeholder="Inserisci il nome del rappresentante" name="nome_rappresentante" autocomplete="off" required <#if aziendaNR??>value="${aziendaNR.nomeRappresentante}"</#if> />
 							  <label for="cognomeRappresentante"><b>Cognome Rappresentante</b></label>
-							  <input id="cognomeRappresentante" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" placeholder="Inserisci il cognome del rappresentante" name="cognome_rappresentante" autocomplete="off" required />
+							  <input id="cognomeRappresentante" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" placeholder="Inserisci il cognome del rappresentante" name="cognome_rappresentante" autocomplete="off" <#if aziendaNR??>value="${aziendaNR.cognomeRappresentante}"</#if> required />
 							  <label for="nomeResponsabile"><b>Nome responsabile</b></label>
-							  <input id="nomeResponsabile" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" placeholder="Inserisci il nome del responsabile" name="nome_responsabile" autocomplete="off" required />
+							  <input id="nomeResponsabile" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" placeholder="Inserisci il nome del responsabile" name="nome_responsabile" autocomplete="off" <#if aziendaNR??>value="${aziendaNR.nomeResponsabile}"</#if> required />
 							  <label for="cognomeResponsabile"><b>Cognome Responsabile</b></label>
-							  <input id="cognomeResponsabile" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" placeholder="Inserisci il cognome del responsabile" name="cognome_responsabile" autocomplete="off" required />					  
+							  <input id="cognomeResponsabile" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" placeholder="Inserisci il cognome del responsabile" name="cognome_responsabile" autocomplete="off" <#if aziendaNR??>value="${aziendaNR.cognomeResponsabile}"</#if> required />					  
 					          <h3 class="univaq-color profile">Account</h3>
 					          <label for="usernameAzienda"><b>Username</b></label>
-				         	  <input id="usernameAzienda" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="15" type="text" placeholder="Inserisci il tuo username" name="username" autocomplete="off" required />
+				         	  <input id="usernameAzienda" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="15" type="text" placeholder="Inserisci il tuo username" name="username" autocomplete="off" <#if aziendaNR??>value="${aziendaNR.username}"</#if> required />
+					          <#if usernameAInUso?? && usernameAInUso??>
+								<p class="warning">Username non disponibile</p>
+							  </#if>
 					          <label for="emailAzienda"><b>Email</b></label>
-				         	  <input id="emailAzienda" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="email" placeholder="Inserisci la tua email" name="email" autocomplete="off" required />
+				         	  <input id="emailAzienda" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" placeholder="Inserisci la tua email" name="email" autocomplete="off" <#if aziendaNR??>value="${aziendaNR.email}"</#if> required />
+					          <#if emailAInUso?? && emailAInUso??>
+					          	<p class="warning">Email non disponibile</p>
+					          </#if>
 					          <label for="telefonoAzienda"><b>Telefono</b></label>
-				          	  <input id="telefonoAzienda" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="20" type="tel" placeholder="Inserisci il tuo telefono" name="telefono" autocomplete="off" required />
+				          	  <input id="telefonoAzienda" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="20" type="tel" placeholder="Inserisci il tuo telefono" name="telefono" autocomplete="off" <#if aziendaNR??>value="${aziendaNR.telefono}"</#if> required />
+					          <#if telefonoAInUso?? && telefonoAInUso??>
+					          	<p class="warning">Telefono non disponibile</p>
+					          </#if>
 					          <label for="passwordAzienda"><b>Password</b></label>
-				          	  <input id="passwordAzienda" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="password" placeholder="Inserisci la password" name="password" autocomplete="off" required />
+				          	  <input id="passwordAzienda" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="password" placeholder="Inserisci la password" name="password" autocomplete="off" <#if aziendaNR??>value="${aziendaNR.password}"</#if> required />
 				          	  <button class="w3-button w3-block w3-section w3-padding univaq-color-background" type="submit" name="registrazione" value="registrazione">Registra l'azienda</button>
 				          </div>
 					    </form>
@@ -219,14 +255,13 @@
 					<!-- Password recover modal -->
 					<div id="recover-password" class="tab">
 						<div class="w3-center"><br>
-							<a href="#" class="w3-button w3-xlarge w3-display-topright">&times;</a>
 							<h2 class="w3-margin-bottom">Ottieni una nuova password</h2>
 						</div>
 						<form class="w3-container" action="login" method="post">
 					        <div class="w3-section">
-					          <h3 class="univaq-color profile">Inserisci l'email di recupero</h3>
+					          <h3 class="univaq-color profile">Email di recupero</h3>
 					          <label for="emailRecupero"><b>Email</b></label>
-				         	  <input id="emailRecupero" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="email" placeholder="Inserisci l'email dove desideri ricevere la nuova password" name="email" autocomplete="off" required />
+				         	  <input id="emailRecupero" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="email" placeholder="Inserisci l&#39;email dove desideri ricevere la nuova password" name="email" autocomplete="off" required />
 				          	  <button class="w3-button w3-block w3-section w3-padding univaq-color-background" type="submit" name="ottieni" value="ottieni">Ottieni password</button>
 				          </div>
 					    </form>

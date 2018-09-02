@@ -22,10 +22,10 @@
 		                </p>
 		                <hr class="no-margin" />
 		                <p class="info padding-top-bot pointer">
-			                <a href="#update-intership-modal">
+			                <label for="update-intership-modal">
 			                   <i class="far fa-edit fa-fw w3-margin-right w3-text-theme"></i>
 			                   Modifica questa offerta
-			                </a>
+			                </label>
 		                </p>
 		           </div>
 		       </div>
@@ -70,9 +70,9 @@
 					<p>
 						&Egrave; stato scelto come tutore <span>${tirocinio.tutoreUniversitario}</span>
 						contattabile al numero <span>${tirocinio.telefonoTutoreUniversitario}</span> o 
-						all'indirizzo email <span>${tirocinio.emailTutoreUniversitario}</span>.<br />
+						all&#39;indirizzo email <span>${tirocinio.emailTutoreUniversitario}</span>.<br />
 						Il tirocinante chiede il raggiungimento di <span>${tirocinio.cfu}</span> CFU 
-						con lo svolgimento dell'attività.					
+						con lo svolgimento dell&#39;attivit&#224;.					
 					</p>
 				</div>
 				<h3 class="univaq-color">Contatti del candidato</h3>
@@ -85,20 +85,22 @@
 				<br /><br />
 				<#if tirocinio.stato.name() == "attesa">
 					<#if !offertaTirocinio.dataInizio?? || !offertaTirocinio.dataFine??>
-						<a class="w3-left" href="#accept-modal" class="pointer w3-round fas fa-check w3-padding">
+						<label class="w3-left" for="accept-modal" class="pointer w3-round fas fa-check w3-padding">
+							Accetta
+						</label>
 					<#else>
 						<a href="tirocinioStudente?candidato=${candidato.codiceFiscale}&stato=accettato&utente=${azienda.utente}&referer=tirocinioStudente?id_tirocinio=${tirocinio.tirocinio}" class="pointer w3-round fas fa-check w3-padding w3-button">
+							Accetta
+						</a>
 					</#if>
-						Accetta
-					</a>
 					<a class="pointer w3-round fas fa-times w3-padding w3-right w3-button" href="tirocinioStudente?candidato=${candidato.codiceFiscale}&stato=rifiutato&utente=${azienda.utente}&referer=tirocinioStudente?id_tirocinio=${tirocinio.tirocinio}">
 						Rifiuta
 					</a>
 				<#elseif tirocinio.stato.name() == "accettato">
 					<div class="w3-block">
-						<a class="w3-button pointer w3-round fas fa-check-double w3-padding w3-right" href="#conclude-modal-${candidato.codiceFiscale}">	
+						<label class="w3-button pointer w3-round fas fa-check-double w3-padding w3-right" for="conclude-modal-${candidato.codiceFiscale}">	
 							Termina
-						</a>
+						</label>
 						<a class="w3-button pointer w3-round fas fa-download w3-padding w3-left" href="download?candidato=${candidato.utente}&utente=${utente.utente}">
 							Progetto formativo
 						</a>
@@ -109,7 +111,7 @@
 					</div>
 				<#elseif tirocinio.stato.name() == "terminato">
 					<p class="w3-right univaq-color no-margin w3-padding">
-						Il tirocinio è concluso
+						Il tirocinio &#233; concluso
 					</p>
 					<a class="w3-button pointer w3-round fas fa-download w3-padding w3-left" href="download?candidato=${candidato.utente}&utente=${utente.utente}">
 						Progetto formativo
@@ -119,7 +121,7 @@
 					</a>
 				<#else>
 					<p class="w3-right w3-text-gray w3-padding no-margin">
-						Il candidato è stato respinto
+						Il candidato &#233; stato respinto
 					</p>
 					<a class="w3-button pointer w3-round far fas fa-trash-alt w3-padding w3-left" href="tirocinioStudente?rimuovi=true&candidato=${candidato.utente}&utente=${azienda.utente}&referer=tirocinioStudente?id_tirocinio=${tirocinio.tirocinio}">
 						Elimina
@@ -144,11 +146,12 @@
 
 <!-- Modals -->
 <!-- Update intership modal -->
-<div id="update-intership-modal" class="overlay">
-    <div class="w3-card w3-white w3-round popup w3-padding">
+<input type="checkbox" class="modal" id="update-intership-modal" />
+<div class="modal">
+    <div class="w3-card w3-white w3-round modal-frame w3-padding">
 
 	      <div class="w3-center"><br>
-	      	<a href="#close" class="w3-button w3-xlarge w3-display-topright">&times;</a>
+		      <label for="update-intership-modal" class="w3-xlarge pointer close w3-button w3-padding">&times;</label>
 	        <h2>Aggiorna tirocinio</h2>
 	      </div>
 	      <form class="w3-container" action="offertaTirocinio?referer=tirocinioStudente?id_tirocinio=${offertaTirocinio.idTirocinio}&candidati=candidati" method="post">
@@ -159,13 +162,13 @@
 	          <label for="titoloOffertaTirocinio"><b>Titolo</b></label>
 	          <input id="titoloOffertaTirocinio" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="255" type="text" placeholder="Inserisci una breve descrizione" name="titolo" value="${offertaTirocinio.titolo}" autocomplete="off" required />
 	          <label for="luogoOffertaTirocinio"><b>Luogo</b></label>
-	          <input id="luogoOffertaTirocinio" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" placeholder="Inserisci il luogo in cui avverrà il tirocinio" name="luogo" value="${offertaTirocinio.luogo}" autocomplete="off" required />
+	          <input id="luogoOffertaTirocinio" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" placeholder="Inserisci il luogo in cui avverr&#224; il tirocinio" name="luogo" value="${offertaTirocinio.luogo}" autocomplete="off" required />
 	          <label for="obiettivi"><b>Obiettivi</b></label>
 			  <textarea id="obiettivi" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="2500" placeholder="Inserisci gli obiettivi da raggiungere" name="obiettivi" autocomplete="off" required>${offertaTirocinio.obiettivi}</textarea>
 			  <label for="modalita"><b>Modalit&agrave;</b></label>
-			  <textarea id="modalita" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="2500" placeholder="Inserisci le modalita con cui verrà effettuato il tirocinio" name="modalita" autocomplete="off" required>${offertaTirocinio.modalita}</textarea>
+			  <textarea id="modalita" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="2500" placeholder="Inserisci le modalita con cui verr&#224; effettuato il tirocinio" name="modalita" autocomplete="off" required>${offertaTirocinio.modalita}</textarea>
 			  <label for="rimborso"><b>Rimborso</b></label>
-			  <input id="rimborso" class="w3-input w3-border-bottom w3-margin-bottom" type="number" placeholder="Inserisci l'importo del rimborso se previsto" <#if offertaTirocinio.rimborso??>value="${offertaTirocinio.rimborso}"</#if> name="rimborso" />
+			  <input id="rimborso" class="w3-input w3-border-bottom w3-margin-bottom" type="number" placeholder="Inserisci l&#39;importo del rimborso se previsto" <#if offertaTirocinio.rimborso??>value="${offertaTirocinio.rimborso}"</#if> name="rimborso" />
 			  <label for="dataInizio"><b>Data inizio</b></label>
 			  <input id="dataInizio" class="w3-input w3-border-bottom w3-margin-bottom" type="date" name="data_inizio" <#if offertaTirocinio.dataInizio??> value="${offertaTirocinio.dataInizio?iso_local}"</#if> autocomplete="off" />
 			  <label for="dataFine"><b>Data fine</b></label>
@@ -184,10 +187,11 @@
 	
 <!-- Conclude intership modals -->
 <#list candidatoTirocinio as candidato, offerta>
-	<div id="conclude-modal-${candidato.codiceFiscale}" class="overlay">
-		    <div class="w3-card w3-white w3-round popup w3-padding">
+	<input type="checkbox" class="modal" id="conclude-modal-${candidato.codiceFiscale}" />
+	<div class="modal">
+		    <div class="w3-card w3-white w3-round w3-padding modal-frame">
+		      <label for="conclude-modal-${candidato.codiceFiscale}" class="w3-xlarge pointer close w3-button w3-padding">&times;</label>
 		      <div class="w3-center"><br>
-		      	<a href="#close" class="w3-button w3-xlarge w3-display-topright">&times;</a>
 		        <h2>Concludi il tirocinio</h2>
 		      </div>
 		      <form class="w3-container" action="tirocinioStudente?stato=terminato&referer=tirocinioStudente?id_tirocinio=${offerta.tirocinio}" method="post">
@@ -195,7 +199,7 @@
 		        	<input type="hidden" name="utente" value="${azienda.utente}" />
 		        	<input type="hidden" name="candidato" value="${candidato.codiceFiscale}" />
 					<label for="descrizioneDettagliata-${candidato.codiceFiscale}"><b>Descrizione dettagliata</b></label>
-	          		<textarea id="descrizioneDettagliata-${candidato.codiceFiscale}" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="2000" placeholder="Inserisci una descrizione dettagliata sull'attività svolta" name="descrizione_dettagliata" autocomplete="off" required></textarea>
+	          		<textarea id="descrizioneDettagliata-${candidato.codiceFiscale}" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="2000" placeholder="Inserisci una descrizione dettagliata sull&#39;attivit&#224; svolta" name="descrizione_dettagliata" autocomplete="off" required></textarea>
 			        <label for="oreSvolte-${candidato.codiceFiscale}"><b>Ore svolte</b></label>
 			        <input id="oreSvolte-${candidato.codiceFiscale}" class="w3-input w3-border-bottom w3-margin-bottom" type="number" placeholder="Inserisci le ore svolte" name="ore_svolte" autocomplete="off" required />
 			        <label for="giudizioFinale-${candidato.codiceFiscale}"><b>Giudizio finale</b></label>
@@ -207,10 +211,11 @@
 	</div>
 </#list>
 
-<div id="accept-modal" class="overlay">
-	    <div class="w3-card w3-white w3-round popup w3-padding">
+<input type="checkbox" class="modal" id="accept-modal" />
+<div class="modal">
+	    <div class="w3-card w3-white w3-round w3-padding modal-frame">
+	      <label for="accept-modal" class="w3-right w3-xlarge pointer">&times;</label>
 	      <div class="w3-center"><br>
-	      	<a href="#close" class="w3-button w3-xlarge w3-display-topright">&times;</a>
 	        <h2>Aggiungi il periodo di svolgimento</h2>
 	      </div>
 	      <form class="w3-container" action="offertaTirocinio?referer=tirocinioStudente?id_tirocinio=${offertaTirocinio.idTirocinio}" method="post">

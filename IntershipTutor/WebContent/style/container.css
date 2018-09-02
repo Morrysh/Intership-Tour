@@ -298,35 +298,70 @@ input:checked ~ #label-search:after {
 /* End collapsible research */
 
 /* Modals without js */
-.overlay {
-	position: absolute;
-	top: 0;
-	bottom: 0;
-	left: 0;
-	right: 0;
-	background: rgba(0,0,0,0.5);
-	transition: opacity 200ms;
-	visibility: hidden;
-	opacity: 0;
-	position: fixed;
-	/* Doesn't work on edge and firefox, find a workaround or keep the ugly effect */
-	overflow-y: scroll;
+/* VEDERE ANCHE NEL CSS PER PC E PER MOBILE */
+
+@-webkit-keyframes fadeIn {
+    from { opacity: 0; }
+      to { opacity: 1; }
+}  
+@keyframes fadeIn {
+    from { opacity: 0; }
+      to { opacity: 1; }
 }
 
-.overlay:target{
-   visibility: visible;
-   opacity: 1; 
+.modal,
+.modal * {
+    box-sizing: border-box;
+    -moz-box-size: border-box;
+    transition: all .2s ease-in-out
 }
 
-.overlay::-webkit-scrollbar { 
+.modal:checked+.modal {
+    display: block;
+    -webkit-animation: fadeIn .2s;
+    animation: fadeIn .2s;
+    pointer-events: all
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 500;
+    padding: 15px;
+    overflow-y: scroll;
+    display: none;
+    pointer-events: none;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.modal .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 600;
+    cursor: pointer;
+}
+
+.modal::-webkit-scrollbar { 
     display: none; 
 }
 
-.popup {
-	margin: 40px auto;
-	max-width: 600px;
-	position: relative;
+.modal-frame{
+	position: relative
 }
+
+.close{
+	position: absolute;
+	top: 0;
+	right: 0;
+	border-top-right-radius: 4px
+}
+
 /* End modals without js */
 
 /* Modal login, signup */
@@ -460,6 +495,11 @@ a[href="#navbar-pc"] .up:hover {
 		width: 80%;
 		max-width: 2500px;	
 	}
+	
+	.modal-frame{
+		width: 50%;
+		margin: 30px auto
+	}
 }
 
 /* Tablet and smartphone */
@@ -467,6 +507,10 @@ a[href="#navbar-pc"] .up:hover {
 	
 	*{
 		-webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+	}
+	
+	.modal-frame{
+		margin: 30px auto
 	}
 	
 	#container{

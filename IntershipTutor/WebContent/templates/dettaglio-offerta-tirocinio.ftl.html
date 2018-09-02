@@ -34,20 +34,23 @@
           </p>
           <#if pareriTirocinio?size gt 0>
          	<hr />
-         	<a href="#pareri-tirocinio-modal">
-	         	<p class="info pointer">
+         	<p class="no-padding">
+	         	<label class="info pointer" for="pareri-tirocinio-modal">
 		         	<i class="fas fa-clipboard-list fa-fw w3-margin-right"></i>
 		          	Pareri
-		         </p>
-	         </a>
+		         </label>
+	         </p>
           </#if>
           <#if hasIntership?? && hasIntership>
-        	<a href="#review">
-	         	<p class="info pointer">
-		         	<i class="fas fa-marker fa-fw w3-margin-right "></i>
+          	<#if pareriTirocinio?size == 0>
+          	  <hr class="no-margin" />
+          	 </#if>
+	          <p class="-no-padding">
+	        	<label class="info pointer" for="review">
+		         	<i class="fas fa-marker fa-fw w3-margin-right"></i>
 		          	Recensisci
-		         </p>
-	         </a>
+		         </label>
+		      </p>
         </#if> 
         </div>       
       </div>
@@ -88,14 +91,14 @@
           	<h5 class="bold"><b>Obiettivi</b></h5>
           		<p class="descrizione-tirocinio">${offertaTirocinio.obiettivi}</p>	        
         		<hr>
-          	<h5 class="bold"><b>Modalità</b></h5>
+          	<h5 class="bold"><b>Modalit&#224;</b></h5>
           	<p class="descrizione-tirocinio">${offertaTirocinio.modalita}</p>
           	<#if offertaTirocinio.rimborso?? || offertaTirocinio.numeroOre gt 0>
 	          	<hr>
 	          	<h5 class="bold"><b>Informazioni tecniche</b></h5>
 	          	<p class="descrizione-tirocinio">
 	          		<#if offertaTirocinio.numeroOre gt 0>
-		          		Il numero di ore richieste per completare il tirocinio è pari ${offertaTirocinio.numeroOre}.
+		          		Il numero di ore richieste per completare il tirocinio &#233; pari ${offertaTirocinio.numeroOre}.
 		          	</#if>
 		          	<#if offertaTirocinio.rimborso??>
 		          		È previsto un rimborso di ${offertaTirocinio.rimborso}&#8364;.
@@ -133,11 +136,12 @@
 </div>
 
 <!-- Read reviews modal -->
-    <div id="pareri-tirocinio-modal" class="overlay">
-	    <div class="w3-card w3-white w3-round popup w3-padding">
+	<input type="checkbox" class="modal" id="pareri-tirocinio-modal" />
+    <div class="modal">
+	    <div class="w3-card w3-white w3-round modal-frame w3-padding">
 	
 	      <div class="w3-center"><br>
-	      	<a href="#close" class="w3-button w3-xlarge w3-display-topright">&times;</a>
+	      	<label for="pareri-tirocinio-modal" class="w3-xlarge pointer close w3-button w3-padding">&times;</label>
 	        <h2>Pareri sul tirocinio</h2>
 	      </div>
 	        <div class="w3-section">
@@ -152,11 +156,12 @@
 
 <!-- Review intership -->
 <#if studente?? && hasIntership??>
-      <div id="review" class="overlay">
-	    <div class="w3-card w3-white w3-round popup w3-padding">
+	  <input type="checkbox" class="modal" id="review" />
+      <div class="modal">
+	    <div class="w3-card w3-white w3-round modal-frame w3-padding">
 	
 	      <div class="w3-center"><br>
-	      	<a href="#" class="w3-button w3-xlarge w3-display-topright">&times;</a>
+	      	<label for="review" class="w3-xlarge pointer close w3-button w3-padding">&times;</label>
 	        <h2>Esprimi il tuo parere su questo tirocinio</h2>
 	      </div>
 	        <form class="w3-container" action="offertaTirocinio?referer=offertaTirocinio?id_tirocinio=${offertaTirocinio.idTirocinio}" method="post">
@@ -169,7 +174,7 @@
 		          		<input type="hidden" name="update" value="update" />
 		          </#if>
 		          <label for="parere"><b>Parere</b></label>
-				  <textarea id="parere" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="2500" placeholder="Esprimi il tuo parere sull'azienda" name="parere" autocomplete="off" required><#if tirocinioStudente?? && tirocinioStudente.parere??>${tirocinioStudente.parere}</#if></textarea>
+				  <textarea id="parere" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="2500" placeholder="Esprimi il tuo parere sull&#39;azienda" name="parere" autocomplete="off" required><#if tirocinioStudente?? && tirocinioStudente.parere??>${tirocinioStudente.parere}</#if></textarea>
 	          	  <button class="w3-button w3-block w3-section w3-padding univaq-color-background" type="submit" name="recensisci" value="recensisci">
 	          	  	<#if tirocinioStudente?? && tirocinioStudente.parere??>
 	          	  		Aggiungi recensione

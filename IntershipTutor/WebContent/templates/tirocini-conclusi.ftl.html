@@ -63,9 +63,9 @@
 						<p>
 							&Egrave; stato scelto come tutore <span>${tirocinio.tutoreUniversitario}</span>
 							contattabile al numero <span>${tirocinio.telefonoTutoreUniversitario}</span> o 
-							all'indirizzo email <span>${tirocinio.emailTutoreUniversitario}</span>.<br />
+							all&#39;indirizzo email <span>${tirocinio.emailTutoreUniversitario}</span>.<br />
 							Il tirocinante chiede il raggiungimento di <span>${tirocinio.cfu}</span> CFU 
-							con lo svolgimento dell'attività.					
+							con lo svolgimento dell&#39;attivit&#224;.					
 						</p>
 					</div>
 					<h3 class="univaq-color">Contatti del candidato</h3>
@@ -77,9 +77,9 @@
 					</div>
 					<br /><br />
 						<div class="w3-block">
-						<a class="w3-button pointer w3-round fas fa-check-double w3-padding w3-right" href="#conclude-modal-${candidato.codiceFiscale}">
+						<label class="w3-button pointer w3-round fas fa-check-double w3-padding w3-right" for="conclude-modal-${candidato.codiceFiscale}">
 							Termina
-						</a>
+						</label>
 						<a class="w3-button pointer w3-round fas fa-download w3-padding w3-left" href="download?candidato=${candidato.utente}&utente=${azienda.utente}">
 							Progetto formativo
 						</a>
@@ -109,10 +109,11 @@
 <!-- Conclude intership modals -->
 <#list candidatoTirocinioOfferta as candidato, tirocinioOfferta>    	
     <#list tirocinioOfferta as tirocinio, offerta>
-		<div id="conclude-modal-${candidato.codiceFiscale}" class="overlay">
-			    <div class="w3-card w3-white w3-round popup w3-padding">
+    	<input type="checkbox" class="modal" id="conclude-modal-${candidato.codiceFiscale}" />
+		<div class="modal">
+			    <div class="w3-card w3-white w3-round modal-frame w3-padding">
 			      <div class="w3-center"><br>
-			      	<a href="#close" class="w3-button w3-xlarge w3-display-topright">&times;</a>
+			      	<label for="conclude-modal-${candidato.codiceFiscale}" class="w3-xlarge pointer close w3-button w3-padding">&times;</label>
 			        <h2>Concludi il tirocinio</h2>
 			      </div>
 			      <form class="w3-container" action="tirocinioStudente?stato=terminato&referer=tirocinioStudente?conclusi=true" method="post">
@@ -120,7 +121,7 @@
 			        	<input type="hidden" name="utente" value="${azienda.utente}" />
 			        	<input type="hidden" name="candidato" value="${candidato.codiceFiscale}" />
 						<label for="descrizioneDettagliata"><b>Descrizione dettagliata</b></label>
-		          		<textarea id="descrizioneDettagliata" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="2000" placeholder="Inserisci una descrizione dettagliata sull'attività svolta" name="descrizione_dettagliata" autocomplete="off" required></textarea>
+		          		<textarea id="descrizioneDettagliata" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="2000" placeholder="Inserisci una descrizione dettagliata sull&#39;attivit&#224; svolta" name="descrizione_dettagliata" autocomplete="off" required></textarea>
 				        <label for="oreSvolte"><b>Ore svolte</b></label>
 				        <input id="oreSvolte" class="w3-input w3-border-bottom w3-margin-bottom" type="number" placeholder="Inserisci le ore svolte" name="ore_svolte" autocomplete="off" required />
 				        <label for="giudizioFinale"><b>Giudizio finale</b></label>

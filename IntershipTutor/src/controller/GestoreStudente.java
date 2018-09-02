@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import dao.impl.StudenteDAO;
+import dao.impl.UtenteDAO;
 import data.model.Studente;
 import data.model.Utente;
 import data.model.enumeration.TipoUtente;
@@ -28,9 +29,68 @@ public class GestoreStudente extends IntershipTutorBaseController {
         }
     }
 	
+	// Funzione per controllare se lo studente può registrarsi o aggiornare la registrazione 
+	// con i campi inseriti(verifica dei duplicati)
+	private boolean check_fields(HttpServletRequest request, HttpServletResponse response, Studente studente) throws DataLayerException {
+		try {
+			boolean registrazione_ok = true;
+			
+			// Registrazione
+			if(request.getParameter("registrazione") != null) {
+				if(!new UtenteDAO().checkCodiceFiscaleDisponibile(studente.getCodiceFiscale())) {
+					request.setAttribute("CFInUso", true);
+					registrazione_ok = false;
+				}
+				if(!new UtenteDAO().checkEmailDisponibile(studente.getEmail())) {
+					
+					request.setAttribute("emailInUso", true);
+					registrazione_ok = false;
+				}
+				if(!new UtenteDAO().checkUsernameDisponibile(studente.getUsername())) {
+					request.setAttribute("usernameInUso", true);
+					registrazione_ok = false;
+				}
+				if(!new UtenteDAO().checkTelefonoDisponibile(studente.getTelefono())) {
+					request.setAttribute("telefonoInUso", true);
+					registrazione_ok = false;
+				}
+			}
+			// Richiesta aggiornamento profilo
+			else {
+				
+				Studente studenteLoggato = (Studente)request.getAttribute("utente");
+				
+				if(!(studenteLoggato.getEmail().equals(studente.getEmail())) &&
+				   !new UtenteDAO().checkEmailDisponibile(studente.getEmail())){
+					
+					request.setAttribute("emailInUso", true);
+					registrazione_ok = false;
+				}
+				if(!(studenteLoggato.getUsername().equals(studente.getUsername())) &&
+                   !new UtenteDAO().checkUsernameDisponibile(studente.getUsername())) {
+					
+					request.setAttribute("usernameInUso", true);
+					registrazione_ok = false;
+				}
+				if(!(studenteLoggato.getTelefono().equals(studente.getTelefono())) &&
+				   !new UtenteDAO().checkTelefonoDisponibile(studente.getTelefono())) {
+					
+					request.setAttribute("telefonoInUso", true);
+					registrazione_ok = false;
+				}
+			}
+			
+			return registrazione_ok;
+		}
+		catch(DataLayerException ex) {
+			throw new DataLayerException("Errore nella verifica dei campi");
+		}
+	}
+	
 	private void action_aggiorna(HttpServletRequest request, HttpServletResponse response) {
 		try {
-			Studente studente = (Studente) request.getAttribute("utente");
+			Studente studenteLoggato = (Studente) request.getAttribute("utente");
+			Studente studente = new Studente();
 			
 			studente.setNome(request.getParameter(Studente.NOME));
 			studente.setCognome(request.getParameter(Studente.COGNOME));
@@ -47,12 +107,40 @@ public class GestoreStudente extends IntershipTutorBaseController {
 			studente.setCorsoLaurea(request.getParameter(Studente.CORSO_LAUREA));
 			studente.setHandicap(SecurityLayer.checkBoolean(request.getParameter(Studente.HANDICAP)));
 			
-			new StudenteDAO().update(studente);
+			boolean registrazione_ok = check_fields(request, response, studente);
 			
-			// NOT USING request.getContextPath becouse it doesn't work with Heroku
-			response.sendRedirect(".");
+			if(registrazione_ok) {
+				// Aggiorniamo i dati dello studente 
+				studenteLoggato.setNome(studente.getNome());
+				studenteLoggato.setCognome(studente.getCognome());
+				studenteLoggato.setEmail(studente.getEmail());
+				studenteLoggato.setUsername(studente.getUsername());
+				studenteLoggato.setPassword(studente.getPassword());
+				studenteLoggato.setTelefono(studente.getTelefono());
+				studenteLoggato.setDataNascita(studente.getDataNascita());
+				studenteLoggato.setLuogoNascita(studente.getLuogoNascita());
+				studenteLoggato.setProvinciaNascita(studente.getProvinciaNascita());
+				studenteLoggato.setResidenza(studente.getResidenza());
+				studenteLoggato.setProvinciaResidenza(studente.getProvinciaResidenza());
+				studenteLoggato.setTipoLaurea(studente.getTipoLaurea());
+				studenteLoggato.setCorsoLaurea(studente.getCorsoLaurea());
+				studenteLoggato.setHandicap(studente.isHandicap());
+				new StudenteDAO().update(studente);
+				// NOT USING request.getContextPath becouse it doesn't work with Heroku
+				response.sendRedirect(".");
+			}
+			else {
+				// studenteNR contiene i dati inseriti per la registrazione 
+				// che non è andata a buon fine a causa di vlaori duplicati
+				// verrà usato per non far reinserire tutti i valori all'utente
+				// che ha tentato la registrazione
+				request.setAttribute("updateFailed", true);
+				request.setAttribute("studenteNR", studente);
+				request.getRequestDispatcher(".").forward(request,response);
+			}
+			
 		}
-		catch(DataLayerException | IOException | IllegalArgumentException ex) {
+		catch(DataLayerException | IOException | IllegalArgumentException | ServletException ex) {
             request.setAttribute("message", "Data access exception: " + ex.getMessage());
             action_error(request, response);
         }
@@ -79,10 +167,26 @@ public class GestoreStudente extends IntershipTutorBaseController {
 				request.getParameter(Studente.CORSO_LAUREA),
 				SecurityLayer.checkBoolean(request.getParameter(Studente.HANDICAP)));
 			
-			new StudenteDAO().insert(studente);
+			boolean registrazione_ok = check_fields(request, response, studente);
 			
-			// NOT USING request.getContextPath becouse it doesn't work with Heroku
-			response.sendRedirect(".");
+			if(registrazione_ok) {
+				// Inseriamo lo studente nel database
+				new StudenteDAO().insert(studente);
+				// NOT USING request.getContextPath becouse it doesn't work with Heroku
+				response.sendRedirect(".");
+			}
+			else {
+				// studenteNR contiene i dati inseriti per la registrazione 
+				// che non è andata a buon fine a causa di vlaori duplicati
+				// verrà usato per non far reinserire tutti i valori all'utente
+				// che ha tentato la registrazione
+				request.setAttribute("signUpFailed", true);
+				// Riapriamo il modal della registrazione
+				request.setAttribute("failed", true);
+				request.setAttribute("studenteNR", studente);
+				request.getRequestDispatcher(".").forward(request,response);
+			}			
+			
 		}
 		catch(DataLayerException | IOException | IllegalArgumentException ex) {
             request.setAttribute("message", "Data access exception: " + ex.getMessage());
