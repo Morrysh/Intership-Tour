@@ -116,7 +116,8 @@ public class Uploader extends IntershipTutorBaseController{
 						action_update_training_project(request, response);
 					}
 					else {
-						request.setAttribute("message", "Studente non autorizzato");
+						request.setAttribute("message", "Studente non autorizzato:<br />" + 
+														"Si sta cercando aggiornare il documento di un'altro studente");
 						action_error(request, response);
 					}
 				}
@@ -133,12 +134,14 @@ public class Uploader extends IntershipTutorBaseController{
 							action_update_training_project(request, response);
 						}
 						else {
-							request.setAttribute("message", "Azienda non autorizzata");
+							request.setAttribute("message", "Azienda non autorizzata:<br />" +
+															"Si sta cercando di caricare una risorsa per un'altra azienda");
 							action_error(request, response);
 						}
 					}
 					else {
-						request.setAttribute("message", "Errore nella richiesta");
+						request.setAttribute("message", "Errore nella richiesta:<br />" + 
+														"Lo studente non ha svolto alcuna attività con quest'azienda");
 						action_error(request, response);
 					}
 				}
@@ -149,7 +152,8 @@ public class Uploader extends IntershipTutorBaseController{
 				}
 			}
 			else {
-				request.setAttribute("message", "Accesso non autorizzato");
+				request.setAttribute("message", "Accesso non autorizzato:<br />" + 
+												"È richiesto l'accesso per caricare questa risorsa");
 				action_error(request, response);
 			}		
 		}

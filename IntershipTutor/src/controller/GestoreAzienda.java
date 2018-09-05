@@ -354,7 +354,8 @@ public class GestoreAzienda extends IntershipTutorBaseController {
     						action_aggiorna(request, response);
     					}
     					else {
-    						request.setAttribute("message", "Azione non autorizzata");
+    						request.setAttribute("message", "Azione non autorizzata:<br />" + 
+    														"Si sta cercando di modificare il profilo di un'altra azienda");
     	                    action_error(request, response);
     					}
     				}
@@ -365,13 +366,15 @@ public class GestoreAzienda extends IntershipTutorBaseController {
     						action_recensisci(request, response);
     					}
     					else {
-    						request.setAttribute("message", "Studente non autenticato");
+    						request.setAttribute("message", "Studente non autenticato:<br />" + 
+    														"È necessario l'accesso per recensire l'azienda");
     	                    action_error(request, response);
     					}
     				}
     			}
     			else {
-    				request.setAttribute("message", "Azione non autorizzata");
+    				request.setAttribute("message", "Azione non autorizzata:<br />" + 
+    												"È necessario l'accesso per completare l'operazione");
                     action_error(request, response);
     			}
     		}
@@ -382,7 +385,7 @@ public class GestoreAzienda extends IntershipTutorBaseController {
     			action_registra(request, response);
     		}
     		else {
-    			request.setAttribute("message", "Nessuna opzione valida specificata");
+    			request.setAttribute("message", "Errore:<br />Nessuna opzione valida specificata");
                 action_error(request, response);
     		}
     		

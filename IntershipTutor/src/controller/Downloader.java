@@ -96,7 +96,8 @@ public class Downloader extends IntershipTutorBaseController{
 						action_download_company_convention(request, response);
 					}
 					else {
-						request.setAttribute("message", "Azienda non autorizzata");
+						request.setAttribute("message", "Azienda non autorizzata:<br />" + 
+														"La convenzione che si vuole scaricare non è legata a quest'azienda");
 						action_error(request, response);
 					}
 				}
@@ -112,7 +113,9 @@ public class Downloader extends IntershipTutorBaseController{
 							action_download_training_project(request, response);
 						}
 						else {
-							request.setAttribute("message", "Studente non autorizzato");
+							request.setAttribute("message", "Studente non autorizzato:<br />" +
+											     			"Stai cercando di scaricare un progetto formativo " +
+															"di un'altro studente");
 							action_error(request, response);
 						}
 					}
@@ -128,23 +131,24 @@ public class Downloader extends IntershipTutorBaseController{
 								action_download_training_project(request, response);
 							}
 							else {
-								request.setAttribute("message", "Azienda non autorizzata");
+								request.setAttribute("message", "Azienda non autorizzata:<br />" + 
+																"Il progetto formativo che si sta cercando di scaricare " +
+																"non è legato a quest'azienda");
 								action_error(request, response);
 							}
 						}
 						else {
-							request.setAttribute("message", "Errore nella richiesta");
+							request.setAttribute("message", "Errore nella richiesta:<br />" + 
+															"Lo studente di cui si vuole scaricare il progetto formativo " +
+															"sembra non aver svolto l'attività con quest'azienda");
 							action_error(request, response);
 						}
-					}
-					else {
-						request.setAttribute("message", "Utente non autorizzato");
-						action_error(request, response);
 					}
 				}
 			}
 			else {
-				request.setAttribute("message", "Accesso non autorizzato");
+				request.setAttribute("message", "Accesso non autorizzato:<br />" +
+									 			"Devi aver effettuato l'accesso per scaricare questa risorsa");
 				action_error(request, response);
 			}
 			

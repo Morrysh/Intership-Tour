@@ -183,8 +183,8 @@ public class GestoreOffertaTirocinio extends IntershipTutorBaseController{
 	    	Map<String, String> pareriTirocinio = new OffertaTirocinioDAO().getPareriTirocinio(offertaTirocinio);
 	        
 	    	// Verifichiamo che l'utente loggato sia uno studente
-	        // in modo da dargli la possibilità di recensire l'azienda(se ha effettuato un tirocinio
-	        // tramite essa) o di aggiornare la sua recensione
+	        // in modo da dargli la possibilità di recensire il tirocinio(se ha effettuato un tirocinio
+	        // il tirocinio di cui si stanno visualizzando i dettagli) o di aggiornare la sua recensione
 	    	if(request.getAttribute("utente") instanceof Studente) {
 	    		Studente studente = (Studente) request.getAttribute("utente");
 		    	// Eventuale tirocinio effettuato dallo studente loggato
@@ -201,11 +201,15 @@ public class GestoreOffertaTirocinio extends IntershipTutorBaseController{
 	    		if(tirocinioStudente != null && 
 	    		   tirocinioStudente.getTirocinio() == offertaTirocinio.getIdTirocinio() &&
 	    		   tirocinioStudente.getStato() == StatoRichiestaTirocinio.terminato) {
+	    				// Lo studente terminato il tirocinio di cui si stanno visualizzando i dettagli
+	    				// quindi può recensirlo
 	    				hasIntership = true;
-	    				request.setAttribute("tirocinioStudente", tirocinioStudente);
 	    		    	request.setAttribute("hasIntership", hasIntership);
-	    		    	request.setAttribute("studente", studente);
 	    		}
+	    		// Il tirocinio effettuato dallo studente o null
+	    		request.setAttribute("tirocinioStudente", tirocinioStudente);
+	    		// Lo studente eventualmente loggato
+    			request.setAttribute("studente", studente);
 	    	}
 	    	
 	    	request.setAttribute("pareriTirocinio", pareriTirocinio);
@@ -280,7 +284,11 @@ public class GestoreOffertaTirocinio extends IntershipTutorBaseController{
 					}
 				}
 				else {
-					request.setAttribute("message", "Azione non autorizzata");
+					request.setAttribute("message", "Azione non autorizzata:<br />" +
+													"Possibili cause:<br />"+
+													"1- È necessario l'accesso per completare l'operazione<br />" +
+													"2- L'utente loggato non è un'azienda<br />" +
+													"3- L'operazione non è consentita a quest'azienda<br />");
 	                action_error(request, response);
 				}
 				
@@ -295,7 +303,10 @@ public class GestoreOffertaTirocinio extends IntershipTutorBaseController{
 					action_recensisci(request, response);
 				}
 				else {
-					request.setAttribute("message", "Utente non autorizzato");
+					request.setAttribute("message", "Azione non autorizzata:<br />" +
+													"Possibili cause:<br />"+
+													"1- È necessario l'accesso per completare l'operazione<br />" +
+													"2- L'utente loggato non è uno studente");
 	                action_error(request, response);
 				}
 			}

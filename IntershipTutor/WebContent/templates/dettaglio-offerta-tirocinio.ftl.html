@@ -122,6 +122,16 @@
 				</a>
 			</#if>
 			 -->
+			<#if !studente??>
+				<label for="access-manager-modal" class="w3-button w3-right w3-round far fa-share-square w3-margin-top">
+					Invia proposta
+				</label>
+			</#if>
+			<#if studente?? && !tirocinioStudente??>
+				<label class="w3-button w3-right w3-round far fa-share-square w3-margin-top" for="intership-subscription-modal">
+					Invia proposta
+				</label>
+			</#if>
         </div>
       </div>
 
@@ -153,9 +163,39 @@
 	        </div>
 	      </div>
       </div>
+      
+<!-- Inteship subscription -->
+<#if studente?? && !tirocinioStudente??>
+<input type="checkbox" class="modal" id="intership-subscription-modal" />
+      <div  class="modal">
+	    <div class="w3-card w3-white w3-round modal-frame w3-padding">
+	      <div class="w3-center"><br>
+	      	<label for="intership-subscription-modal" class="w3-xlarge pointer close w3-button w3-padding">&times;</label>
+	        <h2>Inserisci le informazioni</h2>
+	      </div>
+		      <form class="w3-container" action="tirocinioStudente" method="post">
+		        <div class="w3-section">
+		        	<input type="hidden" name="utente" value="${studente.utente}" />
+		        	<input type="hidden" name="id_tirocinio" value="${offertaTirocinio.idTirocinio}" />
+		        	<h3 class="univaq-color profile">Informazioni sul tutore scelto</h3>
+					<label for="nomeTutore-${offertaTirocinio.idTirocinio}"><b>Nome e Cognome Tutore</b></label>
+	          		<input id="nomeTutore-${offertaTirocinio.idTirocinio}" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="text" placeholder="Inserisci il nome e cognome del tutore scelto" name="tutore_universitario" autocomplete="off" required />
+			        <label for="telefonoTutore-${offertaTirocinio.idTirocinio}"><b>Telefono tutore</b></label>
+			        <input id="telefonoTutore-${offertaTirocinio.idTirocinio}" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="15" type="tel" placeholder="Inserisci il numero di telefono del tutore scelto" name="telefono_tutore" autocomplete="off" required />
+			        <label for="emailTutore-${offertaTirocinio.idTirocinio}"><b>Email tutore</b></label>
+			        <input id="emailTutore-${offertaTirocinio.idTirocinio}" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="email" placeholder="Inserisci l&#39;email del tutore scelto" name="email_tutore" autocomplete="off" required />
+			        <h3 class="univaq-color profile">Informazioni aggiuntive</h3>
+			        <label for="cfu-${offertaTirocinio.idTirocinio}"><b>CFU</b></label>
+					<input id="cfu-${offertaTirocinio.idTirocinio}" class="w3-input w3-border-bottom w3-margin-bottom" type="number" placeholder="Inserisci i CFU che desideri conseguire con il tirocinio scelto" name="cfu" autocomplete="off" required />
+					<button class="w3-button w3-block w3-section w3-padding univaq-color-background" type="submit" name="iscriviti" value="iscriviti">Invia</button>
+		        </div>
+		      </form>
+	      </div>
+      </div>
+</#if>
 
 <!-- Review intership -->
-<#if studente?? && hasIntership??>
+<#if studente?? && hasIntership?? && hasIntership>
 	  <input type="checkbox" class="modal" id="review" />
       <div class="modal">
 	    <div class="w3-card w3-white w3-round modal-frame w3-padding">

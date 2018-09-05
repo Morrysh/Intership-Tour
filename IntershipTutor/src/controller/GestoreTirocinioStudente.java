@@ -319,7 +319,10 @@ public class GestoreTirocinioStudente extends IntershipTutorBaseController {
 						}
 					}
 					else {
-						request.setAttribute("message", "Azione non autorizzata");
+						request.setAttribute("message", "Azione non autorizzata:<br />" + 
+														"Possibili cause:<br />" +
+														"1- L'operazione richiesta non è consentita a quest'azienda<br />" +
+														"2- L'utente loggato non è un'azienda");
 		                action_error(request, response);
 					}
 				}
@@ -332,7 +335,10 @@ public class GestoreTirocinioStudente extends IntershipTutorBaseController {
 						action_iscriviti(request, response);
 					}
 					else {
-						request.setAttribute("message", "Azione non autorizzata");
+						request.setAttribute("message", "Azione non autorizzata:<br />" + 
+														"Possibili cause:<br />" +
+														"1- L'operazione richiesta non è consentita a questo studente<br />" +
+														"2- L'utente loggato non è uno studente");
 		                action_error(request, response);
 					}
 				}
@@ -364,17 +370,21 @@ public class GestoreTirocinioStudente extends IntershipTutorBaseController {
 						}
 					}
 					else {
-						request.setAttribute("message", "Utente non autorizzato");
+						request.setAttribute("message", "Azione non autorizzata:<br />" + 
+														"Possibili cause:<br />" +
+														"1- L'operazione richiesta non è consentita a quest'azienda<br />" +
+														"2- L'utente loggato non è un'azienda");
 		                action_error(request, response);
 					}
 				}
 				else {
-					request.setAttribute("message", "Azione non autorizzata");
+					request.setAttribute("message", "Errore nella richiesta");
 	                action_error(request, response);
 				}
 			}
 			else {
-				request.setAttribute("message", "Accesso non autorizzato");
+				request.setAttribute("message", "Accesso non autorizzato:<br />" + 
+												"È richiesto l'accesso per completare l'operazione");
 				action_error(request, response);
 			}
 			
