@@ -170,7 +170,7 @@
         <h4>Tirocinante</h4><br />
         <h4>Nome ${studente.nome} Cognome ${studente.cognome}</h4><br />
         <h4 class="thin">Ha svolto il tirocinio con esito</h4><br />
-        <h4 class="thin">${tirocinioStudente.giudizioFinale}</h4><br />
+        <h4 class="thin"><#if tirocinioStudente.giudizioFinale??> ${tirocinioStudente.giudizioFinale} </#if></h4><br />
         <h4>Firma del tutore universitario</h4>
         <h4 class="thin">${tirocinioStudente.tutoreUniversitario}</h4>
         <h4>Firma del responsabile della struttura didattica competente</h4><br />

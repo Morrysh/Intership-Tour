@@ -246,7 +246,7 @@ public class GestoreTirocinioStudente extends IntershipTutorBaseController {
 				response.sendRedirect(request.getHeader("referer"));
 			}
 			else {
-				// NOT USING request.getContextPath becouse it doesn't work with Heroku
+				// NOT USING request.getContextPath because it doesn't work with Heroku
     			response.sendRedirect(".");
 			}
 		}

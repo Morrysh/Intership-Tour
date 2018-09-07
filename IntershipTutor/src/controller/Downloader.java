@@ -114,7 +114,7 @@ public class Downloader extends IntershipTutorBaseController{
 						}
 						else {
 							request.setAttribute("message", "Studente non autorizzato:<br />" +
-											     			"Stai cercando di scaricare un progetto formativo " +
+											     			"Stai cercando di scaricare il progetto formativo " +
 															"di un'altro studente");
 							action_error(request, response);
 						}

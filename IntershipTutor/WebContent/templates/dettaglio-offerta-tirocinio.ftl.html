@@ -105,30 +105,13 @@
 		          	</#if>
 	          	</p>
           	</#if>
-          	<!-- 
-          	<#if utente??>
-	          	<a href="#access-manager-modal">
-					<button class="w3-button w3-right w3-round">
-						<i class="far fa-share-square fa-fw w3-margin-right"></i>
-						Invia proposta
-					</button>
-				</a>
-			<#else>
-				<a href="#access-manager-modal">
-					<button class="w3-button w3-right w3-round">
-						<i class="far fa-share-square fa-fw w3-margin-right"></i>
-						Invia proposta
-					</button>
-				</a>
-			</#if>
-			 -->
 			<#if !studente??>
-				<label for="access-manager-modal" class="w3-button w3-margin-top w3-right w3-round send-button far fa-share-square w3-margin-top">
+				<label for="access-manager-modal" class="w3-button w3-margin-top w3-right w3-round far fa-share-square w3-margin-top">
 					Invia proposta
 				</label>
 			</#if>
 			<#if studente?? && !tirocinioStudente??>
-				<label for="intership-subscription-modal" class="w3-button w3-margin-top w3-right w3-round send-button far fa-share-square w3-margin-top">
+				<label for="intership-subscription-modal" class="w3-button w3-margin-top w3-right w3-round far fa-share-square w3-margin-top">
 					Invia proposta
 				</label>
 			</#if>

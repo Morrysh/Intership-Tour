@@ -7,6 +7,10 @@
 	margin-bottom: 0
 }
 
+.offerta-container:last-child > label{
+	margin-bottom: 10px !important
+}
+
 .titolo-aziende{
     color:#822627;
     font-size: 20px;
@@ -77,6 +81,10 @@ input[type="file"]{
 .proposte-tirocinio{
     font-size: 14px;
     line-height: 2
+}
+
+.send-button{
+	margin: 10px 0 0 0 !important;
 }
 
 /* End homepage STUDENTE */
