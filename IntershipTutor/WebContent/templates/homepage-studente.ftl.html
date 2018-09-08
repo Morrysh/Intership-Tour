@@ -260,17 +260,17 @@
 	         	  <h3 class="univaq-color profile">Account</h3>
 	         	  <label for="usernameStudente"><b>Username</b></label>
 	         	  <input id="usernameStudente" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="15" type="text" <#if studenteNR??>value="${studenteNR.username}"<#else>value="${utente.username}"</#if> placeholder="Inserisci il tuo username" name="username" autocomplete="off" required />
-		          <#if usernameInUso?? && usernameInUso??>
+		          <#if usernameInUso?? && usernameInUso>
 					<p class="warning">Username non disponibile</p>
 				  </#if>
 		          <label for="emailStudente"><b>Email</b></label>
 	         	  <input id="emailStudente" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="email" <#if studenteNR??>value="${studenteNR.email}"<#else>value="${utente.email}"</#if> placeholder="Inserisci la tua email" name="email" autocomplete="off" required />
-		          <#if emailInUso?? && emailInUso??>
+		          <#if emailInUso?? && emailInUso>
 		          	<p class="warning">Email non disponibile</p>
 		          </#if>
 		          <label for="telefonoStudente"><b>Telefono</b></label>
 	          	  <input id="telefonoStudente" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="20" type="tel" <#if studenteNR??>value="${studenteNR.telefono}"<#else>value="${utente.telefono}"</#if> placeholder="Inserisci il tuo telefono" name="telefono" autocomplete="off" required />
-		          <#if telefonoInUso?? && telefonoInUso??>
+		          <#if telefonoInUso?? && telefonoInUso>
 		          	<p class="warning">Telefono non disponibile</p>
 		          </#if>
 		          <label for="passwordStudente"><b>Password</b></label>

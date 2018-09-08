@@ -183,17 +183,17 @@
 		          <h3 class="univaq-color profile">Account</h3>
 		          <label for="usernameAzienda"><b>Username</b></label>
 	         	  <input id="usernameAzienda" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="15" type="text" <#if aziendaNR??>value="${aziendaNR.username}"<#else>value="${utente.username}"</#if> placeholder="Inserisci il tuo username" name="username" autocomplete="off" required />
-		          <#if usernameAInUso?? && usernameAInUso??>
+		          <#if usernameAInUso?? && usernameAInUso>
 					<p class="warning">Username non disponibile</p>
 				  </#if>
 		          <label for="emailAzienda"><b>Email</b></label>
 	         	  <input id="emailAzienda" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="45" type="email" <#if aziendaNR??>value="${aziendaNR.email}"<#else>value="${utente.email}"</#if> placeholder="Inserisci la tua email" name="email" autocomplete="off" required />
-		          <#if emailAInUso?? && emailAInUso??>
+		          <#if emailAInUso?? && emailAInUso>
 		          	<p class="warning">Email non disponibile</p>
 		          </#if>
 		          <label for="telefonoAzienda"><b>Telefono</b></label>
 	          	  <input id="telefonoAzienda" class="w3-input w3-border-bottom w3-margin-bottom" maxlength="20" type="tel" <#if aziendaNR??>value="${aziendaNR.telefono}"<#else>value="${utente.telefono}"</#if> placeholder="Inserisci il tuo telefono" name="telefono" autocomplete="off" required />
-		          <#if telefonoAInUso?? && telefonoAInUso??>
+		          <#if telefonoAInUso?? && telefonoAInUso>
 		          	<p class="warning">Telefono non disponibile</p>
 		          </#if>
 		          <label for="passwordAzienda"><b>Password</b></label>
