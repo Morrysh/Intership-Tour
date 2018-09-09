@@ -35,7 +35,7 @@ public class FailureResult {
             //if an error template has been configured, try it
             if (context.getInitParameter("view.error_template") != null) {
                 request.setAttribute("error", message);
-                request.setAttribute("container", "");
+                //request.setAttribute("container", "");
                 template.activate(context.getInitParameter("view.error_template"), request, response);
             } else {
                 //altrimenti, inviamo un errore HTTP
