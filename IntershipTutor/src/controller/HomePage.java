@@ -49,7 +49,8 @@ public class HomePage extends IntershipTutorBaseController {
         }
     }
 
-    private void action_student(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException {
+    private void action_student(HttpServletRequest request, HttpServletResponse response) 
+    		throws IOException, ServletException, TemplateManagerException {
         try {
         	
         	Studente studente = (Studente) request.getAttribute("utente");
@@ -115,7 +116,8 @@ public class HomePage extends IntershipTutorBaseController {
         }
     }
     
-    private void action_azienda(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException {
+    private void action_azienda(HttpServletRequest request, HttpServletResponse response) 
+    		throws IOException, ServletException, TemplateManagerException {
     	try {
     		this.setCommonAttributes(request, response);
     		TemplateResult res = new TemplateResult(getServletContext());
@@ -155,36 +157,39 @@ public class HomePage extends IntershipTutorBaseController {
     }
     
     //Amministratore
-    private void action_amministratore(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException {
-    	try{this.setCommonAttributes(request, response);
-    	TemplateResult res = new TemplateResult(getServletContext());
-    	
-    	Amministratore amministratore = (Amministratore) request.getAttribute("utente");
-    	
-    	Azienda bestAzienda = new AziendaDAO().getBestAzienda();
-    	Azienda worstAzienda = new AziendaDAO().getWorstAzienda();
-    	List<Azienda> aziendeNonConv = new AziendaDAO().allAziendeAccordingToConvention(false);
-    	OffertaTirocinio bestOfferta = new OffertaTirocinioDAO().getBestOfferta();
-    	
-    	int numAmministratoriTotali = new UtenteDAO().getCountAccordingToUserType(TipoUtente.amministratore);
-    	int numAziendeTotali = new UtenteDAO().getCountAccordingToUserType(TipoUtente.azienda);
-    	int numStudentiTotali = new UtenteDAO().getCountAccordingToUserType(TipoUtente.studente);
-    	int numOfferteTotali = new OffertaTirocinioDAO().getCount();
-    	
-    	// Removing outline template for the admin
-    	request.setAttribute("outline_tpl", "");
-    	request.setAttribute("numAmministratoriTotali", numAmministratoriTotali);
-    	request.setAttribute("numAziendeTotali", numAziendeTotali);
-    	request.setAttribute("numStudentiTotali", numStudentiTotali);
-    	request.setAttribute("numOfferteTotali", numOfferteTotali);
-    	request.setAttribute("bestAzienda", bestAzienda);
-        request.setAttribute("worstAzienda", worstAzienda);
-        request.setAttribute("aziendeNonConv", aziendeNonConv);
-        request.setAttribute("numAziende", aziendeNonConv.size());
-        request.setAttribute("bestOfferta", bestOfferta);
-        request.setAttribute("amministratore", amministratore);
-    	//Attiviamo il template dell'amministatore
-    	res.activate("homepage-amministratore.ftl.html", request, response);
+    private void action_amministratore(HttpServletRequest request, HttpServletResponse response) 
+    		throws IOException, ServletException, TemplateManagerException {
+    	try{
+    		
+	    	this.setCommonAttributes(request, response);
+	    	TemplateResult res = new TemplateResult(getServletContext());
+	    	
+	    	Amministratore amministratore = (Amministratore) request.getAttribute("utente");
+	    	
+	    	Azienda bestAzienda = new AziendaDAO().getBestAzienda();
+	    	Azienda worstAzienda = new AziendaDAO().getWorstAzienda();
+	    	List<Azienda> aziendeNonConv = new AziendaDAO().allAziendeAccordingToConvention(false);
+	    	OffertaTirocinio bestOfferta = new OffertaTirocinioDAO().getBestOfferta();
+	    	
+	    	int numAmministratoriTotali = new UtenteDAO().getCountAccordingToUserType(TipoUtente.amministratore);
+	    	int numAziendeTotali = new UtenteDAO().getCountAccordingToUserType(TipoUtente.azienda);
+	    	int numStudentiTotali = new UtenteDAO().getCountAccordingToUserType(TipoUtente.studente);
+	    	int numOfferteTotali = new OffertaTirocinioDAO().getCount();
+	    	
+	    	// Removing outline template for the admin
+	    	request.setAttribute("outline_tpl", "");
+	    	request.setAttribute("numAmministratoriTotali", numAmministratoriTotali);
+	    	request.setAttribute("numAziendeTotali", numAziendeTotali);
+	    	request.setAttribute("numStudentiTotali", numStudentiTotali);
+	    	request.setAttribute("numOfferteTotali", numOfferteTotali);
+	    	request.setAttribute("bestAzienda", bestAzienda);
+	        request.setAttribute("worstAzienda", worstAzienda);
+	        request.setAttribute("aziendeNonConv", aziendeNonConv);
+	        request.setAttribute("numAziende", aziendeNonConv.size());
+	        request.setAttribute("bestOfferta", bestOfferta);
+	        request.setAttribute("amministratore", amministratore);
+	    	//Attiviamo il template dell'amministatore
+	    	res.activate("homepage-amministratore.ftl.html", request, response);
     	}
     	catch(DataLayerException ex) {
             request.setAttribute("message", "Data access exception: " + ex.getMessage());
@@ -193,7 +198,8 @@ public class HomePage extends IntershipTutorBaseController {
     }
     
     // Anonimo
-    private void action_default(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException {
+    private void action_default(HttpServletRequest request, HttpServletResponse response) 
+    		throws IOException, ServletException, TemplateManagerException {
     	try {
     		this.setCommonAttributes(request, response);
     		TemplateResult res = new TemplateResult(getServletContext());

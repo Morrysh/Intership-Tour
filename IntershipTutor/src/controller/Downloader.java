@@ -18,7 +18,6 @@ import data.model.Studente;
 import data.model.TirocinioStudente;
 import framework.data.DataLayerException;
 import framework.result.FailureResult;
-import framework.result.TemplateManagerException;
 import framework.security.SecurityLayer;
 
 @SuppressWarnings("serial")
@@ -34,7 +33,8 @@ public class Downloader extends IntershipTutorBaseController{
         }
     }
 	
-	private void action_download_training_project(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException{
+	private void action_download_training_project(HttpServletRequest request, HttpServletResponse response) 
+			throws IOException, ServletException {
 		try {			
 			Studente studente = new StudenteDAO().getStudenteByCF(request.getParameter("candidato"));
 			
@@ -54,7 +54,8 @@ public class Downloader extends IntershipTutorBaseController{
 		}
 	}
 	
-	private void action_download_company_convention(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException{
+	private void action_download_company_convention(HttpServletRequest request, HttpServletResponse response)
+			throws IOException, ServletException {
 		try {
 			Azienda azienda = new AziendaDAO().getAziendaByCF(request.getParameter("azienda"));
 	
@@ -68,14 +69,15 @@ public class Downloader extends IntershipTutorBaseController{
 			}
 			fileInputStream.close();
 		}
-		catch(IOException | DataLayerException e) {
+		catch(DataLayerException e) {
 			request.setAttribute("message", "Data access exception: " + e.getMessage());
             action_error(request, response);
 		}
 	}
 
 	@Override
-	protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException {
+	protected void processRequest(HttpServletRequest request, HttpServletResponse response) 
+			throws ServletException {
 		try {
 			// Sessione eventualmente attiva
 			HttpSession session = SecurityLayer.checkSession(request);
@@ -97,7 +99,8 @@ public class Downloader extends IntershipTutorBaseController{
 					}
 					else {
 						request.setAttribute("message", "Azienda non autorizzata:<br />" + 
-														"La convenzione che si vuole scaricare non è legata a quest'azienda");
+														"La convenzione che si vuole scaricare non è " +
+														"legata a quest'azienda");
 						action_error(request, response);
 					}
 				}
@@ -153,7 +156,7 @@ public class Downloader extends IntershipTutorBaseController{
 			}
 			
         }
-    	catch (TemplateManagerException | IOException | DataLayerException ex) {
+    	catch (IOException | DataLayerException ex) {
             request.setAttribute("exception", ex);
             action_error(request, response);
 

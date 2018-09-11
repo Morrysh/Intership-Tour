@@ -17,7 +17,6 @@ import data.model.Studente;
 import data.model.Utente;
 import framework.data.DataLayerException;
 import framework.result.FailureResult;
-import framework.result.TemplateManagerException;
 import framework.security.SecurityLayer;
 import utils.email.EmailSender;
 import utils.password.PasswordGenerator;
@@ -35,7 +34,8 @@ public class Login extends IntershipTutorBaseController {
         }
     }
 	
-	private void action_recover(HttpServletRequest request, HttpServletResponse response) throws IOException, TemplateManagerException {
+	private void action_recover(HttpServletRequest request, HttpServletResponse response) 
+			throws IOException, ServletException {
 		try {
 			
 			// Controlliamo che l'email esista.
@@ -84,7 +84,8 @@ public class Login extends IntershipTutorBaseController {
 		
 	}
 
-    private void action_login(HttpServletRequest request, HttpServletResponse response) throws IOException, TemplateManagerException {
+    private void action_login(HttpServletRequest request, HttpServletResponse response) 
+    		throws IOException, ServletException {
         try {
 	    	String username = request.getParameter("username");
 	        String password = request.getParameter("password");
@@ -135,7 +136,7 @@ public class Login extends IntershipTutorBaseController {
             	request.getRequestDispatcher(".").forward(request,response);
 	        }
         }
-        catch (DataLayerException | ServletException ex) {
+        catch (DataLayerException ex) {
             request.setAttribute("message", "Data access exception: " + ex.getMessage());
             action_error(request, response);
         }
@@ -155,7 +156,7 @@ public class Login extends IntershipTutorBaseController {
     			action_login(request, response);
     		}
         } 
-    	catch (TemplateManagerException | IOException ex) {
+    	catch (IOException ex) {
             request.setAttribute("exception", ex);
             action_error(request, response);
 

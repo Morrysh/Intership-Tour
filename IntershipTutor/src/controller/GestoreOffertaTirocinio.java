@@ -37,7 +37,8 @@ public class GestoreOffertaTirocinio extends IntershipTutorBaseController{
     }
 	
 	// Aggiungi offerta tirocinio
-	private void action_aggiungi(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException{
+	private void action_aggiungi(HttpServletRequest request, HttpServletResponse response)
+			throws IOException, ServletException{
 		
 		try {
 			Azienda azienda = (Azienda) request.getAttribute("utente");
@@ -80,7 +81,7 @@ public class GestoreOffertaTirocinio extends IntershipTutorBaseController{
 				request.setAttribute("message", "Azienda non convenzionata, permesso negato");
 	            action_error(request, response);
 			}
-		} catch (DataLayerException | IOException | IllegalArgumentException ex) {
+		} catch (DataLayerException ex) {
 			request.setAttribute("message", "Data access exception: " + ex.getMessage());
 	        action_error(request, response);
 		}
@@ -88,7 +89,8 @@ public class GestoreOffertaTirocinio extends IntershipTutorBaseController{
 	}
 	
 	// Aggiorna offerta tirocinio
-	private void action_aggiorna(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException{
+	private void action_aggiorna(HttpServletRequest request, HttpServletResponse response)
+			throws IOException, ServletException {
 		
 		try {
 			Azienda azienda = (Azienda) request.getAttribute("utente");
@@ -133,7 +135,7 @@ public class GestoreOffertaTirocinio extends IntershipTutorBaseController{
     			response.sendRedirect(".");
 			}
 				
-		} catch (DataLayerException | IOException | IllegalArgumentException ex) {
+		} catch (DataLayerException ex) {
 			request.setAttribute("message", "Data access exception: " + ex.getMessage());
             action_error(request, response);
 		}
@@ -141,7 +143,8 @@ public class GestoreOffertaTirocinio extends IntershipTutorBaseController{
 	}
 	
 	// Rimuovi offerta tirocinio
-	private void action_rimuovi(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException{
+	private void action_rimuovi(HttpServletRequest request, HttpServletResponse response) 
+			throws IOException, ServletException {
 		try {
 			int codiceOffertaTirocinio = SecurityLayer.checkNumeric(request.getParameter(OffertaTirocinio.ID_TIROCINIO));
 			
@@ -150,27 +153,29 @@ public class GestoreOffertaTirocinio extends IntershipTutorBaseController{
 			// NOT USING request.getContextPath because it doesn't work with Heroku
 			response.sendRedirect(".");
 			
-		} catch (DataLayerException | IOException ex) {
+		} catch (DataLayerException ex) {
 			request.setAttribute("message", "Data access exception: " + ex.getMessage());
 	        action_error(request, response);
 		}
 	}
 	
-	private void action_visibilita(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException{
+	private void action_visibilita(HttpServletRequest request, HttpServletResponse response) 
+			throws IOException, ServletException {
 		try {
 			int codiceOffertaTirocinio = SecurityLayer.checkNumeric(request.getParameter(OffertaTirocinio.ID_TIROCINIO));
 			new OffertaTirocinioDAO().setVisibilita(codiceOffertaTirocinio, SecurityLayer.checkBoolean(request.getParameter("visibilita")));
 			// NOT USING request.getContextPath becouse it doesn't work with Heroku
 			response.sendRedirect(".");
 		}
-		catch(DataLayerException | IOException | IllegalArgumentException ex) {
+		catch(DataLayerException ex) {
             request.setAttribute("message", "Data access exception: " + ex.getMessage());
             action_error(request, response);
         }
 	}
 	
 	// Mostra dettagli dell'offerta
-    private void action_default(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException {
+    private void action_default(HttpServletRequest request, HttpServletResponse response) 
+    		throws IOException, ServletException, TemplateManagerException {
     	try {
 	    	TemplateResult res = new TemplateResult(getServletContext());
 	    	
@@ -229,7 +234,8 @@ public class GestoreOffertaTirocinio extends IntershipTutorBaseController{
         }
     }
     
-    private void action_recensisci(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException{
+    private void action_recensisci(HttpServletRequest request, HttpServletResponse response) 
+    		throws IOException, ServletException {
 		try {
 			
 			String codiceFiscale = ((Studente)request.getAttribute("utente")).getCodiceFiscale();
@@ -245,7 +251,7 @@ public class GestoreOffertaTirocinio extends IntershipTutorBaseController{
     			response.sendRedirect(".");
 			}
 		}
-		catch(DataLayerException | IOException ex) {
+		catch(DataLayerException ex) {
             request.setAttribute("message", "Data access exception: " + ex.getMessage());
             action_error(request, response);
         }
@@ -315,7 +321,7 @@ public class GestoreOffertaTirocinio extends IntershipTutorBaseController{
 			}
 			
     	}
-		catch (TemplateManagerException | IOException e) {
+		catch (TemplateManagerException | IOException | IllegalArgumentException e) {
 			request.setAttribute("exception", e);
             action_error(request, response);
 		}

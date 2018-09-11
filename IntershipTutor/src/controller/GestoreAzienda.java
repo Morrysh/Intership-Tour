@@ -52,64 +52,66 @@ public class GestoreAzienda extends IntershipTutorBaseController {
         }
     }
 	
-		// Funzione per controllare se l'azienda può registrarsi o aggiornare la registrazione 
-		// con i campi inseriti(verifica dei duplicati)
-		private boolean check_fields(HttpServletRequest request, HttpServletResponse response, Azienda azienda) throws DataLayerException {
-			try {
-				boolean registrazione_ok = true;
-				
-				// Registazione
-				if(request.getParameter("registrazione") != null) {
-					if(!new UtenteDAO().checkCodiceFiscaleDisponibile(azienda.getCodiceFiscale())) {
-						request.setAttribute("PIInUso", true);
-						registrazione_ok = false;
-					}
-					if(!new UtenteDAO().checkEmailDisponibile(azienda.getEmail())) {
-						request.setAttribute("emailAInUso", true);
-						registrazione_ok = false;
-					}
-					if(!new UtenteDAO().checkUsernameDisponibile(azienda.getUsername())) {
-						request.setAttribute("usernameAInUso", true);
-						registrazione_ok = false;
-					}
-					if(!new UtenteDAO().checkTelefonoDisponibile(azienda.getTelefono())) {
-						request.setAttribute("telefonoAInUso", true);
-						registrazione_ok = false;
-					}
+	// Funzione per controllare se l'azienda può registrarsi o aggiornare la registrazione 
+	// con i campi inseriti(verifica dei duplicati)
+	private boolean check_fields(HttpServletRequest request, HttpServletResponse response, Azienda azienda) 
+			throws DataLayerException {
+		try {
+			boolean registrazione_ok = true;
+			
+			// Registazione
+			if(request.getParameter("registrazione") != null) {
+				if(!new UtenteDAO().checkCodiceFiscaleDisponibile(azienda.getCodiceFiscale())) {
+					request.setAttribute("PIInUso", true);
+					registrazione_ok = false;
 				}
-				// Richiesta aggiornamento profilo
-				else {
-					
-					Azienda aziendaLoggata = (Azienda)request.getAttribute("utente");
-					
-					if(!(aziendaLoggata.getEmail().equals(azienda.getEmail())) &&
-					   !new UtenteDAO().checkEmailDisponibile(azienda.getEmail())) {
-						
-						request.setAttribute("emailAInUso", true);
-						registrazione_ok = false;
-					}
-					if(!(aziendaLoggata.getUsername().equals(azienda.getUsername())) &&
-					   !new UtenteDAO().checkUsernameDisponibile(azienda.getUsername())) {
-						
-						request.setAttribute("usernameAInUso", true);
-						registrazione_ok = false;
-					}
-					if(!(aziendaLoggata.getTelefono().equals(azienda.getTelefono())) &&
-					   !new UtenteDAO().checkTelefonoDisponibile(azienda.getTelefono())) {
-						
-						request.setAttribute("telefonoAInUso", true);
-						registrazione_ok = false;
-					}
+				if(!new UtenteDAO().checkEmailDisponibile(azienda.getEmail())) {
+					request.setAttribute("emailAInUso", true);
+					registrazione_ok = false;
 				}
+				if(!new UtenteDAO().checkUsernameDisponibile(azienda.getUsername())) {
+					request.setAttribute("usernameAInUso", true);
+					registrazione_ok = false;
+				}
+				if(!new UtenteDAO().checkTelefonoDisponibile(azienda.getTelefono())) {
+					request.setAttribute("telefonoAInUso", true);
+					registrazione_ok = false;
+				}
+			}
+			// Richiesta aggiornamento profilo
+			else {
 				
-				return registrazione_ok;
+				Azienda aziendaLoggata = (Azienda)request.getAttribute("utente");
+				
+				if(!(aziendaLoggata.getEmail().equals(azienda.getEmail())) &&
+				   !new UtenteDAO().checkEmailDisponibile(azienda.getEmail())) {
+					
+					request.setAttribute("emailAInUso", true);
+					registrazione_ok = false;
+				}
+				if(!(aziendaLoggata.getUsername().equals(azienda.getUsername())) &&
+				   !new UtenteDAO().checkUsernameDisponibile(azienda.getUsername())) {
+					
+					request.setAttribute("usernameAInUso", true);
+					registrazione_ok = false;
+				}
+				if(!(aziendaLoggata.getTelefono().equals(azienda.getTelefono())) &&
+				   !new UtenteDAO().checkTelefonoDisponibile(azienda.getTelefono())) {
+					
+					request.setAttribute("telefonoAInUso", true);
+					registrazione_ok = false;
+				}
 			}
-			catch(DataLayerException ex) {
-				throw new DataLayerException("Errore nella verifica dei campi");
-			}
+			
+			return registrazione_ok;
 		}
+		catch(DataLayerException ex) {
+			throw new DataLayerException("Errore nella verifica dei campi");
+		}
+	}
 	
-	private void setConvezioneAzienda(HttpServletRequest request, HttpServletResponse response, Azienda azienda) {
+	private void setConvezioneAzienda(HttpServletRequest request, HttpServletResponse response, Azienda azienda) 
+			throws IOException, ServletException, DocumentException, TemplateManagerException{
 		try {
 			TemplateResult res = new TemplateResult(getServletContext());
 			
@@ -129,14 +131,15 @@ public class GestoreAzienda extends IntershipTutorBaseController {
 			ByteArrayInputStream pdfInputStream = new ByteArrayInputStream(baos.toByteArray());
 			
 			new AziendaDAO().setConvenzioneDoc(pdfInputStream, azienda);
-		} catch (DataLayerException | IOException | TemplateManagerException | DocumentException e) {
+		} catch (DataLayerException e) {
 			request.setAttribute("message", "Data access exception: " + e.getMessage());
 	        action_error(request, response);
 		} 
 		
 	}
 	
-	private void action_aggiorna(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException{
+	private void action_aggiorna(HttpServletRequest request, HttpServletResponse response) 
+			throws IOException, ServletException{
 		try {
 			Azienda aziendaLoggata = (Azienda) request.getAttribute("utente");
 			Azienda azienda = new Azienda();
@@ -183,13 +186,14 @@ public class GestoreAzienda extends IntershipTutorBaseController {
 				request.getRequestDispatcher(".").forward(request,response);
 			}
 			
-		} catch (DataLayerException | IOException e) {
+		} catch (DataLayerException e) {
 			request.setAttribute("message", "Data access exception: " + e.getMessage());
             action_error(request, response);
 		}
 	}
 	
-	private void action_registra(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException {
+	private void action_registra(HttpServletRequest request, HttpServletResponse response) 
+			throws IOException, ServletException, DocumentException, TemplateManagerException {
 		try {
 			Azienda azienda = new Azienda(
 					request.getParameter(Utente.CODICE_FISCALE),
@@ -230,14 +234,15 @@ public class GestoreAzienda extends IntershipTutorBaseController {
 				request.getRequestDispatcher(".").forward(request,response);
 			}
 			
-		} catch (DataLayerException | IOException e) {
+		} catch (DataLayerException e) {
 			request.setAttribute("message", "Data access exception: " + e.getMessage());
             action_error(request, response);
 		} 
 	}
 
 	// Show details
-    private void action_default(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException {
+    private void action_default(HttpServletRequest request, HttpServletResponse response) 
+    		throws IOException, ServletException, TemplateManagerException {
         try {
 	    	TemplateResult res = new TemplateResult(getServletContext());
 	    	
@@ -295,13 +300,14 @@ public class GestoreAzienda extends IntershipTutorBaseController {
 	        
 			res.activate("dettaglio-azienda.ftl.html", request, response);
         }
-        catch (DataLayerException | IllegalArgumentException ex) {
-            request.setAttribute("message", "Data access exception: " + ex.getMessage());
+        catch (DataLayerException e) {
+            request.setAttribute("message", "Data access exception: " + e.getMessage());
             action_error(request, response);
         }
     }
     
-    private void action_recensisci(HttpServletRequest request, HttpServletResponse response) {
+    private void action_recensisci(HttpServletRequest request, HttpServletResponse response) 
+    		throws IOException, ServletException {
 		try {
 			
 			String codiceFiscale = ((Studente)request.getAttribute("utente")).getCodiceFiscale();
@@ -328,7 +334,7 @@ public class GestoreAzienda extends IntershipTutorBaseController {
 			}
 			
 		}
-		 catch (DataLayerException | IOException | IllegalArgumentException e) {
+		 catch (DataLayerException e) {
 			request.setAttribute("message", "Data access exception: " + e.getMessage());
             action_error(request, response);
 		 } 
@@ -390,7 +396,7 @@ public class GestoreAzienda extends IntershipTutorBaseController {
     		}
     		
     		
-		} catch (IOException | TemplateManagerException ex) {
+		} catch (IOException | TemplateManagerException | IllegalArgumentException | DocumentException ex) {
             request.setAttribute("exception", ex);
             action_error(request, response);
         } 

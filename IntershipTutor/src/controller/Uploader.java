@@ -35,7 +35,8 @@ public class Uploader extends IntershipTutorBaseController{
         }
     }
 	
-	private void action_update_training_project(HttpServletRequest request, HttpServletResponse response){
+	private void action_update_training_project(HttpServletRequest request, HttpServletResponse response)  
+			throws IOException, ServletException {
 		try {
 			
 			Part filePart = request.getPart("file");
@@ -60,13 +61,14 @@ public class Uploader extends IntershipTutorBaseController{
 			    action_error(request, response);
 			}
 			
-		} catch (IOException | ServletException | DataLayerException e) {
+		} catch (DataLayerException e) {
 			request.setAttribute("message", "Data access exception: " + e.getMessage());
             action_error(request, response);
 		}
 	}
 	
-	private void action_set_convention(HttpServletRequest request, HttpServletResponse response){
+	private void action_set_convention(HttpServletRequest request, HttpServletResponse response)
+			throws IOException, ServletException {
 		try {
 			
 			Part filePart = request.getPart("file");
@@ -94,14 +96,15 @@ public class Uploader extends IntershipTutorBaseController{
 			    action_error(request, response);
 			}
 			
-		} catch (IOException | ServletException | DataLayerException e) {
+		} catch (DataLayerException e) {
 			request.setAttribute("message", "Data access exception: " + e.getMessage());
             action_error(request, response);
 		}
 	}
 
 	@Override
-	protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException {
+	protected void processRequest(HttpServletRequest request, HttpServletResponse response) 
+			throws ServletException {
 		try {
 			// Sessione eventualmente attiva
 			HttpSession session = SecurityLayer.checkSession(request);
@@ -157,7 +160,7 @@ public class Uploader extends IntershipTutorBaseController{
 				action_error(request, response);
 			}		
 		}
-		catch(DataLayerException ex) {
+		catch(DataLayerException | IOException ex) {
 			request.setAttribute("exception", ex);
             action_error(request, response);
 		}

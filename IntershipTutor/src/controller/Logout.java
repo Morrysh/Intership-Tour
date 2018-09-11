@@ -22,7 +22,8 @@ public class Logout extends IntershipTutorBaseController{
         }
     }
 
-    private void action_logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private void action_logout(HttpServletRequest request, HttpServletResponse response) 
+    		throws IOException, ServletException {
         SecurityLayer.disposeSession(request);
         
         if (request.getParameter("referer") != null) {

@@ -53,7 +53,8 @@ public class GestoreTirocinioStudente extends IntershipTutorBaseController {
         }
     }
 	
-	private void action_show_candidates(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException{
+	private void action_show_candidates(HttpServletRequest request, HttpServletResponse response) 
+			throws IOException, ServletException, TemplateManagerException{
 		try {
 			TemplateResult res = new TemplateResult(getServletContext());
 			
@@ -97,7 +98,8 @@ public class GestoreTirocinioStudente extends IntershipTutorBaseController {
 		}
 	}
 	
-	private void action_show_concluded_interships(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException{
+	private void action_show_concluded_interships(HttpServletRequest request, HttpServletResponse response) 
+			throws IOException, ServletException, TemplateManagerException{
 		try {
 			TemplateResult res = new TemplateResult(getServletContext());
 			
@@ -137,7 +139,8 @@ public class GestoreTirocinioStudente extends IntershipTutorBaseController {
 		}
 	}
 	
-	private void action_iscriviti(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException {
+	private void action_iscriviti(HttpServletRequest request, HttpServletResponse response) 
+			throws IOException, ServletException {
         try {
         	
         	Studente studente = (Studente) request.getAttribute("utente");
@@ -192,7 +195,8 @@ public class GestoreTirocinioStudente extends IntershipTutorBaseController {
         }
     }
 	
-	private void action_rimuovi(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException{
+	private void action_rimuovi(HttpServletRequest request, HttpServletResponse response) 
+			throws IOException, ServletException {
 		try {
 			Studente studente = (Studente) new StudenteDAO().getStudenteByCF(request.getParameter("candidato"));
 			
@@ -207,13 +211,14 @@ public class GestoreTirocinioStudente extends IntershipTutorBaseController {
 			}
 			
 		}
-		catch (DataLayerException | IOException e) {
+		catch (DataLayerException e) {
 			request.setAttribute("message", "Data access exception: " + e.getMessage());
             action_error(request, response);
 		}
 	}
 	
-	private void action_update_state(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException{
+	private void action_update_state(HttpServletRequest request, HttpServletResponse response) 
+			throws IOException, ServletException, TemplateManagerException, DocumentException {
 		try {	    
 			String codiceFiscale = request.getParameter("candidato");
 			StatoRichiestaTirocinio statoRichiestaTirocinio = StatoRichiestaTirocinio.valueOf(request.getParameter(TirocinioStudente.STATO));		
@@ -250,7 +255,7 @@ public class GestoreTirocinioStudente extends IntershipTutorBaseController {
     			response.sendRedirect(".");
 			}
 		}
-		catch (DataLayerException | IOException e) {
+		catch (DataLayerException e) {
 			request.setAttribute("message", "Data access exception: " + e.getMessage());
             action_error(request, response);
 		}
@@ -259,7 +264,8 @@ public class GestoreTirocinioStudente extends IntershipTutorBaseController {
 	// Per la generazione automatica del progetto formativo
 	// Usiamo un template che viene riempito con i dati dello studente e dell'azienda,
 	// il templata da stringa viene trasformato in pdf e inserito nel db
-	private void update_training_project(HttpServletRequest request, HttpServletResponse response) throws TemplateManagerException {
+	private void update_training_project(HttpServletRequest request, HttpServletResponse response) 
+			throws TemplateManagerException, DocumentException, IOException {
 		try {
 			TemplateResult res = new TemplateResult(getServletContext());
 			
@@ -289,7 +295,7 @@ public class GestoreTirocinioStudente extends IntershipTutorBaseController {
 			
 			new TirocinioStudenteDAO().setProgettoFormativo(pdfInputStream, studente);
 		}
-		catch (DataLayerException | IOException | DocumentException e) {
+		catch (DataLayerException e) {
 			request.setAttribute("message", "Data access exception: " + e.getMessage());
             action_error(request, response);
 		}
@@ -388,7 +394,7 @@ public class GestoreTirocinioStudente extends IntershipTutorBaseController {
 				action_error(request, response);
 			}
 			
-		} catch (IOException | TemplateManagerException ex) {
+		} catch (IOException | IllegalArgumentException | TemplateManagerException | DocumentException ex) {
             request.setAttribute("exception", ex);
             action_error(request, response);
         } 

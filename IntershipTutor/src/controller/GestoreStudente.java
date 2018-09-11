@@ -13,7 +13,6 @@ import data.model.Utente;
 import data.model.enumeration.TipoUtente;
 import framework.data.DataLayerException;
 import framework.result.FailureResult;
-import framework.result.TemplateManagerException;
 import framework.security.SecurityLayer;
 
 @SuppressWarnings("serial")
@@ -31,7 +30,8 @@ public class GestoreStudente extends IntershipTutorBaseController {
 	
 	// Funzione per controllare se lo studente può registrarsi o aggiornare la registrazione 
 	// con i campi inseriti(verifica dei duplicati)
-	private boolean check_fields(HttpServletRequest request, HttpServletResponse response, Studente studente) throws DataLayerException {
+	private boolean check_fields(HttpServletRequest request, HttpServletResponse response, Studente studente) 
+			throws DataLayerException {
 		try {
 			boolean registrazione_ok = true;
 			
@@ -87,7 +87,8 @@ public class GestoreStudente extends IntershipTutorBaseController {
 		}
 	}
 	
-	private void action_aggiorna(HttpServletRequest request, HttpServletResponse response) {
+	private void action_aggiorna(HttpServletRequest request, HttpServletResponse response) 
+			throws IOException, ServletException {
 		try {
 			Studente studenteLoggato = (Studente) request.getAttribute("utente");
 			Studente studente = new Studente();
@@ -140,13 +141,14 @@ public class GestoreStudente extends IntershipTutorBaseController {
 			}
 			
 		}
-		catch(DataLayerException | IOException | IllegalArgumentException | ServletException ex) {
+		catch(DataLayerException ex) {
             request.setAttribute("message", "Data access exception: " + ex.getMessage());
             action_error(request, response);
         }
 	}
 	
-	private void action_registra(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException{
+	private void action_registra(HttpServletRequest request, HttpServletResponse response) 
+			throws IOException, ServletException {
 		try {
 			Studente studente = new Studente(
 				request.getParameter(Utente.CODICE_FISCALE),
@@ -188,7 +190,7 @@ public class GestoreStudente extends IntershipTutorBaseController {
 			}			
 			
 		}
-		catch(DataLayerException | IOException | IllegalArgumentException ex) {
+		catch(DataLayerException ex) {
             request.setAttribute("message", "Data access exception: " + ex.getMessage());
             action_error(request, response);
         }
@@ -213,7 +215,7 @@ public class GestoreStudente extends IntershipTutorBaseController {
 				action_registra(request, response);
 			}
         }
-    	catch (TemplateManagerException | IOException ex) {
+    	catch (IllegalArgumentException | IOException ex) {
             request.setAttribute("exception", ex);
             action_error(request, response);
 
