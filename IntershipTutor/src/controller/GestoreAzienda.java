@@ -22,6 +22,7 @@ import dao.impl.OffertaTirocinioDAO;
 import dao.impl.ParereAziendaDAO;
 import dao.impl.TirocinioStudenteDAO;
 import dao.impl.UtenteDAO;
+import data.model.Amministratore;
 import data.model.Azienda;
 import data.model.OffertaTirocinio;
 import data.model.ParereAzienda;
@@ -339,6 +340,23 @@ public class GestoreAzienda extends IntershipTutorBaseController {
             action_error(request, response);
 		 } 
 	}
+    
+    private void action_delete_company(HttpServletRequest request, HttpServletResponse response) 
+    		throws IOException, ServletException {
+		try {
+			
+			// L'azienda viene rimossa dal database
+			new UtenteDAO().delete(request.getParameter("azienda"));
+			
+			// NOT USING request.getContextPath because it doesn't work with Heroku
+			response.sendRedirect(".");
+			
+		}
+		 catch (DataLayerException e) {
+			request.setAttribute("message", "Data access exception: " + e.getMessage());
+            action_error(request, response);
+		 } 
+	}
 
     @Override
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -347,7 +365,9 @@ public class GestoreAzienda extends IntershipTutorBaseController {
     	try {
     		request.setAttribute("page_css", "gestore-azienda");
   
-    		if(request.getParameter("aggiorna") != null || request.getParameter("recensisci") != null) {
+    		if(request.getParameter("aggiorna") != null ||
+    		   request.getParameter("recensisci") != null ||
+    		   request.getParameter("elimina") != null) {
     			HttpSession session = SecurityLayer.checkSession(request);
     			
     			if(session != null) {
@@ -365,8 +385,7 @@ public class GestoreAzienda extends IntershipTutorBaseController {
     	                    action_error(request, response);
     					}
     				}
-    				// Lo studente vuole recensire l'azienda
-    				else {
+    				else if(request.getParameter("recensisci") != null) {
     					// Verifichiamo che l'utente loggato sia uno studente
     					if(request.getAttribute("utente") instanceof Studente) {
     						action_recensisci(request, response);
@@ -375,6 +394,18 @@ public class GestoreAzienda extends IntershipTutorBaseController {
     						request.setAttribute("message", "Studente non autenticato:<br />" + 
     														"È necessario l'accesso per recensire l'azienda");
     	                    action_error(request, response);
+    					}
+    				}
+    				// L'amministratore rifiuta la richiesta dall'azienda
+    				else {
+    					// L'utente deve essere un'amministratore
+    					if(request.getAttribute("utente") instanceof Amministratore) {
+    						action_delete_company(request, response);
+    					}
+    					else {
+    						request.setAttribute("message", "Azione non autorizzata:<br />" + 
+												    		"Non si dispone dei permessi necessari per compiere l'azione");
+    						action_error(request, response);
     					}
     				}
     			}

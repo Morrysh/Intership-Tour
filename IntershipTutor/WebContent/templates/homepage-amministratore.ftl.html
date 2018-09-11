@@ -143,6 +143,9 @@
 							    <input type="file" name="file" />
 							    <button id="send-${azienda.utente}" class="w3-button pointer fas fa-upload w3-round" type="submit" > Carica documento</button>
 							</form>
+							<a class="w3-button pointer w3-round far fas fa-trash-alt w3-padding w3-left" href="azienda?elimina=true&azienda=${azienda.utente}">
+								Rifiuta richiesta
+							</a>
 				        </td>
 				      </tr>
 				      </#list>

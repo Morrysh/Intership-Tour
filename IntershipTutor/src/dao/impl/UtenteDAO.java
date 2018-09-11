@@ -94,6 +94,27 @@ public class UtenteDAO implements UtenteDAOInterface {
 	}
 	
 	@Override
+	public int delete(String codiceFiscale) throws DataLayerException {
+		String deleteQuery = "DELETE FROM utente WHERE codice_fiscale = ?;";
+		PreparedStatement preparedStatement;
+		int status = 0;
+		
+		try (Connection connection = DBConnector.getDatasource().getConnection()) {
+		preparedStatement = connection.prepareStatement(deleteQuery);
+		
+		preparedStatement.setString(1, codiceFiscale);
+		
+		status = preparedStatement.executeUpdate();
+		
+		connection.close();
+		} catch (SQLException e) {
+			throw new DataLayerException("Unable to delete user by CF", e);
+		}
+		
+		return status;
+	}
+	
+	@Override
 	public int getCountAccordingToUserType(TipoUtente tipoUtente) throws DataLayerException {
 		String query = "SELECT COUNT(*) AS count FROM utente WHERE tipo = ?";
 		PreparedStatement preparedStatement;

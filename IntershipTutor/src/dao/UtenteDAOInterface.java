@@ -12,6 +12,8 @@ public interface UtenteDAOInterface {
 	
 	int delete(Utente utente) throws DataLayerException;
 	
+	int delete(String codiceFiscale) throws DataLayerException;
+	
 	int getCountAccordingToUserType(TipoUtente tipoUtente) throws DataLayerException;
 	
 	boolean checkCodiceFiscaleDisponibile(String email) throws DataLayerException;
